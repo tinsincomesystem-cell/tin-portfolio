@@ -1,0 +1,5343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tin | GHL Systems Specialist · Funnel Strategist · Automation Workflows</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600;1,700&family=Barlow:wght@200;300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09080a;
+      --surface: #100e10;
+      --surface2: #161316;
+      --border: rgba(255, 235, 210, 0.06);
+      --border-bright: rgba(255, 235, 210, 0.13);
+
+      /* ── PEACH / TERRACOTTA PALETTE ── */
+      --peach: #FF8C69;
+      /* main accent — warm coral-peach */
+      --peach-light: #FFAA88;
+      /* lighter hover state */
+      --peach-gold: #E8703A;
+      /* deeper burnt orange */
+      --peach-dim: rgba(255, 140, 105, 0.14);
+      --peach-glow: rgba(255, 140, 105, 0.07);
+      --peach-border: rgba(255, 140, 105, 0.22);
+
+      /* keep violet for secondary accent — now mauve/wine */
+      --violet: #9B5E6B;
+      --violet-dim: rgba(155, 94, 107, 0.15);
+
+      /* keep green as a warm sand/cream accent */
+      --green: #F5C99A;
+      --green-dim: rgba(245, 201, 154, 0.1);
+
+      --white: #FFF5EE;
+      /* warm off-white, not cold */
+      --muted: rgba(255, 235, 210, 0.38);
+      --muted2: rgba(255, 235, 210, 0.18);
+      --mono: 'DM Mono', monospace;
+
+      /* ── FONT ALIASES ── */
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-condensed: 'Barlow Condensed', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      width: 10px;
+      height: 10px;
+      background: var(--peach);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s, height 0.3s, background 0.3s;
+      mix-blend-mode: screen;
+    }
+
+    .cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 140, 105, 0.4);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.3s, height 0.3s;
+    }
+
+    body:hover .cursor {
+      opacity: 1;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      padding: 0 60px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(9, 8, 10, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--peach);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--peach);
+      animation: blinkDot 2s ease infinite;
+    }
+
+    @keyframes blinkDot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--peach);
+    }
+
+    .nav-cta {
+      background: var(--peach);
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 20px rgba(255, 140, 105, 0.25);
+    }
+
+    .nav-cta:hover {
+      background: var(--white);
+      box-shadow: 0 0 30px rgba(255, 140, 105, 0.4);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding-top: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* GRID BACKGROUND */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 140, 105, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 140, 105, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+
+    /* GLOW ORBS */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(80px);
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 140, 105, 0.06);
+      top: -100px;
+      left: -100px;
+      animation: driftOrb 12s ease-in-out infinite alternate;
+    }
+
+    .orb-2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(155, 94, 107, 0.08);
+      bottom: -80px;
+      right: -80px;
+      animation: driftOrb 15s ease-in-out infinite alternate-reverse;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: rgba(0, 255, 163, 0.04);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: driftOrb 20s ease-in-out infinite;
+    }
+
+    @keyframes driftOrb {
+      from {
+        transform: translate(0, 0);
+      }
+
+      to {
+        transform: translate(40px, 30px);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 60px 40px;
+      max-width: 900px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 140, 105, 0.25);
+      background: rgba(255, 140, 105, 0.05);
+      padding: 8px 18px;
+      border-radius: 100px;
+      margin-bottom: 40px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--peach);
+      letter-spacing: 1px;
+      animation: fadeUp 1s ease both;
+    }
+
+    .hero-tag-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: blinkDot 1.5s ease infinite;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--peach);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: fadeUp 1s ease 0.1s both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 8vw, 88px);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 28px;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+
+    .hero-title .line1 {
+      color: var(--white);
+      display: block;
+    }
+
+    .hero-title .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--peach) 0%, var(--violet) 50%, var(--green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 48px;
+      line-height: 1.8;
+      animation: fadeUp 1s ease 0.3s both;
+    }
+
+    .hero-sub span {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 1s ease 0.4s both;
+      margin-bottom: 72px;
+    }
+
+    .btn-primary {
+      background: var(--peach);
+      color: var(--bg);
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 30px rgba(255, 140, 105, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 50px rgba(255, 140, 105, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border-bright);
+      color: var(--white);
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      text-decoration: none;
+      transition: all 0.3s;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--peach);
+      color: var(--peach);
+      background: var(--peach-glow);
+    }
+
+    /* HERO STATS BAR */
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      width: fit-content;
+      margin: 0 auto;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .hstat {
+      padding: 20px 36px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .hstat:last-child {
+      border-right: none;
+    }
+
+    .hstat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--peach);
+      display: block;
+      line-height: 1;
+    }
+
+    .hstat-lbl {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    /* VIDEO SECTION */
+    .video-section {
+      padding: 100px 80px;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--peach), transparent);
+    }
+
+    .video-section::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--violet), transparent);
+    }
+
+    .video-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .video-frame {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--bg);
+      border: 1px solid var(--border-bright);
+      overflow: hidden;
+    }
+
+    .video-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 140, 105, 0.05), rgba(155, 94, 107, 0.05));
+    }
+
+    /* Corner accents */
+    .video-frame::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid rgba(255, 140, 105, 0.1);
+      pointer-events: none;
+    }
+
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* When a video is embedded, hide the placeholder */
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    .video-frame iframe {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border: none;
+    }
+
+    .play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255, 140, 105, 0.1);
+      border: 2px solid var(--peach);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 3;
+    }
+
+    .play-btn:hover {
+      background: var(--peach);
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(255, 140, 105, 0.4);
+    }
+
+    .play-btn svg {
+      fill: var(--peach);
+      width: 24px;
+      height: 24px;
+      margin-left: 4px;
+      transition: fill 0.3s;
+    }
+
+    .play-btn:hover svg {
+      fill: var(--bg);
+    }
+
+    .video-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .video-hint {
+      font-size: 12px;
+      color: rgba(255, 140, 105, 0.4);
+      text-align: center;
+      padding: 0 24px;
+      font-family: var(--mono);
+    }
+
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--peach), transparent);
+      opacity: 0.3;
+      animation: scanDown 4s linear infinite;
+      z-index: 3;
+    }
+
+    @keyframes scanDown {
+      from {
+        top: 0;
+      }
+
+      to {
+        top: 100%;
+      }
+    }
+
+    .video-content .sec-eyebrow {
+      margin-bottom: 16px;
+    }
+
+    .video-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .video-title em {
+      color: var(--peach);
+      font-style: normal;
+    }
+
+    .video-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 36px;
+    }
+
+    .video-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--peach);
+      border: 1px solid rgba(255, 140, 105, 0.18);
+      background: var(--peach-dim);
+      padding: 6px 14px;
+      letter-spacing: 1px;
+    }
+
+    /* SECTION COMMONS */
+    .section {
+      padding: 100px 80px;
+    }
+
+    .sec-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin-bottom: 12px;
+    }
+
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 60px;
+    }
+
+    .sec-title em {
+      color: var(--peach);
+      font-style: normal;
+    }
+
+    .sec-title .grad {
+      background: linear-gradient(90deg, var(--peach), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Specializes / PRIMARY SERVICES */
+    .specialist {
+      background: var(--bg);
+    }
+
+    .specialist-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .exp-card {
+      background: var(--surface);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--peach), var(--violet));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .exp-card:hover {
+      background: var(--surface2);
+    }
+
+    .exp-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .exp-card.primary {
+      background: linear-gradient(135deg, rgba(255, 140, 105, 0.05), var(--surface));
+    }
+
+    .exp-card.primary::before {
+      transform: scaleX(1);
+      background: var(--peach);
+    }
+
+    .exp-number {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .exp-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .exp-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .exp-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .exp-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 4px 10px;
+      border: 1px solid var(--border-bright);
+      color: var(--muted2);
+      letter-spacing: 0.5px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .exp-card:hover .exp-tag {
+      border-color: rgba(255, 140, 105, 0.18);
+      color: var(--peach);
+    }
+
+    /* WHAT I BUILD — featured showcase */
+    .builds {
+      background: var(--surface);
+    }
+
+    .builds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .build-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 40px;
+      display: flex;
+      gap: 28px;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .build-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--peach), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .build-item:hover {
+      border-color: rgba(255, 140, 105, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .build-item:hover::after {
+      opacity: 1;
+    }
+
+    .build-num {
+      font-family: var(--mono);
+      font-size: 48px;
+      font-weight: 300;
+      color: rgba(255, 140, 105, 0.07);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 56px;
+      transition: color 0.3s;
+    }
+
+    .build-item:hover .build-num {
+      color: rgba(255, 140, 105, 0.14);
+    }
+
+    .build-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .build-content p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* WORK SAMPLES — VIDEO READY */
+    .samples {
+      background: var(--bg);
+    }
+
+    .samples-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .snav-btn {
+      padding: 14px 28px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .snav-btn:hover {
+      color: var(--peach);
+    }
+
+    .snav-btn.active {
+      color: var(--peach);
+      border-bottom-color: var(--peach);
+    }
+
+    .s-panel {
+      display: none;
+    }
+
+    .s-panel.active {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .sample-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .sample-card:hover {
+      border-color: rgba(255, 140, 105, 0.18);
+      transform: translateY(-4px);
+    }
+
+    .sample-media {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Video embed inside sample */
+    .sample-media video,
+    .sample-media iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: none;
+      z-index: 2;
+    }
+
+    .sample-media-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      color: inherit;
+      font-family: inherit;
+      position: relative;
+      z-index: 3;
+    }
+
+    code {
+      color: var(--peach);
+      background: var(--peach-dim);
+      padding: 2px 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .sample-media-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0a18, #0f0f20);
+    }
+
+    .sample-media-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 140, 105, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 140, 105, 0.04) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .sample-play {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 140, 105, 0.4);
+      background: rgba(255, 140, 105, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 3;
+      transition: all 0.3s;
+    }
+
+    .sample-card:hover .sample-play {
+      background: var(--peach);
+      box-shadow: 0 0 20px rgba(255, 140, 105, 0.4);
+    }
+
+    .sample-play svg {
+      fill: var(--peach);
+      width: 14px;
+      height: 14px;
+      margin-left: 2px;
+      transition: fill 0.3s;
+    }
+
+    .sample-card:hover .sample-play svg {
+      fill: var(--bg);
+    }
+
+    .sample-media-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(255, 140, 105, 0.3);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 3;
+    }
+
+    .sample-media-hint {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.12);
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .sample-body {
+      padding: 20px 24px;
+    }
+
+    .sample-cat {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin-bottom: 6px;
+    }
+
+    .sample-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .sample-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* SAAS FEATURE SECTION */
+    .saas-section {
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(155, 94, 107, 0.05) 100%);
+      padding: 100px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .saas-section::before {
+      content: 'SYSTEM';
+      font-family: 'Playfair Display', serif;
+      font-size: 160px;
+      font-weight: 800;
+      color: rgba(124, 58, 237, 0.03);
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      white-space: nowrap;
+      letter-spacing: -4px;
+    }
+
+    .saas-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .saas-media {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .saas-media::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(155, 94, 107, 0.08), rgba(255, 140, 105, 0.04));
+    }
+
+    .saas-media video,
+    .saas-media iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: none;
+      z-index: 2;
+    }
+
+    .saas-media-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .saas-media-icon {
+      font-size: 48px;
+    }
+
+    .saas-media-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(124, 58, 237, 0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .saas-media-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.1);
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .saas-content .sec-eyebrow {
+      color: var(--violet);
+    }
+
+    .saas-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .saas-title em {
+      color: var(--violet);
+      font-style: normal;
+    }
+
+    .saas-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 32px;
+    }
+
+    .saas-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .saas-feat {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      background: rgba(155, 94, 107, 0.05);
+      transition: border-color 0.2s;
+    }
+
+    .saas-feat:hover {
+      border-color: rgba(155, 94, 107, 0.3);
+    }
+
+    .saas-feat-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .saas-feat-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .saas-feat-text strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* CERTS */
+    .certs {
+      background: var(--surface);
+      padding: 100px 80px;
+    }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .cert-card {
+      background: var(--bg);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .cert-card:hover {
+      background: var(--surface2);
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--peach);
+    }
+
+    .cert-media {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cert-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cert-media-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cert-media-icon {
+      font-size: 28px;
+      opacity: 0.4;
+    }
+
+    .cert-media-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted2);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .cert-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .cert-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .cert-status {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+    }
+
+    .cert-status.verified {
+      background: rgba(245, 201, 154, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(245, 201, 154, 0.2);
+    }
+
+    .cert-status.progress {
+      background: var(--peach-dim);
+      color: var(--peach);
+      border: 1px solid rgba(255, 140, 105, 0.18);
+    }
+
+    /* PRICING */
+    .pricing {
+      background: var(--bg);
+      padding: 100px 80px;
+    }
+
+    .pricing-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .ptab-btn {
+      padding: 14px 28px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ptab-btn:hover {
+      color: var(--peach);
+    }
+
+    .ptab-btn.active {
+      color: var(--peach);
+      border-bottom-color: var(--peach);
+    }
+
+    .p-panel {
+      display: none;
+    }
+
+    .p-panel.active {
+      display: block;
+    }
+
+    /* PRICE CARDS */
+    .pgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .pcard {
+      background: var(--surface);
+      padding: 44px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .pcard:hover {
+      background: var(--surface2);
+    }
+
+    .pcard.hot {
+      background: linear-gradient(135deg, rgba(255, 140, 105, 0.06), var(--surface));
+    }
+
+    .pcard.hot::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: 16px;
+      right: -28px;
+      background: var(--peach);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 5px 40px;
+      transform: rotate(45deg);
+    }
+
+    .pcard-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .pcard-icon {
+      font-size: 28px;
+    }
+
+    .pcard-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+    }
+
+    .pcard-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .pcard-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .pcard-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--peach);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .pcard-period {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      letter-spacing: 1px;
+    }
+
+    .pcard-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 28px;
+    }
+
+    .pcard-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .pcard-features li {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.5;
+    }
+
+    .pcard-features li::before {
+      content: '→';
+      color: var(--peach);
+      flex-shrink: 0;
+      font-family: var(--mono);
+    }
+
+    .pcard-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted2);
+      margin-bottom: 28px;
+      line-height: 1.7;
+      letter-spacing: 0.3px;
+    }
+
+    .pcard-btn {
+      display: block;
+      text-align: center;
+      padding: 14px 24px;
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255, 140, 105, 0.3);
+      color: var(--peach);
+      transition: all 0.3s;
+      background: transparent;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .pcard-btn:hover {
+      background: var(--peach);
+      color: var(--bg);
+      border-color: var(--peach);
+      box-shadow: 0 0 20px rgba(255, 140, 105, 0.3);
+    }
+
+    .pcard.hot .pcard-btn {
+      background: var(--peach);
+      color: var(--bg);
+      border-color: var(--peach);
+    }
+
+    .pcard.hot .pcard-btn:hover {
+      background: var(--white);
+      border-color: var(--white);
+      box-shadow: 0 0 30px rgba(255, 140, 105, 0.4);
+    }
+
+    /* FUNNEL GRID */
+    .fgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .fcard {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 36px;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fcard:hover {
+      border-color: rgba(255, 140, 105, 0.18);
+      transform: translateY(-3px);
+    }
+
+    .fcard.quoted {
+      background: linear-gradient(135deg, rgba(155, 94, 107, 0.05), var(--surface));
+      border-color: rgba(124, 58, 237, 0.2);
+    }
+
+    .fcard-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .fcard-icon {
+      font-size: 32px;
+    }
+
+    .fcard-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--peach);
+      text-align: right;
+    }
+
+    .fcard-price small {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    .fcard-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .fcard-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .fcard-includes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .fcard-includes li {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      font-family: var(--mono);
+    }
+
+    .fcard-includes li::before {
+      content: '//';
+      color: var(--peach);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    .fcard-turnaround {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--peach);
+      background: var(--peach-dim);
+      padding: 6px 14px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    /* BK GRID */
+    .bkgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .bkcard {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 36px 32px;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bkcard:hover {
+      border-color: rgba(255, 140, 105, 0.14);
+      transform: translateY(-3px);
+    }
+
+    .bkcard.bkhot {
+      border-color: rgba(255, 140, 105, 0.18);
+      background: linear-gradient(135deg, rgba(255, 140, 105, 0.04), var(--surface));
+    }
+
+    .bkcard-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .bkcard-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .bkcard-ideal {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+      letter-spacing: 0.3px;
+    }
+
+    .bkcard-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--peach);
+      margin-bottom: 4px;
+    }
+
+    .bkcard-period {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+
+    .bkcard-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .bkcard-features li {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .bkcard-features li::before {
+      content: '→';
+      color: var(--peach);
+      font-family: var(--mono);
+    }
+
+    .bkcard-note {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted2);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Disclaimer */
+    .p-disclaimer {
+      margin-top: 32px;
+      padding: 24px 32px;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--peach);
+      background: var(--surface);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.9;
+      letter-spacing: 0.3px;
+    }
+
+    .p-disclaimer strong {
+      color: var(--peach);
+    }
+
+    /* DIFFERENTIATORS */
+    .diff {
+      background: var(--surface);
+      padding: 100px 80px;
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .diff-item {
+      background: var(--bg);
+      padding: 48px 44px;
+      display: flex;
+      gap: 28px;
+      transition: background 0.3s;
+    }
+
+    .diff-item:hover {
+      background: var(--surface2);
+    }
+
+    .diff-num {
+      font-family: var(--mono);
+      font-size: 64px;
+      font-weight: 300;
+      color: rgba(255, 140, 105, 0.06);
+      line-height: 0.85;
+      flex-shrink: 0;
+      width: 56px;
+      transition: color 0.3s;
+    }
+
+    .diff-item:hover .diff-num {
+      color: rgba(0, 229, 255, 0.12);
+    }
+
+    .diff-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .diff-content p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    /* CTA */
+    .cta {
+      background: var(--bg);
+      padding: 120px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    }
+
+    .cta-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(255, 140, 105, 0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-photo {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid rgba(255, 140, 105, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 30px rgba(255, 140, 105, 0.14);
+    }
+
+    .cta-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .cta-photo-emoji {
+      font-size: 32px;
+    }
+
+    .cta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--peach);
+      border: 1px solid rgba(255, 140, 105, 0.18);
+      background: var(--peach-dim);
+      padding: 7px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title .grad {
+      background: linear-gradient(90deg, var(--peach), var(--violet), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 48px;
+      line-height: 1.85;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--peach);
+      color: var(--bg);
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 20px 56px;
+      text-decoration: none;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 40px rgba(255, 140, 105, 0.3);
+    }
+
+    .cta-btn:hover {
+      background: var(--white);
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(255, 140, 105, 0.4);
+    }
+
+    footer {
+      background: var(--surface);
+      padding: 28px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .footer-logo span {
+      color: var(--peach);
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted2);
+      letter-spacing: 1px;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+
+    /* LIVE PORTFOLIO UPGRADES */
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      border: 1px solid rgba(245, 201, 154, 0.22);
+      background: rgba(245, 201, 154, 0.08);
+      padding: 6px 12px;
+      margin-top: 14px;
+    }
+
+    .live-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    .crm-form {
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .crm-form input,
+    .crm-form select,
+    .crm-form textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-bright);
+      color: var(--white);
+      padding: 15px 16px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .crm-form input:focus,
+    .crm-form select:focus,
+    .crm-form textarea:focus {
+      border-color: var(--peach);
+      box-shadow: 0 0 0 3px rgba(255, 140, 105, 0.08);
+    }
+
+    .crm-form textarea,
+    .crm-form .full {
+      grid-column: 1 / -1;
+    }
+
+    .crm-submit {
+      grid-column: 1 / -1;
+      border: none;
+      cursor: pointer;
+    }
+
+    .form-note {
+      grid-column: 1 / -1;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted2);
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 8, 10, 0.78);
+      backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 24px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(620px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border-bright);
+      padding: 34px;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.45);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .modal-text {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 22px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      .crm-form {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1024px) {
+
+      .video-inner,
+      .saas-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 0 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-content {
+        padding: 40px 24px;
+      }
+
+      .section,
+      .video-section,
+      .builds,
+      .saas-section,
+      .certs,
+      .pricing,
+      .diff,
+      .cta {
+        padding: 64px 28px;
+      }
+
+      .specialist-grid,
+      .pgrid,
+      .certs-grid,
+      .diff-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .builds-grid,
+      .fgrid,
+      .bkgrid {
+        grid-template-columns: 1fr;
+      }
+
+      .s-panel.active {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 8px;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .hero-stats {
+        flex-wrap: wrap;
+      }
+
+      .hstat {
+        flex: 1;
+        min-width: 120px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .s-panel.active {
+        grid-template-columns: 1fr;
+      }
+
+      .hstat {
+        flex: none;
+        width: 100%;
+      }
+
+      .hero-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* ===== LUXURY MOCKUP TOP REVISION ===== */
+    body {
+      cursor: auto;
+    }
+
+    .cursor,
+    .cursor-ring {
+      display: none !important;
+    }
+
+    .lux-top {
+      background:
+        radial-gradient(circle at 78% 22%, rgba(255, 140, 105, .16), transparent 32%),
+        radial-gradient(circle at 12% 88%, rgba(232, 112, 58, .12), transparent 28%),
+        #050505;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lux-top::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 140, 105, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 140, 105, .035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse at center, black 28%, transparent 82%);
+      pointer-events: none;
+    }
+
+    .lux-top::after {
+      content: "Tin’s Income System   Tin’s Income System   Tin’s Income System";
+      position: absolute;
+      top: 110px;
+      left: 22%;
+      width: 900px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 28px;
+      color: rgba(255, 140, 105, .16);
+      word-spacing: 48px;
+      transform: rotate(-6deg);
+      pointer-events: none;
+    }
+
+    .lux-wrap {
+      width: min(1220px, 92%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .lux-nav {
+      height: 76px;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: rgba(5, 5, 5, .86);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 235, 210, .06);
+    }
+
+    .lux-nav-inner {
+      width: min(1220px, 92%);
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lux-logo {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-style: italic;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .lux-logo span {
+      color: var(--peach);
+    }
+
+    .lux-nav-links {
+      display: flex;
+      gap: 26px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .lux-nav-links a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: rgba(255, 245, 238, .7);
+      text-decoration: none;
+    }
+
+    .lux-nav-links a:hover {
+      color: var(--peach);
+    }
+
+    .lux-nav-cta {
+      background: linear-gradient(135deg, var(--peach), var(--peach-light));
+      color: #120b09;
+      padding: 13px 24px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      box-shadow: 0 18px 50px rgba(255, 140, 105, .18);
+    }
+
+    .lux-hero {
+      min-height: 640px;
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      align-items: center;
+      gap: 42px;
+      padding: 66px 0 0;
+      border-bottom: 1px solid rgba(255, 140, 105, .14);
+    }
+
+    .lux-eyebrow {
+      font-family: var(--mono);
+      color: var(--peach);
+      letter-spacing: 2.6px;
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 18px;
+    }
+
+    .lux-title {
+      font-family: var(--font-display);
+      font-size: clamp(54px, 7vw, 86px);
+      line-height: .92;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 22px;
+      letter-spacing: -2px;
+    }
+
+    .lux-title em {
+      display: block;
+      color: var(--peach);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .lux-sub {
+      color: rgba(255, 245, 238, .78);
+      font-size: 17px;
+      max-width: 530px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .lux-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+
+    .lux-btn-primary,
+    .lux-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 28px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    .lux-btn-primary {
+      background: linear-gradient(135deg, var(--peach), var(--peach-light));
+      color: #120b09;
+    }
+
+    .lux-btn-secondary {
+      border: 1px solid rgba(255, 140, 105, .38);
+      color: var(--white);
+      background: rgba(0, 0, 0, .12);
+    }
+
+    .lux-hero-visual {
+      align-self: end;
+      position: relative;
+      min-height: 580px;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+
+      background: none;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+
+      overflow: visible;
+    }
+
+    .lux-hero-visual::before {
+      content: "";
+      position: absolute;
+
+      width: 700px;
+      height: 700px;
+
+      right: -120px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      background:
+        radial-gradient(circle,
+          rgba(255, 140, 105, .22),
+          rgba(255, 140, 105, .08),
+          transparent 70%);
+
+      filter: blur(40px);
+
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .lux-hero-visual img {
+      width: min(560px, 100%);
+      max-height: 680px;
+
+      object-fit: contain;
+      object-position: center bottom;
+
+      position: relative;
+      z-index: 2;
+
+      /* removes framed look */
+      mix-blend-mode: lighten;
+
+      /* smooth edge blending */
+      -webkit-mask-image:
+        radial-gradient(circle at center,
+          rgba(0, 0, 0, 1) 52%,
+          rgba(0, 0, 0, .92) 68%,
+          rgba(0, 0, 0, .45) 82%,
+          transparent 100%);
+
+      mask-image:
+        radial-gradient(circle at center,
+          rgba(0, 0, 0, 1) 52%,
+          rgba(0, 0, 0, .92) 68%,
+          rgba(0, 0, 0, .45) 82%,
+          transparent 100%);
+
+      filter:
+        contrast(1.02) saturate(1.03) drop-shadow(0 0 40px rgba(255, 140, 105, .12));
+
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+
+      transform: scale(1.03);
+    }
+
+    .lux-panel-section {
+      padding: 34px 0 36px;
+    }
+
+    .lux-panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .lux-panel,
+    .lux-video-card,
+    .lux-workspace-card {
+      border: 1px solid rgba(255, 140, 105, .16);
+      background: rgba(12, 10, 11, .74);
+      border-radius: 18px;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, .22);
+    }
+
+    .lux-panel {
+      padding: 34px 34px;
+    }
+
+    .lux-panel h2,
+    .lux-workspace-card h2 {
+      font-family: var(--font-display);
+      font-size: 40px;
+      line-height: 1.1;
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+
+    .lux-panel h2 em,
+    .lux-workspace-card h2 em {
+      color: var(--peach);
+      font-style: italic;
+    }
+
+    .lux-panel p,
+    .lux-workspace-card p,
+    .lux-mini p {
+      color: rgba(255, 245, 238, .62);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .lux-mini-list {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .lux-mini {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .lux-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 140, 105, .35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--peach);
+      font-size: 20px;
+      background: rgba(255, 140, 105, .05);
+    }
+
+    .lux-mini h3 {
+      font-family: var(--mono);
+      color: var(--peach);
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .lux-video-card {
+      padding: 20px;
+    }
+
+    .lux-video-shell {
+      position: relative;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #080708;
+      border: 1px solid rgba(255, 140, 105, .16);
+    }
+
+    .lux-video-shell video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lux-video {
+      width: 100%;
+      max-height: 420px;
+
+      object-fit: cover;
+
+      border-radius: 24px;
+
+      background: #000;
+
+      border: 1px solid rgba(255, 140, 105, .12);
+
+      box-shadow:
+        0 0 40px rgba(0, 0, 0, .45);
+
+      overflow: hidden;
+    }
+
+    .lux-play-badge {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      border: 0;
+      background: linear-gradient(135deg, var(--peach), var(--peach-light));
+      color: #130b09;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      box-shadow: 0 20px 60px rgba(255, 140, 105, .24);
+    }
+
+    .lux-video-caption {
+      margin-top: 22px;
+    }
+
+    .lux-video-caption h2 {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 500;
+      line-height: 1.12;
+      margin-bottom: 12px;
+    }
+
+    .lux-video-caption h2 em {
+      color: var(--peach);
+      font-style: italic;
+    }
+
+    .lux-workspace-card {
+      padding: 28px;
+    }
+
+    .lux-mini-workspace {
+      margin-top: 30px;
+
+      border-top: 1px solid rgba(255, 140, 105, .10);
+
+      padding-top: 24px;
+    }
+
+    .lux-mini-workspace h3 {
+      font-size: 32px;
+      line-height: 1.08;
+
+      margin: 10px 0 14px;
+    }
+
+    .lux-mini-workspace p {
+      color: rgba(255, 245, 238, .68);
+
+      font-size: 15px;
+      line-height: 1.75;
+
+      margin-bottom: 18px;
+
+      max-width: 500px;
+    }
+
+    .lux-mini-workspace-img {
+      width: 100%;
+      max-width: 360px;
+
+      display: block;
+
+      border-radius: 18px;
+
+      border: 1px solid rgba(255, 140, 105, .12);
+
+      box-shadow:
+        0 0 30px rgba(0, 0, 0, .30);
+
+      object-fit: cover;
+    }
+
+    .lux-behind {
+      padding: 0 0 54px;
+    }
+
+    .lux-behind-card {
+      display: grid;
+      grid-template-columns: .9fr 1fr .82fr;
+      gap: 30px;
+      align-items: center;
+      border: 1px solid rgba(255, 140, 105, .16);
+      border-radius: 18px;
+      padding: 34px 38px;
+      background:
+        radial-gradient(circle at 52% 50%, rgba(255, 140, 105, .12), transparent 36%),
+        rgba(12, 10, 11, .76);
+      overflow: hidden;
+    }
+
+    .lux-behind-copy h2 {
+      font-family: var(--font-display);
+      font-size: 40px;
+      line-height: 1.12;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .lux-behind-copy p {
+      color: rgba(255, 245, 238, .65);
+      line-height: 1.8;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .lux-behind-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 14px;
+    }
+
+    .lux-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lux-step {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .lux-step h3 {
+      color: var(--peach);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .lux-step p {
+      color: rgba(255, 245, 238, .62);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .lux-disc-section {
+      padding: 70px 36px;
+    }
+
+    .lux-disc-wrap {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 34px;
+      align-items: stretch;
+
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    .lux-disc-copy,
+    .lux-disc-card {
+      border: 1px solid rgba(255, 140, 105, .14);
+      border-radius: 28px;
+
+      background:
+        linear-gradient(145deg, rgba(255, 140, 105, .055), rgba(255, 255, 255, .015)),
+        rgba(10, 10, 10, .72);
+
+      box-shadow:
+        0 0 60px rgba(0, 0, 0, .35);
+
+      padding: 42px;
+    }
+
+    .lux-disc-copy h2 {
+      font-size: 48px;
+      line-height: 1.05;
+      margin: 18px 0 22px;
+    }
+
+    .lux-disc-copy p {
+      color: rgba(255, 245, 238, .68);
+      font-size: 16px;
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+
+    .lux-disc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+
+      margin-bottom: 28px;
+    }
+
+    .lux-disc-header span {
+      color: #ff8c69;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .lux-disc-header small {
+      color: rgba(255, 245, 238, .48);
+      font-size: 13px;
+    }
+
+    .lux-radar {
+      width: 260px;
+      height: 260px;
+      margin: 0 auto 34px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(circle, rgba(255, 140, 105, .18) 0 18%, transparent 19%),
+        conic-gradient(from 210deg,
+          rgba(255, 140, 105, .95),
+          rgba(255, 186, 150, .45),
+          rgba(255, 140, 105, .75),
+          rgba(255, 140, 105, .18),
+          rgba(255, 140, 105, .95));
+
+      position: relative;
+
+      box-shadow:
+        0 0 60px rgba(255, 140, 105, .12);
+    }
+
+    .lux-radar::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+
+      background:
+        repeating-radial-gradient(circle,
+          rgba(255, 255, 255, .08) 0 1px,
+          transparent 1px 36px),
+        rgba(8, 8, 8, .86);
+
+      border: 1px solid rgba(255, 140, 105, .14);
+    }
+
+    .lux-radar-center {
+      position: absolute;
+      inset: 0;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 2;
+    }
+
+    .lux-radar-center strong {
+      font-size: 34px;
+      font-family: Georgia, serif;
+      color: #fff5ee;
+    }
+
+    .lux-radar-center span {
+      margin-top: 4px;
+      color: #ff8c69;
+      letter-spacing: 4px;
+      font-weight: 700;
+    }
+
+    .lux-strengths {
+      display: grid;
+      gap: 22px;
+    }
+
+    .lux-strength {
+      display: grid;
+      gap: 10px;
+    }
+
+    .lux-strength span {
+      color: #fff5ee;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .lux-strength small {
+      display: block;
+      margin-top: 4px;
+
+      color: rgba(255, 245, 238, .48);
+      font-size: 13px;
+    }
+
+    .lux-bar {
+      height: 8px;
+      border-radius: 999px;
+
+      background: rgba(255, 255, 255, .07);
+      overflow: hidden;
+    }
+
+    .lux-bar span {
+      display: block;
+      height: 100%;
+
+      border-radius: 999px;
+
+      background: linear-gradient(90deg, #ff8c69, #ffc0a2);
+      box-shadow: 0 0 20px rgba(255, 140, 105, .35);
+    }
+
+    @media(max-width:900px) {
+      .lux-disc-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .lux-disc-copy h2 {
+        font-size: 36px;
+      }
+    }
+
+    @media (max-width:1100px) {
+
+      .lux-hero,
+      .lux-panel-grid,
+      .lux-behind-card {
+        grid-template-columns: 1fr;
+      }
+
+      .lux-hero-visual {
+        min-height: auto;
+      }
+
+      .lux-nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width:700px) {
+      .lux-title {
+        font-size: 52px;
+      }
+
+      .lux-hero {
+        padding-top: 42px;
+      }
+
+      .lux-panel,
+      .lux-workspace-card,
+      .lux-behind-card {
+        padding: 26px;
+      }
+    }
+  </style>
+
+  <style>
+    .process-grid,
+    .sample-grid,
+    .tech-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 40px;
+    }
+
+    .process-card,
+    .sample-card {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 140, 105, .16);
+      border-radius: 24px;
+      padding: 28px;
+    }
+
+    .process-step {
+      font-size: 42px;
+      font-weight: 700;
+      color: #ff9b73;
+      margin-bottom: 12px;
+    }
+
+    .sample-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      margin-top: 40px;
+    }
+
+    .sample-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 140, 105, .12);
+      border: 1px solid rgba(255, 140, 105, .28);
+      font-size: 12px;
+      letter-spacing: .1em;
+      margin-bottom: 16px;
+    }
+
+    .sample-card ul {
+      padding-left: 18px;
+      line-height: 1.8;
+      margin-top: 14px;
+    }
+
+    .tech-grid {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      margin-top: 36px;
+    }
+
+    .tech-item {
+      padding: 18px;
+      text-align: center;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 140, 105, .15);
+      border-radius: 18px;
+      font-weight: 600;
+    }
+    /* MOBILE OPTIMIZATION */
+@media (max-width: 900px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .lux-wrap,
+  .section,
+  .certs,
+  .samples {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .lux-hero,
+  .lux-panel-grid,
+  .lux-disc-wrap,
+  .lux-behind-card,
+  .certs-grid,
+  .s-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lux-hero {
+    padding-top: 90px;
+    text-align: left;
+  }
+
+  .lux-hero h1,
+  .sec-title,
+  .lux-panel h2,
+  .lux-video-caption h2 {
+    font-size: 42px !important;
+    line-height: 1.05 !important;
+  }
+
+  .lux-hero-visual {
+    min-height: auto;
+    margin-top: 40px;
+  }
+
+  .lux-hero-visual img {
+    max-width: 100%;
+    max-height: none;
+    transform: none;
+  }
+
+  .lux-panel,
+  .lux-video-card,
+  .sample-card,
+  .cert-card {
+    padding: 24px !important;
+  }
+
+  .samples-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 18px;
+    padding-bottom: 14px;
+  }
+
+  .snav-btn {
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  .sample-media {
+    height: 230px;
+  }
+
+  .social-media-size {
+    height: 280px;
+  }
+
+  .cert-media {
+    height: 230px;
+  }
+
+  .lux-mini {
+    align-items: flex-start;
+  }
+
+  .lux-mini-workspace-img {
+    max-width: 100%;
+  }
+
+  .sample-modal-box,
+  .cert-modal-box {
+    width: 94vw;
+    max-height: 88vh;
+  }
+
+  .sample-modal-copy h3,
+  .cert-modal-copy h3 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .lux-hero h1,
+  .sec-title,
+  .lux-panel h2,
+  .lux-video-caption h2 {
+    font-size: 34px !important;
+  }
+
+  .lux-actions,
+  .hero-actions,
+  .section-cta-wrap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lux-btn-primary,
+  .lux-btn-secondary,
+  .section-cta {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sample-media {
+    height: 210px;
+  }
+
+  .cert-media {
+    height: 210px;
+  }
+
+  .crm-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    width: 100%;
+  }
+}
+  </style>
+
+
+  <style>
+    .lux-positioning .sample-card {
+      background: rgba(255, 255, 255, .025);
+      backdrop-filter: blur(14px);
+    }
+
+    .sec-copy {
+      max-width: 820px;
+      margin: auto;
+    }
+  </style>
+
+
+  <style>
+    .section-cta-wrap {
+      margin-top: 32px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .section-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff8c69, #ffaa88);
+      color: #09080a !important;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 12px;
+      box-shadow: 0 14px 38px rgba(255, 140, 105, .22);
+    }
+
+    .section-cta.secondary {
+      background: transparent;
+      color: #fff5ee !important;
+      border: 1px solid rgba(255, 140, 105, .34);
+      box-shadow: none;
+    }
+
+    .process-grid,
+    .tech-stack-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .process-card {
+      background: rgba(255, 255, 255, .025);
+      border: 1px solid rgba(255, 140, 105, .16);
+      padding: 30px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .process-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff8c69, transparent);
+    }
+
+    .process-step {
+      font-family: var(--mono);
+      color: #ff8c69;
+      letter-spacing: 2px;
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    .process-card h3 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .process-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .tech-stack-grid {
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      margin-top: 34px;
+    }
+
+    .tech-chip {
+      border: 1px solid rgba(255, 140, 105, .18);
+      background: rgba(255, 255, 255, .025);
+      padding: 18px 16px;
+      text-align: center;
+      color: #fff5ee;
+      border-radius: 18px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .tech-chip span {
+      display: block;
+      color: rgba(255, 235, 210, .42);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.4px;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    @media(max-width:1000px) {
+      .process-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:640px) {
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* FIX MOBILE RIGHT-SIDE OVERFLOW */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 700px) {
+  .lux-wrap,
+  .lux-top,
+  .lux-hero,
+  .section,
+  .samples,
+  .certs {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .lux-hero {
+    display: grid;
+    grid-template-columns: 1fr !important;
+  }
+
+  .lux-hero-copy,
+  .lux-hero-visual {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .lux-hero-visual img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .lux-actions {
+    width: 100%;
+  }
+
+  .lux-actions a {
+    width: 100%;
+  }
+}
+
+/* FIX SYSTEMS I BUILD MOBILE */
+@media (max-width:700px){
+
+  .builds-grid{
+    grid-template-columns:1fr !important;
+    gap:22px !important;
+  }
+
+  .build-item{
+    width:100% !important;
+    max-width:100% !important;
+    overflow:hidden;
+    padding:28px 22px !important;
+  }
+
+  .build-content h3{
+    font-size:30px !important;
+    line-height:1.1 !important;
+    word-break:normal;
+  }
+
+  .build-content p{
+    font-size:15px !important;
+    line-height:1.8 !important;
+  }
+
+  .build-num{
+    font-size:58px !important;
+    min-width:auto !important;
+  }
+
+}
+  </style>
+
+
+  <style>
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .proof-card {
+      background: rgba(255, 255, 255, .025);
+      border: 1px solid rgba(255, 140, 105, .16);
+      border-radius: 26px;
+      padding: 26px;
+    }
+
+    .proof-label {
+      display: inline-flex;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 140, 105, .28);
+      background: rgba(255, 140, 105, .08);
+      color: #ff9b73;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      margin-bottom: 18px;
+    }
+
+    .sample-media {
+      width: 100%;
+      aspect-ratio: 16/10;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 140, 105, .16);
+      margin-bottom: 20px;
+      background: #0a090b;
+    }
+
+    .sample-media img,
+    .sample-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .proof-card h3 {
+      font-family: var(--font-display);
+      font-size: 30px;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+
+    .proof-card p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .proof-card ul {
+      padding-left: 18px;
+      color: rgba(255, 245, 238, .72);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+.sample-media{
+  width:100%;
+  height:300px;
+  border-radius:22px;
+  overflow:hidden;
+  background:#080708;
+  border:1px solid rgba(255,140,105,.14);
+}
+
+.sample-media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+.social-media-size{
+  height:340px;
+}
+
+.sample-card{
+  cursor:pointer;
+}
+
+.sample-card:hover .sample-media img{
+  transform:scale(1.03);
+}
+
+.sample-media img{
+  transition:transform .35s ease;
+}
+
+.sample-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+}
+
+.sample-modal.active{
+  display:flex;
+}
+
+.sample-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(8px);
+}
+
+.sample-modal-box{
+  position:relative;
+  z-index:2;
+  width:min(1100px,96vw);
+  max-height:92vh;
+  overflow:auto;
+  background:#080708;
+  border:1px solid rgba(255,140,105,.22);
+  border-radius:28px;
+  box-shadow:0 0 80px rgba(0,0,0,.65);
+}
+
+.sample-modal-box img{
+  width:100%;
+  max-height:70vh;
+  object-fit:contain;
+  background:#050505;
+  display:block;
+}
+
+.sample-modal-copy{
+  padding:28px;
+}
+
+.sample-modal-copy h3{
+  color:#fff5ee;
+  font-size:32px;
+  margin-bottom:12px;
+}
+
+.sample-modal-copy p{
+  color:rgba(255,245,238,.78);
+  font-size:16px;
+  line-height:1.8;
+}
+
+.sample-modal-close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  z-index:3;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid rgba(255,140,105,.25);
+  background:rgba(0,0,0,.75);
+  color:#fff5ee;
+  font-size:28px;
+  cursor:pointer;
+}
+
+.cert-media{
+  width:100%;
+  height:280px;
+  border-radius:22px;
+  overflow:hidden;
+  background:#080708;
+  border:1px solid rgba(255,140,105,.14);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.cert-media img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  padding:14px;
+  background:#050505;
+}
+
+.cert-card{
+  cursor:pointer;
+}
+
+.cert-card:hover .cert-media img{
+  transform:scale(1.025);
+}
+
+.cert-media img{
+  transition:transform .35s ease;
+}
+
+.cert-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+}
+
+.cert-modal.active{
+  display:flex;
+}
+
+.cert-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(8px);
+}
+
+.cert-modal-box{
+  position:relative;
+  z-index:2;
+  width:min(1000px,96vw);
+  max-height:92vh;
+  overflow:auto;
+  background:#080708;
+  border:1px solid rgba(255,140,105,.22);
+  border-radius:28px;
+  box-shadow:0 0 80px rgba(0,0,0,.65);
+}
+
+.cert-modal-box img{
+  width:100%;
+  max-height:70vh;
+  object-fit:contain;
+  background:#050505;
+  display:block;
+  padding:18px;
+}
+
+.cert-modal-copy{
+  padding:28px;
+}
+
+.cert-modal-copy h3{
+  color:#fff5ee;
+  font-size:32px;
+  margin-bottom:12px;
+}
+
+.cert-modal-copy p{
+  color:rgba(255,245,238,.78);
+  font-size:16px;
+  line-height:1.8;
+}
+
+.cert-modal-close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  z-index:3;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid rgba(255,140,105,.25);
+  background:rgba(0,0,0,.75);
+  color:#fff5ee;
+  font-size:28px;
+  cursor:pointer;
+}
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="lux-top">
+
+    <nav class="lux-nav">
+      <div class="lux-nav-inner">
+        <a class="lux-logo" href="#">Tin<span>.</span></a>
+        <ul class="lux-nav-links">
+          <li><a href="#specialist">Services</a></li>
+          <li><a href="#work">Case Studies</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#saas">SaaS</a></li>
+          <li><a href="#certs">Credentials</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="lux-nav-cta">Work With Me</a>
+      </div>
+    </nav>
+
+    <main class="lux-wrap">
+      <section class="lux-hero">
+        <div>
+          <div class="lux-eyebrow">GHL Systems Specialist • Funnel Strategist • Automation Workflows</div>
+          <h1 class="lux-title">I Build Systems <em>That Print Profits.</em></h1>
+          <p class="lux-sub">Funnels, CRM systems, and automation workflows designed to help businesses streamline
+            operations, manage leads efficiently, and create smoother client experiences.</p>
+          <div class="lux-actions">
+            <a href="#contact" class="lux-btn-primary">Work With Me <span>→</span></a>
+            <a href="#work" class="lux-btn-secondary">View Sample Work</a>
+          </div>
+        </div>
+        <div class="lux-hero-visual">
+          <!-- HERO PHOTO: replace assets/hero-laptop.png with your final hero image, keeping the same filename. -->
+          <img src="assets/hero-main.png" alt="Tin Income System hero image">
+        </div>
+      </section>
+
+      <section class="lux-panel-section">
+        <div class="lux-panel-grid">
+
+          <!-- VIDEO LEFT -->
+          <section class="lux-video-card" id="video">
+
+            <div class="lux-eyebrow">Watch Intro</div>
+
+            <div class="lux-video-shell">
+
+              <video class="lux-video" autoplay muted loop playsinline controls preload="metadata"
+                poster="assets/video-poster.png">
+
+                <source src="assets/intro.mp4" type="video/mp4">
+
+                Your browser does not support the video tag.
+
+              </video>
+
+            </div>
+
+            <div class="lux-video-caption">
+
+              <h2>
+                See How I Turn Systems Into <em>Sales</em>
+              </h2>
+
+              <p class="lux-sub" style="font-size:15px;margin-bottom:0;">
+                Watch this quick intro to see the systems I build, the results I focus on, and how we can work together.
+              </p>
+
+              <div class="lux-mini-workspace">
+
+                <div class="lux-eyebrow">
+                  My Workspace
+                </div>
+
+                <h3>
+                  This is where the <em>magic</em> happens.
+                </h3>
+
+                <p>
+                  A productive setup for building funnels, automations, CRM systems, and client workflows that actually
+                  move the needle.
+                </p>
+
+                <img class="lux-mini-workspace-img" src="assets/workspace-main.png" alt="Tin workspace">
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- ABOUT RIGHT -->
+          <aside class="lux-panel">
+
+            <div class="lux-eyebrow">
+              About Me
+            </div>
+
+            <h2>
+              I’m <em>Tin.</em><br>
+              I help businesses build organized systems that support growth and improve workflows.
+            </h2>
+
+            <p>
+              I help coaches, agencies, and service businesses build powerful systems inside GoHighLevel that generate
+              more leads, close more sales, and deliver a better customer experience — without the chaos.
+            </p>
+
+            <div class="lux-mini-list">
+
+              <div class="lux-mini">
+                <div class="lux-icon">🚀</div>
+                <div>
+                  <h3>GHL Systems Specialist</h3>
+                  <p>
+                    Hands-on experience building high-converting funnels and automations inside GoHighLevel.
+                  </p>
+                </div>
+              </div>
+
+              <div class="lux-mini">
+                <div class="lux-icon">▣</div>
+                <div>
+                  <h3>Systems That Scale</h3>
+                  <p>
+                    I design systems that work 24/7 so you can focus on growth while your business runs smoothly.
+                  </p>
+                </div>
+              </div>
+
+              <div class="lux-mini">
+                <div class="lux-icon">◎</div>
+                <div>
+                  <h3>Results That Matter</h3>
+                  <p>
+                    Everything I build is backed by strategy, tested for results, and aligned with your business goals.
+                  </p>
+                </div>
+              </div>
+
+              <div class="lux-mini">
+                <div class="lux-icon">✦</div>
+                <div>
+                  <h3>Strategy First Approach</h3>
+                  <p>
+                    Before building any funnel, automation, or workflow, I focus on understanding the business goals,
+                    client journey, and operational gaps to create systems with clear purpose and direction.
+                  </p>
+                </div>
+              </div>
+
+              <div class="lux-mini">
+                <div class="lux-icon">◈</div>
+                <div>
+                  <h3>Reliable Communication</h3>
+                  <p>
+                    I value transparency, organization, and keeping clients informed throughout the process — from
+                    planning and onboarding to implementation and delivery.
+                  </p>
+                </div>
+              </div>
+
+              <div class="lux-mini">
+                <div class="lux-icon">✦</div>
+                <div>
+                  <h3>Adaptable & Solutions-Focused</h3>
+                  <p>
+                    I learn quickly, adapt to different business needs and workflows, and approach challenges with a
+                    problem-solving mindset focused on creating practical, efficient solutions.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+          </aside>
+
+        </div>
+      </section>
+
+      <section class="lux-behind">
+        <div class="lux-behind-card">
+          <div class="lux-behind-copy">
+            <div class="lux-eyebrow">Behind The Systems</div>
+            <h2>Strategy. Systems.<br>Execution. Results.</h2>
+            <p>Every system I build is customized, tested, and built to scale your business.</p>
+            <a href="#contact" class="lux-btn-primary">Work With Me <span>→</span></a>
+          </div>
+          <!-- BEHIND THE SYSTEMS PHOTO: replace assets/behind-systems.png with your behind-the-scenes photo. -->
+          <img class="lux-behind-img" src="assets/behind-systems.png" alt="Tin working at laptop">
+          <div class="lux-steps">
+            <div class="lux-step">
+              <div class="lux-icon">⚙</div>
+              <div>
+                <h3>Strategize</h3>
+                <p>We map out the perfect system for your business.</p>
+              </div>
+            </div>
+            <div class="lux-step">
+              <div class="lux-icon">✦</div>
+              <div>
+                <h3>Build</h3>
+                <p>I build your funnels, automations, and CRM systems.</p>
+              </div>
+            </div>
+            <div class="lux-step">
+              <div class="lux-icon">↗</div>
+              <div>
+                <h3>Scale</h3>
+                <p>You get results, more revenue, and a system that grows with you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+  <section class="lux-disc-section" id="work-style">
+    <div class="lux-disc-wrap">
+
+      <div class="lux-disc-copy">
+        <div class="lux-eyebrow">
+          IN CASE YOU'RE CURIOUS — THIS IS MY DISC PERSONALITY PROFILE
+        </div>
+
+        <h2>
+          Strategic work style built around <em>structure, consistency, and execution.</em>
+        </h2>
+
+        <p>
+          My DISC profile is Planner - Sc, which reflects a calm, structured, and process-focused working style. I
+          naturally approach projects with patience, organization, and a strong focus on building systems that are
+          clear, reliable, and sustainable.
+        </p>
+
+        <p>
+          This helps me support clients with organized workflows, thoughtful implementation, and solutions that are
+          built to last — not just quick fixes.
+        </p>
+      </div>
+
+      <div class="lux-disc-card">
+
+        <div class="lux-disc-header">
+          <span>Strategic Work Profile</span>
+          <small>Based on DISC Assessment</small>
+        </div>
+
+        <div class="lux-radar">
+          <div class="lux-radar-center">
+            <strong>Planner</strong>
+            <span>Sc</span>
+          </div>
+        </div>
+
+        <div class="lux-strengths">
+
+          <div class="lux-strength">
+            <div>
+              <span>Structured Execution</span>
+              <small>Clear process + follow-through</small>
+            </div>
+            <div class="lux-bar"><span style="width:92%;"></span></div>
+          </div>
+
+          <div class="lux-strength">
+            <div>
+              <span>Problem Solving</span>
+              <small>Calm, practical solutions</small>
+            </div>
+            <div class="lux-bar"><span style="width:88%;"></span></div>
+          </div>
+
+          <div class="lux-strength">
+            <div>
+              <span>Reliability</span>
+              <small>Consistent communication + delivery</small>
+            </div>
+            <div class="lux-bar"><span style="width:90%;"></span></div>
+          </div>
+
+          <div class="lux-strength">
+            <div>
+              <span>Workflow Thinking</span>
+              <small>Systems, structure, and optimization</small>
+            </div>
+            <div class="lux-bar"><span style="width:94%;"></span></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Specialization -->
+  <section class="section specialist" id="specialist">
+    <div class="sec-eyebrow">// Primary Specialization</div>
+    <h2 class="sec-title">What I <em>Specialize</em> In</h2>
+    <div class="specialist-grid">
+
+      <div class="exp-card primary">
+        <div class="exp-number">// 01 · PRIMARY</div>
+        <div class="exp-icon">⚡</div>
+        <div class="exp-name">GoHighLevel (GHL) Specialist</div>
+        <div class="exp-desc">Full GHL setup, configuration, and management. Sub-accounts, pipelines, automations,
+          snapshots, calendars, reputation management — I build GHL ecosystems from scratch or optimize existing ones.
+        </div>
+        <div class="exp-tags"><span class="exp-tag">GHL Setup</span><span class="exp-tag">Sub-Accounts</span><span
+            class="exp-tag">Pipelines</span><span class="exp-tag">Automations</span><span
+            class="exp-tag">Snapshots</span><span class="exp-tag">White Label</span></div>
+      </div>
+
+      <div class="exp-card primary">
+        <div class="exp-number">// 02 · PRIMARY</div>
+        <div class="exp-icon">🎯</div>
+        <div class="exp-name">Funnel Strategy & Build</div>
+        <div class="exp-desc">High-converting funnels from strategy to launch — lead gen, sales, webinar, booking, VSL,
+          application, and more. I don't just build pages, I design the entire conversion journey.</div>
+        <div class="exp-tags"><span class="exp-tag">Lead Funnels</span><span class="exp-tag">Sales Funnels</span><span
+            class="exp-tag">VSL Funnels</span><span class="exp-tag">Booking Funnels</span><span class="exp-tag">Email
+            Sequences</span></div>
+      </div>
+
+      <div class="exp-card primary">
+        <div class="exp-number">// 03 · PRIMARY</div>
+        <div class="exp-icon">🤖</div>
+        <div class="exp-name">Automation & AI Integration</div>
+        <div class="exp-desc">End-to-end workflow automation using GHL, Zapier, Make, and AI tools. I eliminate
+          repetitive tasks, build smart follow-up systems, and integrate AI to make your business respond, nurture, and
+          convert — automatically.</div>
+        <div class="exp-tags"><span class="exp-tag">Zapier</span><span class="exp-tag">Make.com</span><span
+            class="exp-tag">AI Workflows</span><span class="exp-tag">ChatGPT API</span><span
+            class="exp-tag">Webhooks</span></div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-number">// 04</div>
+        <div class="exp-icon">🛠️</div>
+        <div class="exp-name">SaaS Systems Builder</div>
+        <div class="exp-desc">I've built my own SaaS system — from concept to functional product. I design, build, and
+          launch software-as-a-service tools and internal business systems that solve real operational problems.</div>
+        <div class="exp-tags"><span class="exp-tag">SaaS Architecture</span><span class="exp-tag">System
+            Design</span><span class="exp-tag">MVP Build</span><span class="exp-tag">Internal Tools</span></div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-number">// 05</div>
+        <div class="exp-icon">📊</div>
+        <div class="exp-name">Bookkeeping & Finance</div>
+        <div class="exp-desc">QuickBooks Online certified. Clean books, clear reports, organized financials. A reliable
+          add-on for clients who need both tech and financial support under one roof.</div>
+        <div class="exp-tags"><span class="exp-tag">QuickBooks Online</span><span class="exp-tag">Invoicing</span><span
+            class="exp-tag">P&L Reports</span><span class="exp-tag">Reconciliation</span></div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-number">// 06</div>
+        <div class="exp-icon">🏡</div>
+        <div class="exp-name">Real Estate & VA Services</div>
+        <div class="exp-desc">6+ years as a real estate VA — CRM management, transaction coordination, drip campaigns,
+          content creation, and full admin support for agents and brokerages.</div>
+        <div class="exp-tags"><span class="exp-tag">Real Estate CRM</span><span class="exp-tag">Transaction
+            Coordination</span><span class="exp-tag">Drip Campaigns</span><span class="exp-tag">Admin</span></div>
+      </div>
+
+    </div>
+    <div class="section-cta-wrap"><a href="#contact" class="section-cta">Book A Discovery Call →</a></div>
+  </section>
+
+  <!-- WHAT I BUILD -->
+  <section class="builds">
+    <div class="section" style="padding-top:0; padding-bottom:0; padding:100px 24px;">
+      <div class="sec-eyebrow">// How I Think</div>
+      <h2 class="sec-title">Systems I <em>Build</em></h2>
+      <div class="builds-grid">
+        <div class="build-item">
+          <div class="build-num">01</div>
+          <div class="build-content">
+            <h3>Lead Generation Machines</h3>
+            <p>Full funnel + GHL automation that captures leads, qualifies them, sends them through a nurture sequence,
+              and books calls — all on autopilot.</p>
+          </div>
+        </div>
+        <div class="build-item">
+          <div class="build-num">02</div>
+          <div class="build-content">
+            <h3>GHL White-Label Systems</h3>
+            <p>Complete GoHighLevel setups for agencies and SaaS businesses — white-labeled, sub-account ready, and
+              pre-built with your automation workflows.</p>
+          </div>
+        </div>
+        <div class="build-item">
+          <div class="build-num">03</div>
+          <div class="build-content">
+            <h3>AI-Powered Follow-Up Systems</h3>
+            <p>Smart follow-up sequences that use AI to personalize messaging at scale — the right message, to the right
+              lead, at the right time. Zero manual effort.</p>
+          </div>
+        </div>
+        <div class="build-item">
+          <div class="build-num">04</div>
+          <div class="build-content">
+            <h3>Business Operating Systems</h3>
+            <p>Full internal systems — from client onboarding to project delivery — built in GHL, Notion, or custom SaaS
+              tools so your entire operation runs from one place.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-cta-wrap"><a href="#contact" class="section-cta">Build My System →</a></div>
+    </div>
+  </section>
+
+
+  <section class="section lux-process" id="process" style="background:var(--surface);">
+    <div class="sec-eyebrow">// Client Experience</div>
+    <h2 class="sec-title">My <em>Process</em></h2>
+    <p style="font-size:15px;color:var(--muted);max-width:760px;margin-bottom:56px;margin-top:-40px;line-height:1.9;">
+      A clear working process so you know exactly what happens from our first conversation to final delivery.
+    </p>
+
+    <div class="process-grid">
+      <div class="process-card">
+        <div class="process-step">// 01</div>
+        <h3>Discovery Call</h3>
+        <p>We start with a discovery call so I can understand your business, current systems, goals, offers, audience,
+          pain points, and what you need help organizing or building.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-step">// 02</div>
+        <h3>Strategy Call</h3>
+        <p>After I have the details, I come back with a practical plan for your funnels, workflows, CRM setup,
+          automations, and priorities so the work is intentional.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-step">// 03</div>
+        <h3>Contract Signing</h3>
+        <p>Once you decide to proceed, we confirm scope, deliverables, timeline, payment schedule, downpayment, access
+          requirements, and contract terms.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-step">// 04</div>
+        <h3>Onboarding & Delivery</h3>
+        <p>We set expectations, collect assets, organize access, define communication, begin the build, review progress,
+          test everything, and hand off deliverables clearly.</p>
+      </div>
+    </div>
+
+    <div class="section-cta-wrap">
+      <a href="#contact" class="section-cta">Start With A Discovery Call →</a>
+      <a href="#work" class="section-cta secondary">View Sample Work</a>
+    </div>
+  </section>
+
+
+<!-- WORK SAMPLES -->
+<section class="section samples" id="work">
+  <div class="sec-eyebrow">// Live Portfolio</div>
+  <h2 class="sec-title">Work <em>Samples</em></h2>
+
+  <p style="font-size:15px;color:rgba(255,245,238,.78);max-width:720px;margin-bottom:56px;margin-top:-40px;line-height:1.9;">
+    A curated look at sample systems, funnels, websites, automations, and creative assets I build. Click any sample to view the larger preview and project notes.
+  </p>
+
+  <div class="section-cta-wrap" style="margin-top:-26px;margin-bottom:42px;">
+    <a href="#contact" class="section-cta">Ask About A Similar Build →</a>
+  </div>
+
+  <div class="samples-nav">
+    <button class="snav-btn active" onclick="showSample('ghl',this)">GHL Systems</button>
+    <button class="snav-btn" onclick="showSample('funnels',this)">Funnels</button>
+    <button class="snav-btn" onclick="showSample('websites',this)">Websites</button>
+    <button class="snav-btn" onclick="showSample('saas',this)">SaaS Tools</button>
+    <button class="snav-btn" onclick="showSample('graphics',this)">Social Media</button>
+    <button class="snav-btn" onclick="showSample('automation',this)">Automation</button>
+  </div>
+
+  <!-- GHL SYSTEMS -->
+  <div class="s-panel active" id="sp-ghl">
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Full GHL Sub-Account Setup"
+      data-img="assets/ghl-subaccount-setup.png"
+      data-desc="A full GoHighLevel setup sample showing branding, CRM structure, calendar setup, workflow foundations, integrations, and core system configuration. This type of setup helps organize the backend of a business so leads, bookings, follow-ups, and client communication are easier to manage.">
+      <div class="sample-media">
+        <img src="assets/ghl-subaccount-setup.png" alt="Full GHL Sub-Account Setup">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">GoHighLevel</div>
+        <div class="sample-title">Full GHL Sub-Account Setup</div>
+        <div class="sample-desc">CRM setup, calendars, workflows, integrations, and backend configuration.</div>
+        <div class="live-badge">System-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Pipeline & CRM Configuration"
+      data-img="assets/pipeline-crm.png"
+      data-desc="A pipeline and CRM configuration sample built around client acquisition. This shows organized pipeline stages, opportunity tracking, client status visibility, and CRM structure so leads can move from inquiry to booked call to closed client with less confusion.">
+      <div class="sample-media">
+        <img src="assets/pipeline-crm.png" alt="Pipeline and CRM Configuration">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">CRM Systems</div>
+        <div class="sample-title">Pipeline & CRM Configuration</div>
+        <div class="sample-desc">Lead stages, opportunity tracking, tagging, and sales process organization.</div>
+        <div class="live-badge">CRM-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="AI Lead Follow-Up System"
+      data-img="assets/ai-followup-system.png"
+      data-desc="An AI-assisted follow-up workflow designed to help businesses respond faster, nurture leads, and guide prospects toward booking. This sample includes automated SMS/email touchpoints, lead tagging, conditional logic, and booking-focused follow-up.">
+      <div class="sample-media">
+        <img src="assets/ai-followup-system.png" alt="AI Lead Follow-Up System">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">GHL + AI</div>
+        <div class="sample-title">AI Lead Follow-Up System</div>
+        <div class="sample-desc">SMS/email nurture, lead routing, AI response support, and booking workflows.</div>
+        <div class="live-badge">Automation-ready</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FUNNELS -->
+  <div class="s-panel" id="sp-funnels">
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Lead Generation Funnel"
+      data-img="assets/lead-generation-funnel.png"
+      data-desc="A lead generation funnel sample designed to capture interest, collect contact details, and send new leads into a CRM or automation sequence. This type of funnel is useful for service providers, real estate professionals, coaches, and local businesses.">
+      <div class="sample-media">
+        <img src="assets/lead-generation-funnel.png" alt="Lead Generation Funnel">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Funnel</div>
+        <div class="sample-title">Lead Generation Funnel</div>
+        <div class="sample-desc">Landing page, opt-in, CRM capture, and nurture sequence.</div>
+        <div class="live-badge">Lead-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Sales Funnel"
+      data-img="assets/sales-funnel.png"
+      data-desc="A sales funnel sample structured to present an offer clearly, guide the visitor through the buying decision, and support conversion through strong sections, clear calls-to-action, and follow-up automation.">
+      <div class="sample-media">
+        <img src="assets/sales-funnel.png" alt="Sales Funnel">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Funnel</div>
+        <div class="sample-title">Sales Funnel</div>
+        <div class="sample-desc">Offer page, checkout flow, upsell structure, and post-purchase follow-up.</div>
+        <div class="live-badge">Sales-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Appointment Booking Funnel"
+      data-img="assets/booking-funnel.png"
+      data-desc="A booking funnel sample designed to help leads schedule calls or appointments. This includes a landing page, service positioning, calendar integration, reminders, and no-show follow-up opportunities.">
+      <div class="sample-media">
+        <img src="assets/booking-funnel.png" alt="Appointment Booking Funnel">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Funnel</div>
+        <div class="sample-title">Appointment Booking Funnel</div>
+        <div class="sample-desc">Landing page, calendar booking, reminders, and follow-up flow.</div>
+        <div class="live-badge">Calendar-ready</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WEBSITES -->
+  <div class="s-panel" id="sp-websites">
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Luxury Real Estate Website"
+      data-img="assets/real-estate-website-1.png"
+      data-desc="A luxury real estate website sample created to present properties, build trust, and guide visitors toward inquiries or consultations. The focus is clean design, strong visuals, and lead capture.">
+      <div class="sample-media">
+        <img src="assets/real-estate-website-1.png" alt="Luxury Real Estate Website">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Website</div>
+        <div class="sample-title">Luxury Real Estate Website</div>
+        <div class="sample-desc">Responsive website design with brand positioning and lead capture.</div>
+        <div class="live-badge">Website-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Real Estate Property Website"
+      data-img="assets/real-estate-website-2.png"
+      data-desc="A real estate website sample focused on property presentation, buyer interest, and inquiry conversion. Designed to feel polished, professional, and easy to navigate.">
+      <div class="sample-media">
+        <img src="assets/real-estate-website-2.png" alt="Real Estate Property Website">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Website</div>
+        <div class="sample-title">Real Estate Property Website</div>
+        <div class="sample-desc">Property-focused website layout with inquiry and booking flow.</div>
+        <div class="live-badge">Design-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Health & Wellness Website"
+      data-img="assets/health-website.png"
+      data-desc="A health and wellness website sample designed for service-based providers who need a clean, trustworthy online presence with clear service sections, calls-to-action, and booking flow.">
+      <div class="sample-media">
+        <img src="assets/health-website.png" alt="Health and Wellness Website">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Website</div>
+        <div class="sample-title">Health & Wellness Website</div>
+        <div class="sample-desc">Service-based website layout with credibility, clarity, and conversion focus.</div>
+        <div class="live-badge">Responsive-ready</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SAAS TOOLS -->
+<div class="s-panel" id="sp-saas">
+
+  <div class="sample-card" onclick="openSampleModal(this)"
+    data-title="TIOS — Tin’s Income Operating System"
+    data-img="assets/tios-crm.png"
+    data-desc="TIOS is my own CRM and operating system currently in progress. I’m building it to organize leads, client information, workflows, follow-ups, and business operations in one place. This project shows my ability to think through real business problems and build practical tools around them.">
+
+    <div class="sample-media">
+      <img src="assets/tios-crm.png" alt="TIOS CRM SaaS Tool">
+    </div>
+
+    <div class="sample-body">
+      <div class="sample-cat" style="color:var(--violet);">SaaS Tool</div>
+      <div class="sample-title">TIOS — Tin’s Income Operating System</div>
+      <div class="sample-desc">My in-progress CRM for leads, workflows, clients, and business operations.</div>
+      <div class="live-badge">In Progress</div>
+    </div>
+  </div>
+
+  <div class="sample-card" onclick="openSampleModal(this)"
+    data-title="Client Content Calendar Tool"
+    data-img="assets/content-calendar-tool.png"
+    data-desc="A custom content calendar tool built for a client so they can upload posts, add captions, approve content, choose platforms, and schedule posting times under their own company system instead of relying on another monthly subscription tool.">
+
+    <div class="sample-media">
+      <img src="assets/content-calendar-tool.png" alt="Client Content Calendar Tool">
+    </div>
+
+    <div class="sample-body">
+      <div class="sample-cat" style="color:var(--violet);">Custom Tool</div>
+      <div class="sample-title">Client Content Calendar Tool</div>
+      <div class="sample-desc">A custom approval and scheduling tool for posts, captions, platforms, and timing.</div>
+      <div class="live-badge">Client Tool</div>
+    </div>
+  </div>
+
+  <div class="sample-card" onclick="openSampleModal(this)"
+    data-title="Budget Tracker App"
+    data-img="assets/budget-tracker-app.png"
+    data-desc="A simple budget tracker app designed to help organize income, expenses, categories, and financial visibility. This sample shows how I create practical tools that solve everyday operational problems and make information easier to manage.">
+
+    <div class="sample-media">
+      <img src="assets/budget-tracker-app.png" alt="Budget Tracker App">
+    </div>
+
+    <div class="sample-body">
+      <div class="sample-cat" style="color:var(--violet);">Simple SaaS</div>
+      <div class="sample-title">Budget Tracker App</div>
+      <div class="sample-desc">A practical tracking tool for income, expenses, categories, and financial visibility.</div>
+      <div class="live-badge">Tool-ready</div>
+    </div>
+  </div>
+
+</div>
+
+  <!-- SOCIAL MEDIA -->
+  <div class="s-panel" id="sp-graphics">
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Luxury Realtor Social Graphic"
+      data-img="assets/realtor-social-1.png"
+      data-desc="A luxury real estate social media post designed with a clean hook, premium visuals, and minimal text. Created to support brand awareness and engagement without looking crowded.">
+      <div class="sample-media social-media-size">
+        <img src="assets/realtor-social-1.png" alt="Luxury Realtor Social Graphic">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat" style="color:#f472b6;">Social Media</div>
+        <div class="sample-title">Luxury Realtor Social Graphic</div>
+        <div class="sample-desc">Luxury-style realtor content with clear hook and polished visual hierarchy.</div>
+        <div class="live-badge">Content-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Buyer Tip Social Graphic"
+      data-img="assets/realtor-social-2.png"
+      data-desc="A buyer-focused social media graphic designed to educate and attract potential real estate leads while keeping the visual clean, premium, and easy to read.">
+      <div class="sample-media social-media-size">
+        <img src="assets/realtor-social-2.png" alt="Buyer Tip Social Graphic">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat" style="color:#f472b6;">Social Media</div>
+        <div class="sample-title">Buyer Tip Social Graphic</div>
+        <div class="sample-desc">Educational real estate content designed for engagement and brand trust.</div>
+        <div class="live-badge">Post-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Real Estate Social Graphic"
+      data-img="assets/life-coach-social.png"
+      data-desc="A real estate social media graphic sample designed to feel warm, premium, and clear. Built around a simple message, strong hook, and clean brand presentation.">
+      <div class="sample-media social-media-size">
+        <img src="assets/life-coach-social.png" alt="Life Coach Social Graphic">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat" style="color:#f472b6;">Social Media</div>
+        <div class="sample-title">Life Coach Social Graphic</div>
+        <div class="sample-desc">Simple, polished content graphic for coaching brands and service providers.</div>
+        <div class="live-badge">Graphic-ready</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AUTOMATION -->
+  <div class="s-panel" id="sp-automation">
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Lead Nurture Automation"
+      data-img="assets/lead-nurture-automation.png"
+      data-desc="A lead nurture automation sample designed to keep prospects engaged after they submit a form, book a call, or interact with a campaign. This can include SMS, email, tags, waiting steps, and conditional actions.">
+      <div class="sample-media">
+        <img src="assets/lead-nurture-automation.png" alt="Lead Nurture Automation">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Automation</div>
+        <div class="sample-title">Lead Nurture Automation</div>
+        <div class="sample-desc">SMS/email sequence with conditional branches and booking triggers.</div>
+        <div class="live-badge">Workflow-ready</div>
+      </div>
+    </div>
+
+    <div class="sample-card" onclick="openSampleModal(this)"
+      data-title="Client Onboarding Automation"
+      data-img="assets/client-onboarding-automation.png"
+      data-desc="A client onboarding automation sample for organizing new client handoff, intake forms, welcome messages, kickoff steps, and internal reminders after a client signs on.">
+      <div class="sample-media">
+        <img src="assets/client-onboarding-automation.png" alt="Client Onboarding Automation">
+      </div>
+      <div class="sample-body">
+        <div class="sample-cat">Automation</div>
+        <div class="sample-title">Client Onboarding Automation</div>
+        <div class="sample-desc">Welcome email, intake form, kickoff reminders, and delivery workflow.</div>
+        <div class="live-badge">Client-ready</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SAMPLE MODAL -->
+<div class="sample-modal" id="sampleModal">
+  <div class="sample-modal-backdrop" onclick="closeSampleModal()"></div>
+
+  <div class="sample-modal-box">
+    <button class="sample-modal-close" onclick="closeSampleModal()">×</button>
+
+    <img id="sampleModalImg" src="" alt="Sample preview">
+
+    <div class="sample-modal-copy">
+      <h3 id="sampleModalTitle"></h3>
+      <p id="sampleModalDesc"></p>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- Quick bio strip -->
+  <div
+    style="border:1px solid var(--border);background:var(--bg);padding:32px 40px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;">
+    <div style="padding:0 32px 0 0;border-right:1px solid var(--border);">
+      <div
+        style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">
+        // Based In</div>
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--white);">Philippines</div>
+      <div style="font-size:12px;color:var(--muted);">Working globally · Async-friendly</div>
+    </div>
+    <div style="padding:0 32px;border-right:1px solid var(--border);">
+      <div
+        style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">
+        // Experience</div>
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--peach);">6+ Years</div>
+      <div style="font-size:12px;color:var(--muted);">VA · GHL · Funnels · Bookkeeping</div>
+    </div>
+    <div style="padding:0 32px;border-right:1px solid var(--border);">
+      <div
+        style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">
+        // Availability</div>
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--green);">Open</div>
+      <div style="font-size:12px;color:var(--muted);">New projects & retainers</div>
+    </div>
+    <div style="padding:0 0 0 32px;">
+      <div
+        style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">
+        // Timezone</div>
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--white);">PHT (UTC+8)</div>
+      <div style="font-size:12px;color:var(--muted);">Flexible for US/AU/EU clients</div>
+    </div>
+  </div>
+  </section>
+
+
+  <section class="section lux-tech" id="tech-stack" style="background:var(--bg);">
+    <div class="sec-eyebrow">// Tools & Platforms</div>
+    <h2 class="sec-title">My <em>Tech Stack</em></h2>
+    <p style="font-size:15px;color:var(--muted);max-width:760px;margin-bottom:18px;margin-top:-40px;line-height:1.9;">
+      Platforms I use to build, organize, automate, and launch business systems.
+    </p>
+
+    <div class="tech-stack-grid">
+      <div class="tech-chip">GoHighLevel<span>CRM + funnels</span></div>
+
+      <div class="tech-chip">n8n<span>workflow automation</span></div>
+
+      <div class="tech-chip">Zapier<span>integrations</span></div>
+
+      <div class="tech-chip">HubSpot<span>CRM systems</span></div>
+
+      <div class="tech-chip">WordPress<span>websites</span></div>
+
+      <div class="tech-chip">Duda<span>responsive web design</span></div>
+
+      <div class="tech-chip">Systeme.io<span>funnels</span></div>
+
+      <div class="tech-chip">ChatGPT<span>AI workflows</span></div>
+
+      <div class="tech-chip">Claude<span>AI assistance</span></div>
+
+      <div class="tech-chip">NotebookLM<span>research + organization</span></div>
+
+      <div class="tech-chip">Claude Code<span>AI coding workflows</span></div>
+
+      <div class="tech-chip">Figma<span>UI/UX design</span></div>
+
+      <div class="tech-chip">VS Code<span>web editing</span></div>
+
+      <div class="tech-chip">Supabase<span>database</span></div>
+
+      <div class="tech-chip">Vercel<span>deployment</span></div>
+
+      <div class="tech-chip">Netlify<span>hosting</span></div>
+
+      <div class="tech-chip">Canva<span>creative assets</span></div>
+
+      <div class="tech-chip">Google Workspace<span>operations</span></div>
+
+    </div>
+
+    <div class="section-cta-wrap">
+      <a href="#contact" class="section-cta">Talk About Your Stack →</a>
+    </div>
+  </section>
+
+
+  <!-- CERTS -->
+<section class="certs" id="certs">
+  <div class="sec-eyebrow">// Credentials</div>
+
+  <h2 class="sec-title">
+    Certifications &<br><em>Continuous Learning</em>
+  </h2>
+
+  <p style="font-size:15px;color:rgba(255,245,238,.78);max-width:680px;margin-bottom:56px;margin-top:-40px;line-height:1.9;">
+    I believe credibility is built through practice, continuous learning, and staying resourceful. I may not claim to know everything, but I actively keep learning, improving, and using the right tools, training, and resources to deliver better work for every project.
+  </p>
+
+  <div class="certs-grid">
+
+    <!-- Cert 1 -->
+    <div class="cert-card" onclick="openCertModal(this)"
+      data-title="QuickBooks Certificate"
+      data-img="assets/quickbooks-certificate.png"
+      data-desc="This certification supports my understanding of bookkeeping foundations, financial organization, reconciliation, reporting, and clean account structure. It helps me approach business operations with more accuracy and organization.">
+
+      <div class="cert-media">
+        <img src="assets/quickbooks-certificate.png" alt="QuickBooks Certificate">
+      </div>
+
+      <div class="cert-name">QuickBooks Certificate</div>
+
+      <div class="cert-desc">
+        Training in bookkeeping foundations, financial organization, reconciliation, reporting, and business account structure.
+      </div>
+
+      <span class="cert-status verified">✓ Certified</span>
+    </div>
+
+    <!-- Cert 2 -->
+    <div class="cert-card" onclick="openCertModal(this)"
+      data-title="GoHighLevel Certificate"
+      data-img="assets/ghl-certificate.png"
+      data-desc="This certificate supports my hands-on learning with GoHighLevel systems, including CRM organization, funnels, pipelines, workflows, automations, calendars, and business system setup.">
+
+      <div class="cert-media">
+        <img src="assets/ghl-certificate.png" alt="GoHighLevel Certificate">
+      </div>
+
+      <div class="cert-name">GoHighLevel Certificate</div>
+
+      <div class="cert-desc">
+        Training and hands-on learning in GHL systems, CRM setup, funnels, pipelines, automations, calendars, and workflows.
+      </div>
+
+      <span class="cert-status verified">✓ Certified</span>
+    </div>
+
+    <!-- Cert 3 -->
+    <div class="cert-card" onclick="openCertModal(this)"
+      data-title="Facebook Ads Certificate"
+      data-img="assets/facebook-ads-certificate.png"
+      data-desc="This certificate supports my understanding of Facebook advertising foundations, campaign structure, audience targeting, ad creative strategy, and lead generation campaigns.">
+
+      <div class="cert-media">
+        <img src="assets/facebook-ads-certificate.png" alt="Facebook Ads Certificate">
+      </div>
+
+      <div class="cert-name">Facebook Ads Certificate</div>
+
+      <div class="cert-desc">
+        Training in Facebook Ads foundations, campaign setup, audience targeting, ad creative strategy, and lead generation.
+      </div>
+
+      <span class="cert-status verified">✓ Certified</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATE MODAL -->
+<div class="cert-modal" id="certModal">
+  <div class="cert-modal-backdrop" onclick="closeCertModal()"></div>
+
+  <div class="cert-modal-box">
+    <button class="cert-modal-close" onclick="closeCertModal()">×</button>
+
+    <img id="certModalImg" src="" alt="Certificate preview">
+
+    <div class="cert-modal-copy">
+      <h3 id="certModalTitle"></h3>
+      <p id="certModalDesc"></p>
+    </div>
+  </div>
+</div>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="sec-eyebrow">// Investment</div>
+    <h2 class="sec-title">Transparent <em>Funnel & Systems Pricing</em></h2>
+
+    <div class="pricing-tabs">
+      <button class="ptab-btn active" onclick="showP('va',this)">VA Packages</button>
+      <button class="ptab-btn" onclick="showP('ghl',this)">Funnels + GHL</button>
+      <button class="ptab-btn" onclick="showP('funnels',this)">Funnels</button>
+      <button class="ptab-btn" onclick="showP('bookkeeping',this)">Bookkeeping</button>
+      <button class="ptab-btn" onclick="showP('website',this)">Website</button>
+    </div>
+
+    <!-- VA PACKAGES -->
+    <div class="p-panel active" id="pp-va">
+      <div class="pgrid">
+        <div class="pcard">
+          <div class="pcard-top">
+            <div class="pcard-icon">🌱</div>
+            <div class="pcard-label">Starter</div>
+          </div>
+          <div class="pcard-name">Essentials</div>
+          <div class="pcard-sub">Focused monthly support for solopreneurs needing reliable execution without full-time
+            overhead.</div>
+          <div class="pcard-price">$650</div>
+          <div class="pcard-period">// per month · up to 20 hrs/mo</div>
+          <div class="pcard-divider"></div>
+          <ul class="pcard-features">
+            <li>Email & calendar management</li>
+            <li>Data entry & file organization</li>
+            <li>Social media scheduling (2 platforms)</li>
+            <li>Basic CRM management</li>
+            <li>Weekly progress reports</li>
+            <li>Response within 24 hours</li>
+          </ul>
+          <div class="pcard-note">// 3-month minimum · Best for focused execution</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Book a Discovery Call</a>
+        </div>
+        <div class="pcard hot">
+          <div class="pcard-top">
+            <div class="pcard-icon">🚀</div>
+            <div class="pcard-label">Growth</div>
+          </div>
+          <div class="pcard-name">Operator</div>
+          <div class="pcard-sub">High-leverage weekly operational support for owners ready to delegate systems, content,
+            CRM, admin, and follow-up.</div>
+          <div class="pcard-price">$1,500</div>
+          <div class="pcard-period">// per week · up to 40 hrs/week</div>
+          <div class="pcard-divider"></div>
+          <ul class="pcard-features">
+            <li>Everything in Essentials</li>
+            <li>CRM management & lead follow-up</li>
+            <li>Content creation + email marketing</li>
+            <li>Social media management (3 platforms)</li>
+            <li>Drip campaign setup & management</li>
+            <li>Basic GHL support</li>
+            <li>AI-powered workflow optimization</li>
+            <li>Daily check-ins & reporting</li>
+          </ul>
+          <div class="pcard-note">// 3-month minimum · Best for growing service businesses</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Book a Discovery Call</a>
+        </div>
+        <div class="pcard">
+          <div class="pcard-top">
+            <div class="pcard-icon">👑</div>
+            <div class="pcard-label">Premium</div>
+          </div>
+          <div class="pcard-name">Systems Partner</div>
+          <div class="pcard-sub">Premium systems partnership including GHL, funnels, automation, AI workflows, and
+            priority implementation.</div>
+          <div class="pcard-price">$2,500</div>
+          <div class="pcard-period">// per month · systems + priority</div>
+          <div class="pcard-divider"></div>
+          <ul class="pcard-features">
+            <li>Everything in Operator</li>
+            <li>GHL setup & management</li>
+            <li>Funnel building (1 per quarter)</li>
+            <li>Advanced automation setup</li>
+            <li>AI integration across workflows</li>
+            <li>Basic bookkeeping support</li>
+            <li>Priority response within 4 hours</li>
+            <li>Monthly strategy review call</li>
+          </ul>
+          <div class="pcard-note">// 3-month minimum · Best for high-growth businesses</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Book a Discovery Call</a>
+        </div>
+      </div>
+      <div class="p-disclaimer">// All packages recommends a <strong>3-month minimum commitment</strong>. Social media
+        management included as a specific deliverable (content calendar, posting, basic engagement). Discovery call
+        required before start.</div>
+    </div>
+
+    <!-- GHL SERVICES -->
+    <div class="p-panel" id="pp-ghl">
+      <div class="fgrid">
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">⚡</div>
+            <div class="fcard-price">$750<small>// one-time setup</small></div>
+          </div>
+          <div class="fcard-name">GHL Starter Funnel System</div>
+          <div class="fcard-desc">A starter GoHighLevel setup combined with a basic sales or lead funnel, email
+            follow-up, and core automations so you can start capturing and nurturing leads.</div>
+          <ul class="fcard-includes">
+            <li>Complete GHL account setup</li>
+            <li>Basic sales or lead funnel</li>
+            <li>Landing page + thank you page</li>
+            <li>Pipeline setup (up to 2)</li>
+            <li>Email follow-up sequence</li>
+            <li>Up to 3 core automations</li>
+            <li>Calendar or form integration</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 7–10 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🔧</div>
+            <div class="fcard-price">$1,500<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">GHL Full Ecosystem Build</div>
+          <div class="fcard-desc">Complete GHL ecosystem — pipelines, automations, funnels, email sequences, and
+            integrations. Built to convert and retain.</div>
+          <ul class="fcard-includes">
+            <li>Full account + sub-account setup</li>
+            <li>Custom automation workflows</li>
+            <li>Funnel integration</li>
+            <li>Email + SMS campaign setup</li>
+            <li>Reputation management</li>
+            <li>Third-party integrations</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 10–14 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">📦</div>
+            <div class="fcard-price">$1,200<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">GHL Snapshot Build</div>
+          <div class="fcard-desc">A reusable, pre-built GHL snapshot your agency can deploy to sub-accounts instantly —
+            pre-loaded with automations and templates.</div>
+          <ul class="fcard-includes">
+            <li>Custom snapshot creation</li>
+            <li>Pre-built automation workflows</li>
+            <li>Email & SMS templates</li>
+            <li>Pipeline templates</li>
+            <li>Deployment-ready packaging</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 7–10 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard quoted">
+          <div class="fcard-top">
+            <div class="fcard-icon">🌐</div>
+            <div class="fcard-price" style="color:var(--violet);">Custom<small style="color:var(--muted);">// quoted on
+                discovery call</small></div>
+          </div>
+          <div class="fcard-name">GHL White-Label SaaS Setup</div>
+          <div class="fcard-desc">Full white-label GoHighLevel SaaS setup for agencies — branded, configured, and ready
+            to sell to your clients.</div>
+          <ul class="fcard-includes">
+            <li>White-label domain & branding</li>
+            <li>SaaS pricing plan configuration</li>
+            <li>Sub-account onboarding system</li>
+            <li>Full automation suite</li>
+            <li>Training & documentation</li>
+          </ul>
+          <div class="fcard-turnaround" style="background:rgba(124,58,237,0.1);color:var(--violet);">📞 Quoted after
+            discovery call</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry"
+            style="border-color:var(--violet);color:var(--violet);">Book a Discovery Call</a>
+        </div>
+      </div>
+      <div class="p-disclaimer">// GHL prices are one-time project fees in USD. Monthly GHL management retainer
+        available from <strong>$750/month</strong> after initial setup. <strong>50% deposit</strong> required to begin.
+      </div>
+    </div>
+
+    <!-- FUNNELS -->
+    <div class="p-panel" id="pp-funnels">
+      <div class="fgrid">
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🎯</div>
+            <div class="fcard-price">$650<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">Basic Lead Funnel</div>
+          <div class="fcard-desc">Simple, clean funnel to start capturing leads immediately.</div>
+          <ul class="fcard-includes">
+            <li>1 opt-in / landing page</li>
+            <li>1 thank you page</li>
+            <li>1 automated follow-up email</li>
+            <li>Form integration</li>
+            <li>Mobile responsive</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 5–7 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">📧</div>
+            <div class="fcard-price">$850<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">Lead Funnel + Email Sequence</div>
+          <div class="fcard-desc">Complete lead capture + automated nurture system to warm up your leads.</div>
+          <ul class="fcard-includes">
+            <li>Opt-in + thank you page</li>
+            <li>3–5 step email sequence</li>
+            <li>Email copywriting included</li>
+            <li>CRM integration</li>
+            <li>Mobile responsive</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 7–10 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">📅</div>
+            <div class="fcard-price">$850<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">Booking / Appointment Funnel</div>
+          <div class="fcard-desc">Convert visitors into booked calls — for coaches, consultants, and service providers.
+          </div>
+          <ul class="fcard-includes">
+            <li>Landing page + calendar integration</li>
+            <li>Confirmation & reminder emails</li>
+            <li>No-show follow-up sequence</li>
+            <li>Calendly or GHL integration</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 5–7 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🛒</div>
+            <div class="fcard-price">$1,200<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">Sales Funnel with Upsell</div>
+          <div class="fcard-desc">Full sales funnel to showcase your offer and convert visitors into paying customers.
+          </div>
+          <ul class="fcard-includes">
+            <li>Sales / offer page</li>
+            <li>Checkout + order page</li>
+            <li>Upsell / downsell page</li>
+            <li>Post-purchase email sequence</li>
+            <li>Payment gateway integration</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 10–14 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🎥</div>
+            <div class="fcard-price">$950<small>// one-time</small></div>
+          </div>
+          <div class="fcard-name">Webinar / Event Funnel</div>
+          <div class="fcard-desc">Drive registrations and maximize show-up rates for your webinar or live event.</div>
+          <ul class="fcard-includes">
+            <li>Registration page</li>
+            <li>Confirmation + reminder emails</li>
+            <li>Replay / thank you page</li>
+            <li>Calendar integration</li>
+            <li>Automated reminder sequence</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 7–10 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard quoted">
+          <div class="fcard-top">
+            <div class="fcard-icon">🔧</div>
+            <div class="fcard-price" style="color:var(--violet);">Custom<small style="color:var(--muted);">// quoted on
+                call</small></div>
+          </div>
+          <div class="fcard-name">Advanced / Custom Funnels</div>
+          <div class="fcard-desc">Complex multi-step funnels with advanced automation, AI integration, and custom logic.
+          </div>
+          <ul class="fcard-includes">
+            <li>Multi-step complex funnel systems</li>
+            <li>Advanced GHL automation</li>
+            <li>AI-powered personalization</li>
+            <li>Membership / course funnels</li>
+            <li>Full funnel strategy included</li>
+          </ul>
+          <div class="fcard-turnaround" style="background:rgba(124,58,237,0.1);color:var(--violet);">📞 Quoted after
+            discovery call</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry"
+            style="border-color:var(--violet);color:var(--violet);">Book a Discovery Call</a>
+        </div>
+      </div>
+      <div class="p-disclaimer">// All funnel prices are one-time project fees in USD. Platform (GHL, ClickFunnels,
+        Kajabi, etc.) confirmed on discovery call. <strong>50% deposit</strong> to begin. Up to 2 revision rounds
+        included.</div>
+    </div>
+
+    <!-- BOOKKEEPING -->
+    <div class="p-panel" id="pp-bookkeeping">
+      <div class="bkgrid">
+        <div class="bkcard">
+          <div class="bkcard-icon">🌱</div>
+          <div class="bkcard-name">Starter Retainer</div>
+          <div class="bkcard-ideal">// Freelancers, solopreneurs, low transaction volume</div>
+          <div class="bkcard-price">$350–$750</div>
+          <div class="bkcard-period">// per month · based on volume</div>
+          <ul class="bkcard-features">
+            <li>Monthly transaction categorization</li>
+            <li>Bank & credit card reconciliation</li>
+            <li>Expense tracking</li>
+            <li>Monthly P&L report</li>
+            <li>Up to 100 transactions/month</li>
+            <li>QuickBooks Online management</li>
+          </ul>
+          <div class="bkcard-note">// Rate confirmed after discovery call based on actual transaction volume</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Book a Discovery Call</a>
+        </div>
+        <div class="bkcard bkhot">
+          <div class="bkcard-icon">🚀</div>
+          <div class="bkcard-name">Growing Business</div>
+          <div class="bkcard-ideal">// Small to mid-sized businesses with moderate volume</div>
+          <div class="bkcard-price">$750–$1,500</div>
+          <div class="bkcard-period">// per month · based on scope</div>
+          <ul class="bkcard-features">
+            <li>Everything in Starter</li>
+            <li>Accounts payable & receivable</li>
+            <li>Invoice creation & management</li>
+            <li>Chart of accounts maintenance</li>
+            <li>Quarterly financial summaries</li>
+            <li>Up to 300 transactions/month</li>
+          </ul>
+          <div class="bkcard-note">// Most growing businesses fall in this tier</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Book a Discovery Call</a>
+        </div>
+        <div class="bkcard">
+          <div class="bkcard-icon">👑</div>
+          <div class="bkcard-name">High Volume / Complex</div>
+          <div class="bkcard-ideal">// High transaction volume, multi-account, complex reporting</div>
+          <div class="bkcard-price">$2,000–$4,000+</div>
+          <div class="bkcard-period">// per month · custom scoped</div>
+          <ul class="bkcard-features">
+            <li>Everything in Growing Business</li>
+            <li>High volume (300+ transactions/mo)</li>
+            <li>Multi-account / multi-entity</li>
+            <li>Monthly financial statements</li>
+            <li>Tax preparation support</li>
+            <li>Priority turnaround</li>
+          </ul>
+          <div class="bkcard-note">// Individually scoped — larger operations may fall here</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Book a Discovery Call</a>
+        </div>
+      </div>
+      <div
+        style="margin-top:16px;background:var(--surface);border:1px solid var(--border);padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+        <div>
+          <div class="sec-eyebrow" style="margin-bottom:10px;">// Hourly Option</div>
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--peach);">$35–$125<span
+              style="font-size:16px;font-weight:300;color:var(--muted);font-family:var(--font-body);"> / hour</span>
+          </div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.8;">Rate
+            depends on complexity of books, volume, and tasks. Great for one-time clean-ups and ad-hoc support.</div>
+        </div>
+        <ul class="bkcard-features">
+          <li>Catch-up / clean-up bookkeeping</li>
+          <li>One-time reconciliation</li>
+          <li>QuickBooks setup & training</li>
+          <li>Ad-hoc financial reporting</li>
+          <li>Tax season prep support</li>
+        </ul>
+      </div>
+      <div class="p-disclaimer">// All bookkeeping rates in USD. Confirmed after <strong>free discovery call</strong>.
+        QuickBooks Online subscription billed separately to client. <strong>QBO Certified</strong> — competitive rates
+        reflect building client portfolio.</div>
+    </div>
+
+    <!-- WEBSITE -->
+    <div class="p-panel" id="pp-website">
+      <div class="fgrid">
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🖥️</div>
+            <div class="fcard-price">$500<small>// 7-day delivery</small></div>
+          </div>
+          <div class="fcard-name">Starter Website</div>
+          <div class="fcard-desc">Clean, professional website to establish your online presence fast.</div>
+          <ul class="fcard-includes">
+            <li>Up to 3 pages</li>
+            <li>Mobile responsive design</li>
+            <li>Contact form integration</li>
+            <li>Basic SEO setup</li>
+            <li>Social media links</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 7-Day Guarantee</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🌐</div>
+            <div class="fcard-price">$1,250<small>// 10–14 day delivery</small></div>
+          </div>
+          <div class="fcard-name">Business Website</div>
+          <div class="fcard-desc">Fully branded, multi-page website built to convert visitors into clients.</div>
+          <ul class="fcard-includes">
+            <li>Up to 6 pages</li>
+            <li>Custom branded design</li>
+            <li>Lead capture / opt-in</li>
+            <li>Testimonials section</li>
+            <li>SEO optimization</li>
+            <li>2 rounds of revisions</li>
+          </ul>
+          <div class="fcard-turnaround">⏱ 10–14 day delivery</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard">
+          <div class="fcard-top">
+            <div class="fcard-icon">🔄</div>
+            <div class="fcard-price">$250<small>// per month</small></div>
+          </div>
+          <div class="fcard-name">Website Maintenance</div>
+          <div class="fcard-desc">Keep your site updated, secure, and running smoothly every month.</div>
+          <ul class="fcard-includes">
+            <li>Monthly content updates (up to 5)</li>
+            <li>Platform / plugin updates</li>
+            <li>Performance monitoring</li>
+            <li>Minor design tweaks</li>
+            <li>Monthly backup + priority support</li>
+          </ul>
+          <div class="fcard-turnaround">// Ongoing monthly</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry">Get Started</a>
+        </div>
+        <div class="fcard quoted">
+          <div class="fcard-top">
+            <div class="fcard-icon">🛒</div>
+            <div class="fcard-price" style="color:var(--violet);">Custom<small style="color:var(--muted);">// quoted on
+                call</small></div>
+          </div>
+          <div class="fcard-name">E-Commerce / Custom Website</div>
+          <div class="fcard-desc">Complex websites with e-commerce, membership areas, and advanced integrations.</div>
+          <ul class="fcard-includes">
+            <li>E-commerce / online store</li>
+            <li>Membership / course platform</li>
+            <li>Custom AI chatbot integration</li>
+            <li>Advanced automation integration</li>
+            <li>Ongoing maintenance options</li>
+          </ul>
+          <div class="fcard-turnaround" style="background:rgba(124,58,237,0.1);color:var(--violet);">📞 Quoted after
+            discovery call</div>
+          <a href="#contact" class="pcard-btn" data-action="pricing-inquiry"
+            style="border-color:var(--violet);color:var(--violet);">Book a Discovery Call</a>
+        </div>
+      </div>
+      <div class="p-disclaimer">// Website prices are one-time project fees in USD. Domain and hosting <strong>not
+          included</strong> — billed directly to client. <strong>50% deposit</strong> required. Platform confirmed on
+        discovery call.</div>
+    </div>
+
+  </section>
+
+  <!-- WHY TIN -->
+  <section class="diff" id="why">
+    <div class="sec-eyebrow">// Why Tin</div>
+    <h2 class="sec-title">What Makes Me <em>Different</em></h2>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <div class="diff-num">01</div>
+        <div class="diff-content">
+          <h3>I Think in Systems</h3>
+          <p>I don't just complete tasks — I design the system behind them. Every funnel, automation, and GHL build I
+            deliver is engineered for scale, not just function.</p>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-num">02</div>
+        <div class="diff-content">
+          <h3>AI Is My Co-Pilot</h3>
+          <p>I integrate AI into every workflow I build. Clients get faster delivery, smarter automations, and
+            AI-powered follow-up that works 24/7 — at no extra cost.</p>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-num">03</div>
+        <div class="diff-content">
+          <h3>I've Built My Own SaaS</h3>
+          <p>I don't just talk about systems — I've built one. That gives me a level of technical depth that most VAs
+            and even some developers simply don't have.</p>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-num">04</div>
+        <div class="diff-content">
+          <h3>6 Years, Zero Fluff</h3>
+          <p>Half a decade of real client work — real estate, marketing, admin, GHL, funnels. I've done the reps. I show
+            up, deliver, and make your business better every single week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="lux-positioning section">
+    <div class="section-head">
+      <div class="sec-eyebrow">// Approach</div>
+      <h2 class="sec-title">Practical, Organized & <em>Systems-Focused</em></h2>
+      <p class="sec-copy">
+        My approach focuses on building practical systems that improve workflows, support business operations, and
+        create a smoother experience for both businesses and their clients.
+      </p>
+    </div>
+
+    <div class="sample-grid">
+      <div class="sample-card">
+        <div class="sample-badge">COMMUNICATION</div>
+        <h3>Clear Collaboration</h3>
+        <p>
+          I prioritize responsiveness, organization, and structured communication throughout every project.
+        </p>
+      </div>
+
+      <div class="sample-card">
+        <div class="sample-badge">SYSTEMS THINKING</div>
+        <h3>Workflow-Focused</h3>
+        <p>
+          Every funnel, automation, and CRM workflow is designed with long-term usability and business efficiency in
+          mind.
+        </p>
+      </div>
+
+      <div class="sample-card">
+        <div class="sample-badge">IMPLEMENTATION</div>
+        <h3>Practical Execution</h3>
+        <p>
+          Focused on implementation and operational support rather than overcomplicated systems or unrealistic promises.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="cta-glow"></div>
+    <div class="cta-photo">
+      <!-- Replace with: <img src="photo-hero.jpg"> -->
+      <div class="cta-photo-emoji">🧑‍💼</div>
+    </div>
+    <div class="cta-tag">
+      <div class="hero-tag-dot"></div>// Open to New Projects & Retainers
+    </div>
+    <h2 class="cta-title">Ready To Talk?<br><span class="grad">Let’s Start With A Discovery Call.</span></h2>
+    <p class="cta-sub">If you need GHL built right, funnels that actually convert, automation that saves you hours, or a
+      Simple SaaS system built from scratch — send the inquiry here. </p>
+
+    <form class="crm-form" 
+      id="lead-form"
+      action="https://formspree.io/f/mdajezvz"
+      method="POST">
+      <input type="hidden" name="_subject" value="New Portfolio Inquiry">
+      <input name="name" placeholder="Your name" required>
+      <input name="email" type="email" placeholder="Email address" required>
+      <select name="service" required>
+        <option value="">What do you need?</option>
+        <option>GHL Setup / Management</option>
+        <option>Funnel Build</option>
+        <option>Automation / AI Workflow</option>
+        <option>Custom SaaS / CRM Tool</option>
+        <option>Bookkeeping</option>
+        <option>Website</option>
+        <option>VA Services</option>
+      </select>
+      <select name="budget" required>
+        <option value="">Estimated budget</option>
+        <option>$650–$1,500</option>
+        <option>$1,500–$2,500</option>
+        <option>$2,500–$5,000</option>
+        <option>$5,000+</option>
+      </select>
+      <textarea name="message" rows="4" placeholder="Tell me about your project, current tools, and timeline."
+        required></textarea>
+      <button class="cta-btn crm-submit" type="submit">Email My Inquiry</button>
+      
+      </div>
+    </form>
+  </section>
+
+
+
+  <footer>
+    <div class="footer-logo">Tin<span>.</span></div>
+    <div class="footer-note">// GHL Systems Specialist · Funnel Strategist · Automation Workflows · SaaS Builder ·
+      Philippines</div>
+
+
+  </footer>
+
+  <div class="modal" id="demoModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeDemo()" aria-label="Close">×</button>
+      <div class="sec-eyebrow">// Live Portfolio Action</div>
+      <div class="modal-title" id="demoTitle">Demo</div>
+      <p class="modal-text" id="demoText">This demo slot is ready. Add a Loom, YouTube, live funnel, or SaaS preview URL
+        to the card's data-demo-url attribute.</p>
+      <div class="modal-actions">
+        <a href="#contact" class="btn-primary" onclick="closeDemo()">Ask About This Build</a>
+        <button class="btn-secondary" onclick="closeDemo()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+    function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+    animRing();
+
+    // Tabs — samples
+    function showSample(id, btn) {
+      document.querySelectorAll('.s-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('sp-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Tabs — pricing
+    function showP(id, btn) {
+      document.querySelectorAll('.p-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.ptab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('pp-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+
+
+    // Live demo modal + CRM-ready lead capture
+    function openDemo(el) {
+      const card = el.closest('.sample-card');
+      const title = card?.dataset.demoTitle || 'Portfolio Demo';
+      const url = card?.dataset.demoUrl || '';
+      trackPortfolioAction('demo_click', { title, url });
+      if (url && url !== '#contact') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      document.getElementById('demoTitle').textContent = title;
+      document.getElementById('demoText').textContent = url === '#contact'
+        ? 'This button is connected to the inquiry form. Once your CRM endpoint is added, this action can create a lead automatically.'
+        : 'This demo slot is ready. Add a Loom, YouTube, live funnel, or SaaS preview URL to this card’s data-demo-url attribute.';
+      document.getElementById('demoModal').classList.add('active');
+    }
+    function closeDemo() { document.getElementById('demoModal').classList.remove('active'); }
+    function trackPortfolioAction(eventName, payload = {}) {
+      window.portfolioEvents = window.portfolioEvents || [];
+      window.portfolioEvents.push({ eventName, payload, ts: new Date().toISOString() });
+    }
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', () => trackPortfolioAction(btn.dataset.action, { text: btn.textContent.trim() }));
+    });
+    const leadForm = document.getElementById('lead-form');
+    if (leadForm) {
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => obs.observe(r));
+  </script>
+  <script>
+  function openSampleModal(card){
+    const modal = document.getElementById('sampleModal');
+    const img = document.getElementById('sampleModalImg');
+    const title = document.getElementById('sampleModalTitle');
+    const desc = document.getElementById('sampleModalDesc');
+
+    img.src = card.getAttribute('data-img');
+    title.textContent = card.getAttribute('data-title');
+    desc.textContent = card.getAttribute('data-desc');
+
+    modal.classList.add('active');
+  }
+
+  function closeSampleModal(){
+    document.getElementById('sampleModal').classList.remove('active');
+  }
+</script>
+<script>
+  function openCertModal(card){
+    const modal = document.getElementById('certModal');
+    const img = document.getElementById('certModalImg');
+    const title = document.getElementById('certModalTitle');
+    const desc = document.getElementById('certModalDesc');
+
+    img.src = card.getAttribute('data-img');
+    title.textContent = card.getAttribute('data-title');
+    desc.textContent = card.getAttribute('data-desc');
+
+    modal.classList.add('active');
+  }
+
+  function closeCertModal(){
+    document.getElementById('certModal').classList.remove('active');
+  }
+</script>
+</body>
+
+</html>

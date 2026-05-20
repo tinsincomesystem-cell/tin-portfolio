@@ -1,0 +1,71 @@
+TIN PORTFOLIO EDITING GUIDE
+
+1) Preview
+- Unzip the folder.
+- Keep index.html and the assets folder together.
+- Double-click index.html.
+
+2) Replace photos without editing code
+Open the assets folder and replace the file, keeping the exact same filename.
+
+Hero image:
+assets/hero-laptop.png
+
+Workspace image:
+assets/workspace-placeholder.png
+
+Behind the systems image:
+assets/behind-systems.png
+
+Intro video:
+assets/intro.mp4
+
+Video poster:
+assets/video-poster.png
+
+3) Recommended image sizes
+Hero image: 1600 x 1100 px or larger
+Workspace image: 1200 x 900 px
+Behind the systems image: 1600 x 900 px
+Certificate images: 1200 x 675 px
+Sample work screenshots: 1600 x 900 px
+
+4) Add certificate images
+In index.html, search for:
+CERTIFICATION #1
+CERTIFICATION #2
+CERTIFICATION #3
+
+Replace the placeholder inside each .cert-media with:
+
+<img src="assets/my-certificate.png" style="width:100%;height:100%;object-fit:contain;padding:16px;">
+
+Then put my-certificate.png inside the assets folder.
+
+5) Add sample work links
+Search for:
+data-demo-url=""
+
+Add a live URL:
+data-demo-url="https://yourlink.com"
+
+6) Form submissions by email
+The form opens an email draft to:
+tin@stratawayrealty.com
+
+To change the email, search for:
+data-email-to="tin@stratawayrealty.com"
+
+Replace with:
+data-email-to="your@email.com"
+
+Important:
+Static HTML cannot silently send emails by itself.
+This version opens the visitor's email app with the inquiry filled in.
+For automatic delivery, use Netlify Forms, Formspree, GoHighLevel form, or your future CRM webhook.
+
+7) Connect your CRM later
+Search for:
+data-crm-endpoint="YOUR_CRM_WEBHOOK_URL_HERE"
+
+Replace it with your webhook URL.
