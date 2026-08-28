@@ -2249,7 +2249,7 @@ function ContactSection() {
   method="POST"
   data-netlify="true"
   data-netlify-honeypot="bot-field"
-  action="/thank-you.html"
+  action="/"
   className="animate-in mt-12 space-y-6 text-left"
 >
   <input type="hidden" name="form-name" value="contact" />
