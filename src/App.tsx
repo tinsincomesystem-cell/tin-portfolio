@@ -2200,6 +2200,12 @@ function ApproachSection() {
 function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
 
+  const [submitted, setSubmitted] = useState(false)
+const [submitError, setSubmitError] = useState(false)
+const [submitting, setSubmitting] = useState(false)
+  
+
+
   useEffect(() => {
     if (!sectionRef.current) return
     const els = sectionRef.current.querySelectorAll('.animate-in')
@@ -2211,6 +2217,40 @@ function ContactSection() {
       }
     )
   }, [])
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+
+  setSubmitting(true)
+  setSubmitError(false)
+
+  const form = e.currentTarget
+  const formData = new FormData(form)
+
+  try {
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(
+        Array.from(formData.entries()).map(([key, value]) => [
+          key,
+          String(value),
+        ])
+      ).toString(),
+    })
+
+    if (!response.ok) throw new Error('Form submission failed')
+
+    setSubmitted(true)
+    form.reset()
+  } catch {
+    setSubmitError(true)
+  } finally {
+    setSubmitting(false)
+  }
+}
 
   return (
     <section ref={sectionRef} id="contact" className="bg-[#0C0B0B] py-[clamp(5rem,12vw,10rem)]">
@@ -2238,6 +2278,7 @@ function ContactSection() {
   method="POST"
   data-netlify="true"
   data-netlify-honeypot="bot-field"
+  onSubmit={handleSubmit}
   className="animate-in mt-12 space-y-6 text-left"
 >
   <input type="hidden" name="form-name" value="contact" />
@@ -2304,13 +2345,26 @@ function ContactSection() {
   />
 
   <div className="text-center pt-4">
-    <button
-      type="submit"
-      className="bg-gold text-[#0C0B0B] font-body text-[0.8125rem] font-medium uppercase tracking-[0.08em] px-10 py-3.5 rounded-full hover:bg-gold-light transition-colors duration-300"
-    >
-      Email My Inquiry
-    </button>
-  </div>
+  <button
+    type="submit"
+    disabled={submitting}
+    className="bg-gold text-[#0C0B0B] font-body text-[0.8125rem] font-medium uppercase tracking-[0.08em] px-10 py-3.5 rounded-full hover:bg-gold-light transition-colors duration-300 disabled:opacity-60"
+  >
+    {submitting ? 'Sending...' : 'Email My Inquiry'}
+  </button>
+</div>
+
+{submitted && (
+  <p className="text-center text-gold font-body mt-4">
+    Thank you! Your inquiry has been sent successfully.
+  </p>
+)}
+
+{submitError && (
+  <p className="text-center text-red-400 font-body mt-4">
+    Something went wrong. Please try again.
+  </p>
+)}
 </form>
       </div>
     </section>
