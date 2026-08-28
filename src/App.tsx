@@ -2201,56 +2201,62 @@ function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   const [submitted, setSubmitted] = useState(false)
-const [submitError, setSubmitError] = useState(false)
-const [submitting, setSubmitting] = useState(false)
-  
-
+  const [submitError, setSubmitError] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (!sectionRef.current) return
     const els = sectionRef.current.querySelectorAll('.animate-in')
-    gsap.fromTo(els,
+    gsap.fromTo(
+      els,
       { opacity: 0, y: 40 },
       {
-        opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' }
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        },
       }
     )
   }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  setSubmitting(true)
-  setSubmitError(false)
+    setSubmitting(true)
+    setSubmitError(false)
 
-  const form = e.currentTarget
-  const formData = new FormData(form)
+    const form = e.currentTarget
+    const formData = new FormData(form)
 
-  try {
-    const response = await fetch('/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams(
-        Array.from(formData.entries()).map(([key, value]) => [
-          key,
-          String(value),
-        ])
-      ).toString(),
-    })
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(
+          Array.from(formData.entries()).map(([key, value]) => [
+            key,
+            String(value),
+          ])
+        ).toString(),
+      })
 
-    if (!response.ok) throw new Error('Form submission failed')
+      if (!response.ok) throw new Error('Form submission failed')
 
-    setSubmitted(true)
-    form.reset()
-  } catch {
-    setSubmitError(true)
-  } finally {
-    setSubmitting(false)
+      setSubmitted(true)
+      form.reset()
+    } catch {
+      setSubmitError(true)
+    } finally {
+      setSubmitting(false)
+    }
   }
-}
 
   return (
     <section ref={sectionRef} id="contact" className="bg-[#0C0B0B] py-[clamp(5rem,12vw,10rem)]">
