@@ -1146,7 +1146,7 @@ function WorkSamplesSection({ lenisRef }: { lenisRef: React.MutableRefObject<Len
     },
     {
       title: 'Retail Website',
-      desc: 'Reatil real estate website — Sample 2',
+      desc: 'Modern retail business website,
       cat: 'Websites',
       img: '/images/tech-website.png', // REPLACE: add your second real estate website screenshot to /public/images/
       blurb: 'A full branding project for a client in California. From websites, to logos & full branding kit to place them as top business in their field',
