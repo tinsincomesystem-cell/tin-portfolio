@@ -11,20 +11,35 @@
   <body>
     <form
   name="contact"
-  netlify
+  method="POST"
+  data-netlify="true"
   netlify-honeypot="bot-field"
   hidden
 >
+  <input type="hidden" name="form-name" value="contact" />
+  <input name="bot-field" />
+
   <input type="text" name="name" />
   <input type="email" name="email" />
+
   <select name="service">
     <option value="ghl">GHL Setup / Management</option>
+    <option value="funnel">Funnel Build</option>
+    <option value="automation">Automation / AI Workflow</option>
+    <option value="saas">Custom SaaS / CRM Tool</option>
+    <option value="bookkeeping">Bookkeeping</option>
+    <option value="website">Website</option>
+    <option value="va">VA Services</option>
   </select>
+
   <select name="budget">
     <option value="300-650">$300–$650</option>
+    <option value="650-1500">$650–$1,500</option>
+    <option value="1500-2500">$1,500–$2,500</option>
+    <option value="2500+">$2,500+</option>
   </select>
+
   <textarea name="message"></textarea>
-  <input name="bot-field" />
 </form>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

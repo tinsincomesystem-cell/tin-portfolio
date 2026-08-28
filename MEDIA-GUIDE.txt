@@ -1,0 +1,32 @@
+MEDIA STRUCTURE GUIDE
+
+Premium agencies usually structure portfolios like this:
+
+IMAGES FOR:
+- funnels
+- websites
+- branding
+- social graphics
+- screenshots
+
+VIDEOS FOR:
+- walkthroughs
+- systems demos
+- automations
+- SaaS previews
+
+HOW TO CHANGE EACH MEDIA:
+Open index.html and search:
+<div class="sample-media">
+
+Replace the content with either:
+
+IMAGE:
+<img src="assets/my-image.jpg">
+
+OR VIDEO:
+<video controls>
+  <source src="assets/my-video.mp4" type="video/mp4">
+</video>
+
+Then place the file inside the assets folder.
