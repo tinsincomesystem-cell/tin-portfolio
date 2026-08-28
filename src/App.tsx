@@ -1145,12 +1145,12 @@ function WorkSamplesSection({ lenisRef }: { lenisRef: React.MutableRefObject<Len
       result: 'The agent saw a 60% increase in website-generated inquiries within the first month. The site became the primary source of warm leads for their team.',
     },
     {
-      title: 'Real Estate Website',
-      desc: 'Full real estate website — Sample 2',
+      title: 'Retail Website',
+      desc: 'Reatil real estate website — Sample 2',
       cat: 'Websites',
       img: '/images/tech-website.png', // REPLACE: add your second real estate website screenshot to /public/images/
-      blurb: 'A second real estate website build for a real estate investment company — focused on motivated seller lead capture, market reports, and property listing showcases. Built with a clean, professional aesthetic and full mobile optimization.',
-      result: 'A full branding project for a client in California. From websites, to logos & full branding kit to place them as top business in their field',
+      blurb: 'A full branding project for a client in California. From websites, to logos & full branding kit to place them as top business in their field',
+      result: 'Clients gained more traffic, equiuvalent to more sales with our full on branding & marketing strategy',
     },
     {
       title: 'Health & Wellness Website',
