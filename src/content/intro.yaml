@@ -1,0 +1,10 @@
+# =====================================================================
+#  INTRO VIDEO SECTION (after Services)
+#  video: file in public/video/. poster: picture inside src/assets/.
+# =====================================================================
+eyebrow: "Meet Tin"
+title: "The strategist *behind* the systems."
+intro: "Ninety seconds on who I am and how I work. Move your cursor, or your finger, and the network follows you."
+video: "/video/intro.mp4"
+poster: "me/intro-poster.jpg"
+playLabel: "Play my intro"

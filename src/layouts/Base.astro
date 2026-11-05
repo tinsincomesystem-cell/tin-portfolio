@@ -1,0 +1,79 @@
+---
+// Page shell: <head> tags, fonts, SEO, intro, cursor and the animation engine.
+// Fonts are declared in src/styles/fonts.css (names used in src/styles/tokens.css)
+import '../styles/fonts.css';
+import '../styles/global.css';
+
+import serifWoff2 from '../assets/fonts/instrument-serif-latin-400-normal.woff2?url';
+import sansWoff2 from '../assets/fonts/hanken-grotesk-latin-wght-normal.woff2?url';
+import { site } from '../lib/content';
+
+interface Props { title?: string; description?: string; noindex?: boolean; intro?: boolean; bodyClass?: string }
+const { title = site.seo.title, description = site.seo.description, noindex = false, intro = false, bodyClass = '' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(site.seo.ogImage, Astro.site);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: `${site.name} — ${site.role}`,
+  description,
+  url: Astro.site?.toString(),
+  email: site.email,
+  areaServed: ['US', 'AU', 'EU'],
+  image: ogImage.toString(),
+  sameAs: Object.values(site.social || {}).filter(Boolean),
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0b0a0a" />
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${site.name} · ${site.role}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preload" href={serifWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sansWoff2} as="font" type="font/woff2" crossorigin />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {intro && (
+      <div class="intro" aria-hidden="true">
+        <div class="intro-mark"><span>Tin</span><em>.</em></div>
+        <div class="intro-bar"><i></i></div>
+      </div>
+    )}
+    <slot />
+    <div class="cursor" aria-hidden="true"><div class="cursor-ring"><span></span></div><div class="cursor-dot"></div></div>
+    <script>
+      import { boot } from '../scripts/main';
+      boot();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+---
+// Floating guided chat assistant. Content in src/content/assistant.yaml.
+import { assistant as a, site } from '../lib/content';
+const useGhl = !!(a.ghlWidget && a.ghlWidget.trim());
+---
+{a.enabled && useGhl && <Fragment set:html={a.ghlWidget} />}
+{a.enabled && !useGhl && (
+  <div class="asst" data-asst>
+    <button type="button" class="asst-launch" aria-expanded="false" aria-controls="asst-panel" data-asst-toggle>
+      <span class="asst-orb" aria-hidden="true"><i></i></span>
+      <span class="asst-launch-label">{a.launcher}</span>
+    </button>
+
+    <div id="asst-panel" class="asst-panel" role="dialog" aria-label={a.name} hidden data-asst-panel>
+      <header class="asst-head">
+        <span class="asst-ava" aria-hidden="true">T</span>
+        <div><strong>{a.name}</strong><span>{a.status}</span></div>
+        <button type="button" class="asst-x" aria-label="Close chat" data-asst-close>✕</button>
+      </header>
+      <div class="asst-log" aria-live="polite" data-asst-log></div>
+      <div class="asst-actions" data-asst-actions></div>
+      <form class="asst-form" name="assistant" method="POST" data-netlify="true" netlify-honeypot="nickname" action="/thank-you" hidden data-asst-form>
+        <input type="hidden" name="form-name" value="assistant" />
+        <input type="hidden" name="topic" data-asst-topic />
+        <input type="hidden" name="context" data-asst-context />
+        <p class="sr-only"><label>Leave empty: <input name="nickname" tabindex="-1" autocomplete="off" /></label></p>
+        <label class="sr-only" for="asst-name">Name</label>
+        <input id="asst-name" name="name" placeholder="Your name" required autocomplete="name" />
+        <label class="sr-only" for="asst-email">Email</label>
+        <input id="asst-email" name="email" type="email" placeholder="you@email.com" required autocomplete="email" />
+        <button type="submit" class="btn btn-mint btn-sm">Send</button>
+      </form>
+    </div>
+    <script type="application/json" id="asst-data" set:html={JSON.stringify({ ...a, bookingUrl: site.bookingUrl, email: site.email })} />
+  </div>
+)}
+
+<style>
+  .asst { position: fixed; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); z-index: 95; display: grid; justify-items: end; gap: .75rem; }
+  .asst-launch { display: inline-flex; align-items: center; gap: .6rem; padding: .45rem 1rem .45rem .45rem; border-radius: 999px; background: rgb(11 10 10 / .9); color: var(--bone); border: 1px solid rgb(94 230 200 / .6); box-shadow: 0 0 18px -2px rgb(94 230 200 / .6), 0 12px 30px -10px #000; backdrop-filter: blur(10px); font-weight: 600; font-size: .9rem; transition: transform .3s var(--ease-out); }
+  .asst-launch:hover { transform: translateY(-2px); }
+  .asst-orb { position: relative; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eafff9, var(--mint) 45%, #138a72); box-shadow: 0 0 14px var(--mint); }
+  .asst-orb i { position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--mint); animation: orb 2.2s ease-out infinite; }
+  @keyframes orb { from { transform: scale(.8); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+  .asst-panel { width: min(370px, calc(100vw - 2rem)); max-height: min(560px, 72svh); display: flex; flex-direction: column; border-radius: 20px; background: #121110; color: var(--bone); border: 1px solid rgb(94 230 200 / .4); box-shadow: 0 0 40px -8px rgb(94 230 200 / .5), 0 30px 60px -20px #000; overflow: hidden; animation: pin .35s var(--ease-out); }
+  .asst-panel[hidden] { display: none; }
+  @keyframes pin { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+  .asst-head { display: flex; align-items: center; gap: .7rem; padding: .9rem 1rem; border-bottom: 1px solid var(--line-dark); background: linear-gradient(90deg, rgb(94 230 200 / .08), transparent); }
+  .asst-head div { display: grid; line-height: 1.25; margin-right: auto; }
+  .asst-head span { font-size: .72rem; color: var(--smoke); }
+  .asst-ava { width: 2.2rem; height: 2.2rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-size: 1.2rem; background: var(--champagne); color: var(--onyx); box-shadow: 0 0 12px rgb(200 169 126 / .6); }
+  .asst-x { width: 36px; height: 36px; border-radius: 50%; color: var(--smoke); }
+  .asst-x:hover { background: var(--panel-2); color: var(--bone); }
+  .asst-log { flex: 1; overflow-y: auto; padding: 1rem; display: grid; gap: .6rem; align-content: start; overscroll-behavior: contain; }
+  .asst-log :global(.msg) { max-width: 85%; padding: .6rem .85rem; border-radius: 16px; font-size: .92rem; line-height: 1.45; animation: pin .3s var(--ease-out); }
+  .asst-log :global(.bot) { background: var(--panel-2); border-bottom-left-radius: 4px; }
+  .asst-log :global(.me) { justify-self: end; background: var(--mint); color: var(--onyx); border-bottom-right-radius: 4px; box-shadow: 0 0 14px -2px rgb(94 230 200 / .6); }
+  .asst-log :global(.typing) { display: inline-flex; gap: 4px; padding: .8rem .9rem; }
+  .asst-log :global(.typing i) { width: 6px; height: 6px; border-radius: 50%; background: var(--smoke); animation: blink 1s infinite; }
+  .asst-log :global(.typing i:nth-child(2)) { animation-delay: .15s; }
+  .asst-log :global(.typing i:nth-child(3)) { animation-delay: .3s; }
+  @keyframes blink { 50% { opacity: .2; } }
+  .asst-actions { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 1rem 1rem; }
+  .asst-actions :global(button), .asst-actions :global(a) { font-size: .82rem; padding: .45rem .8rem; min-height: 2.4rem; border-radius: 999px; border: 1px solid rgb(94 230 200 / .5); color: #eafff9; text-decoration: none; display: inline-flex; align-items: center; transition: background .2s, box-shadow .2s; }
+  .asst-actions :global(button:hover), .asst-actions :global(a:hover) { background: rgb(94 230 200 / .12); box-shadow: 0 0 12px -2px rgb(94 230 200 / .7); }
+  .asst-actions :global(.primary) { background: var(--champagne); color: var(--onyx); border-color: var(--champagne); }
+  .asst-form { display: grid; gap: .5rem; padding: 0 1rem 1rem; }
+  .asst-form[hidden] { display: none; }
+  .asst-form input:not([type='hidden']) { min-height: 2.8rem; padding: .6rem .9rem; border-radius: 12px; background: var(--onyx); border: 1px solid var(--line-dark); color: var(--bone); }
+  .asst-form input:focus { outline: none; border-color: var(--mint); }
+  .asst-form .btn { justify-self: start; }
+  @media (max-width: 1099px) {
+    .asst { right: auto; left: 1rem; justify-items: start; }
+    .asst-launch-label { display: none; }
+    .asst-launch { padding: .35rem; }
+  }
+</style>
+
+<script>
+  import { getLenis } from '../scripts/core';
+  const root = document.querySelector<HTMLElement>('[data-asst]');
+  if (root) {
+    const d = JSON.parse(document.getElementById('asst-data')!.textContent!);
+    const toggle = root.querySelector<HTMLButtonElement>('[data-asst-toggle]')!;
+    const panel = root.querySelector<HTMLElement>('[data-asst-panel]')!;
+    const log = root.querySelector<HTMLElement>('[data-asst-log]')!;
+    const actions = root.querySelector<HTMLElement>('[data-asst-actions]')!;
+    const form = root.querySelector<HTMLFormElement>('[data-asst-form]')!;
+    let started = false, context = '';
+
+    const say = (text: string, who: 'bot' | 'me' = 'bot') => {
+      const m = document.createElement('div'); m.className = `msg ${who}`; m.textContent = text; log.append(m); log.scrollTop = log.scrollHeight;
+    };
+    const botSay = (text: string, after?: () => void) => {
+      const t = document.createElement('div'); t.className = 'msg bot typing'; t.innerHTML = '<i></i><i></i><i></i>'; log.append(t); log.scrollTop = log.scrollHeight;
+      setTimeout(() => { t.remove(); say(text); after?.(); }, Math.min(1200, 400 + text.length * 8));
+    };
+    const chips = (list: { label: string; onClick?: () => void; href?: string; primary?: boolean }[]) => {
+      actions.innerHTML = '';
+      list.forEach((c) => {
+        const el = c.href ? Object.assign(document.createElement('a'), { href: c.href, target: '_blank', rel: 'noopener' }) : document.createElement('button');
+        if (!c.href) (el as HTMLButtonElement).type = 'button';
+        el.textContent = c.label; if (c.primary) el.classList.add('primary');
+        if (c.onClick) el.addEventListener('click', c.onClick);
+        actions.append(el);
+      });
+    };
+    const topics = () => chips(d.topics.map((t: any) => ({ label: t.label, onClick: () => pick(t) })));
+    function pick(t: any) {
+      say(t.label, 'me'); actions.innerHTML = '';
+      (form.querySelector('[data-asst-topic]') as HTMLInputElement).value = t.label;
+      botSay(t.reply, () => botSay(d.nextStep, () => chips([
+        { label: d.bookLabel, href: d.bookingUrl, primary: true },
+        { label: d.emailLabel, onClick: () => { say(d.emailLabel, 'me'); actions.innerHTML = ''; botSay(d.emailPrompt, () => { form.hidden = false; form.querySelector<HTMLInputElement>('input[name="name"]')!.focus(); }); } },
+        { label: 'Something else', onClick: () => { actions.innerHTML = ''; topics(); } },
+      ])));
+    }
+    const open = (fromCtx = '') => {
+      panel.hidden = false; toggle.setAttribute('aria-expanded', 'true');
+      if (fromCtx) context = fromCtx;
+      if (!started) { started = true; botSay(context ? `I saw your VA Reality Check score: ${context}. ${d.greeting.replace(/^Hi! /, '')}` : d.greeting, topics); }
+      panel.querySelector<HTMLButtonElement>('[data-asst-close]')!.focus();
+    };
+    const close = () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); };
+    toggle.addEventListener('click', () => (panel.hidden ? open() : close()));
+    root.querySelector('[data-asst-close]')!.addEventListener('click', close);
+    panel.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    log.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+    panel.addEventListener('mouseenter', () => getLenis()?.stop());
+    panel.addEventListener('mouseleave', () => getLenis()?.start());
+
+    let lastResult = '';
+    window.addEventListener('va:result', (e: Event) => { const r = (e as CustomEvent).detail; lastResult = `${r.score}% (${r.tier})`; (form.querySelector('[data-asst-context]') as HTMLInputElement).value = `VA score ${r.score}%, ${r.tier}; top leaks: ${r.leaks.join(', ')}`; });
+    window.addEventListener('assistant:open', () => open(lastResult));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector<HTMLButtonElement>('button')!; btn.disabled = true;
+      try {
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as any).toString() });
+        if (!res.ok) throw new Error();
+        form.hidden = true; say(`${(form.elements.namedItem('name') as HTMLInputElement).value} · ${(form.elements.namedItem('email') as HTMLInputElement).value}`, 'me'); botSay(d.thanks);
+      } catch { botSay(`Hmm, that didn't send. You can email ${d.email} or book a call instead.`); btn.disabled = false; }
+    });
+  }
+</script>

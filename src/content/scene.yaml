@@ -1,0 +1,26 @@
+# =====================================================================
+#  "LAPTOP + DESK OBJECTS" SCROLL SCENE (between the hero and services)
+#  The laptop opens as people scroll, then these objects fly in around it.
+#  icon options: envelope, calendar, phone, sign, key, folder, mug, robot, megaphone
+#  x / y = where the object lands (percent of the scene, 0–100)
+#  mobile: false → hide that object on phones (keeps it uncluttered)
+# =====================================================================
+
+eyebrow: "What I take off your plate"
+headlineStart: "Your to-do list, *handled*."
+headlineEnd: "Leads. Marketing. *AI automations.*"
+subEnd: "Everything that eats your week, organized, automated and done by one person."
+screenTitle: "Lead pipeline"
+columns: ["New lead", "Contacted", "Booked", "Customer"]
+movingCard: "Sarah M. · New lead"
+
+objects:
+  - { icon: envelope, label: "Inbox zero", x: 13, y: 20, mx: 20, my: 18, rotate: -12 }
+  - { icon: calendar, label: "Calls booked", x: 86, y: 16, mx: 78, my: 22, rotate: 8 }
+  - { icon: phone, label: "Lead texted back", x: 91, y: 56, mx: 80, my: 84, rotate: 10 }
+  - { icon: folder, label: "Files organized", x: 8, y: 60, mx: 22, my: 86, rotate: -6 }
+  - { icon: sign, label: "Funnels live", x: 78, y: 86, rotate: -4, mobile: false }
+  - { icon: key, label: "Deals tracked", x: 68, y: 10, rotate: 18, mobile: false }
+  - { icon: robot, label: "AI automations", x: 5, y: 44, mx: 50, my: 22, rotate: -7 }
+  - { icon: megaphone, label: "Marketing", x: 93, y: 84, mx: 50, my: 90, rotate: 7 }
+  - { icon: mug, label: "Mornings back", x: 22, y: 88, rotate: 0, mobile: false }

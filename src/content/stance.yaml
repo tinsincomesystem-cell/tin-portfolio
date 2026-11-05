@@ -1,0 +1,12 @@
+# =====================================================================
+#  MY TAKE ON AI (section under the hero)
+# =====================================================================
+eyebrow: "My take on AI"
+title: "They say AI will replace people. It will replace *some*. I'm the one who trains it."
+paragraphs:
+  - "Just like the internet, AI is not for everybody. Using it well takes a lot of work, and it goes far beyond asking what to cook for dinner."
+  - "So let me be your AI expert. I'm AI empowered, with human discretion and judgment: you get the speed of AI and a person who knows when it's wrong."
+points:
+  - { title: "I train it", text: "On your business, your voice and your customers, so it sounds like you." }
+  - { title: "I manage it", text: "I set up the systems, watch how they run and improve them over time." }
+  - { title: "I judge it", text: "AI drafts and suggests. A human decides what's right for your business." }

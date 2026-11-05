@@ -1,0 +1,165 @@
+---
+// Brand guidelines packet: one page per brand in brands.yaml.
+// Visitors (or you) can press "Download PDF" to save a client-ready packet.
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import BrandLogo from '../../components/brand/BrandLogo.astro';
+import Palette from '../../components/brand/Palette.astro';
+import TypeSpec from '../../components/brand/TypeSpec.astro';
+import Postcard from '../../components/brand/Postcard.astro';
+import YardSign from '../../components/brand/YardSign.astro';
+import BusinessCard from '../../components/brand/BusinessCard.astro';
+import SiteConcept from '../../components/brand/SiteConcept.astro';
+import { brands, site } from '../../lib/content';
+import { img } from '../../lib/images';
+
+export function getStaticPaths() {
+  return brands.brands.map((b: any) => ({ params: { slug: b.slug }, props: { brand: b } }));
+}
+const { brand } = Astro.props;
+const c = brand.colors;
+const web = img(brand.website?.image);
+const year = new Date().getFullYear();
+---
+<Base title={`${brand.name} — Brand Guidelines · by ${site.name}`} description={`Brand guidelines packet for ${brand.name}: logo suite, typography, color palette, social, print, signage and website.`}>
+  <div class="bar s-dark">
+    <a href="/#branding" class="back">← Back to portfolio</a>
+    <div class="bar-actions">
+      <button class="btn btn-sm btn-ghost" type="button" onclick="window.print()" data-cursor="PDF">Download PDF</button>
+      <a class="btn btn-sm" href={site.bookingUrl} target="_blank" rel="noopener">Get a brand like this</a>
+    </div>
+  </div>
+
+  <main id="main" class="packet s-light" style={`--bh:${brand.logo.style === 'arch' ? c.accent : c.primary};--bd:${c.dark || c.primary};--bp:${c.primary};--ba:${c.accent};--bl:${c.light};--bk:${c.ink}`}>
+    <!-- COVER -->
+    <section class="page cover">
+      <div class="cover-logo"><BrandLogo brand={brand} variant="stacked" tone="dark" /></div>
+      <div class="cover-meta">
+        <span class="mono">Brand Guidelines · v1.0 · {year}</span>
+        <span class="mono">{brand.industry}</span>
+      </div>
+    </section>
+
+    <!-- 01 LOGO -->
+    <section class="page">
+      <header class="ph"><span class="num">01</span><h2>Logo suite</h2></header>
+      <p class="p-intro">{brand.summary}</p>
+      <div class="logo-grid">
+        <figure class="tile light"><BrandLogo brand={brand} variant="stacked" tone="light" /><figcaption>Primary · on light</figcaption></figure>
+        <figure class="tile dark"><BrandLogo brand={brand} variant="stacked" tone="dark" /><figcaption>Primary · on dark</figcaption></figure>
+        <figure class="tile light wide"><BrandLogo brand={brand} variant="horizontal" tone="light" /><figcaption>Horizontal · headers, signage riders, email</figcaption></figure>
+        <figure class="tile accent"><div class="mk"><BrandLogo brand={brand} variant="mark" tone="dark" /></div><figcaption>Monogram · favicon, social avatar, pens, closing gifts</figcaption></figure>
+      </div>
+      <ul class="rules">
+        <li><strong>Clear space:</strong> keep space equal to the height of the monogram's first letter on all sides.</li>
+        <li><strong>Minimum size:</strong> horizontal logo 1.25 in / 120 px wide; monogram 0.4 in / 32 px.</li>
+        <li><strong>Don't:</strong> stretch, recolor outside the palette, add shadows, or place on busy photos without a scrim.</li>
+      </ul>
+    </section>
+
+    <!-- 02 TYPE + 03 COLOR -->
+    <section class="page">
+      <header class="ph"><span class="num">02</span><h2>Typography</h2></header>
+      <TypeSpec brand={brand} />
+      <header class="ph ph-gap"><span class="num">03</span><h2>Color palette</h2></header>
+      <p class="p-intro small">Click a swatch to copy its hex code.</p>
+      <Palette brand={brand} />
+      <header class="ph ph-gap"><span class="num">04</span><h2>Voice</h2></header>
+      <ul class="voice">{brand.voice.map((v: string) => <li>{v}</li>)}</ul>
+    </section>
+
+    <!-- 05 SOCIAL -->
+    <section class="page">
+      <header class="ph"><span class="num">05</span><h2>Social media</h2></header>
+      <div class="social">
+        {brand.social.map((s: any) => { const im = img(s.image); return im && <Image src={im} alt={s.alt} widths={[400, 700]} sizes="(min-width: 900px) 40vw, 90vw" class="post" />; })}
+      </div>
+    </section>
+
+    <!-- 06 PRINT -->
+    <section class="page">
+      <header class="ph"><span class="num">06</span><h2>Print: postcards & business cards</h2></header>
+      <div class="print-grid">
+        <figure><Postcard brand={brand} side="front" /><figcaption>{brand.postcard.kind} postcard · front · 6×9 in</figcaption></figure>
+        <figure><Postcard brand={brand} side="back" /><figcaption>Postcard · back · EDDM-ready layout</figcaption></figure>
+        <figure class="bcard"><BusinessCard brand={brand} /><figcaption>Business card · 3.5×2 in · front & back</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 07 SIGNAGE + 08 WEB -->
+    <section class="page">
+      <header class="ph"><span class="num">07</span><h2>Signage in the wild</h2></header>
+      <figure class="sign"><YardSign brand={brand} /><figcaption>Yard sign 24×18 in + rider 6×24 in on a colonial post</figcaption></figure>
+      <header class="ph ph-gap"><span class="num">08</span><h2>Website</h2></header>
+      <figure class="web">
+        {web ? <Image src={web} alt={brand.website.alt} widths={[700, 1200]} sizes="(min-width: 900px) 70vw, 95vw" /> : <SiteConcept brand={brand} />}
+      </figure>
+      <footer class="sign-off">
+        <BrandLogo brand={brand} variant="horizontal" tone="light" size="220px" />
+        <span class="mono">Designed by {site.name} · {site.email}</span>
+      </footer>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .bar { position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .8rem var(--gutter); background: rgb(11 10 10 / .92); backdrop-filter: blur(10px); }
+  .back { text-decoration: none; font-size: .9rem; color: var(--smoke); }
+  .back:hover { color: var(--bone); }
+  .bar-actions { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: flex-end; }
+  .packet { --line: rgb(0 0 0 / .12); padding: clamp(1rem, 3vw, 3rem) var(--gutter) 5rem; display: grid; gap: clamp(1.5rem, 3vw, 3rem); }
+  .page { max-width: 1100px; width: 100%; margin-inline: auto; background: #fffdf9; color: #221c18; border-radius: 18px; padding: clamp(1.5rem, 5vw, 4.5rem); box-shadow: 0 30px 60px -40px rgb(0 0 0 / .4); }
+  .cover { background: var(--bd); color: var(--bl); min-height: min(80vh, 760px); display: grid; place-items: center; align-content: center; gap: 3rem; text-align: center; }
+  .cover-logo { width: min(440px, 80%); }
+  .cover-meta { display: grid; gap: .5rem; opacity: .85; }
+  .cover-meta .mono { font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; }
+  .concept { color: var(--bh); }
+  .ph { display: flex; align-items: baseline; gap: 1rem; padding-bottom: 1rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--line); }
+  .ph-gap { margin-top: 3.5rem; }
+  .num { font-family: var(--font-mono); font-size: .8rem; color: var(--bh); }
+  .ph h2 { font-size: var(--step-3); }
+  .p-intro { max-width: 60ch; color: #5b4f46; margin-bottom: 2rem; font-size: var(--step-1); line-height: 1.5; }
+  .p-intro.small { font-size: .9rem; margin: -1rem 0 1rem; }
+  .logo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+  .tile { min-width: 0; display: grid; place-items: center; gap: 1rem; padding: clamp(1.25rem, 4vw, 3rem) 1rem 1rem; border-radius: 14px; aspect-ratio: 1; }
+  .tile :global(svg) { width: 80%; }
+  .tile.wide { grid-column: span 1; }
+  .tile.wide :global(svg) { width: 92%; }
+  .tile.light { background: var(--bl); }
+  .tile.dark { background: var(--bd); }
+  .tile.accent { background: var(--bk); }
+  .tile .mk { width: 46%; }
+  .tile .mk :global(svg) { width: 100%; }
+  .tile figcaption { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .06em; opacity: .7; align-self: end; text-align: center; }
+  .tile.dark figcaption, .tile.accent figcaption { color: var(--bl); }
+  .rules { margin-top: 1.75rem; padding-left: 1.1rem; display: grid; gap: .5rem; color: #5b4f46; font-size: .95rem; }
+  .voice { list-style: none; padding: 0; display: grid; gap: .75rem; }
+  .voice li { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; padding-left: 1.5rem; border-left: 2px solid var(--ba); }
+  .social { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .social .post { width: 100%; border-radius: 10px; }
+  .print-grid { display: grid; gap: 2rem; }
+  figure figcaption { font-family: var(--font-mono); font-size: .72rem; color: #7a6d63; margin-top: .75rem; }
+  .bcard { max-width: 560px; }
+  .web :global(img) { width: 100%; border-radius: 12px; }
+  .sign-off { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+  .sign-off .mono { font-size: .72rem; color: #7a6d63; }
+  @media (min-width: 900px) {
+    .logo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .print-grid { grid-template-columns: 1fr 1fr; }
+    .bcard { grid-column: span 2; justify-self: center; width: 60%; }
+  }
+  @media (max-width: 520px) { .bar .back { font-size: .8rem; } .bar .btn-ghost { display: none; } }
+
+  @media print {
+    @page { size: letter; margin: 0.4in; }
+    :global(body) { background: #fff !important; }
+    :global(.cursor), :global(.skip-link), .bar { display: none !important; }
+    .packet { padding: 0; background: #fff; gap: 0; }
+    .page { box-shadow: none; border-radius: 0; break-after: page; padding: 0.2in 0; max-width: none; }
+    .cover { min-height: 9.6in; border-radius: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tile, .sw, :global(.pc), :global(.bc), :global(.ys), :global(.sc) { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .logo-grid { grid-template-columns: repeat(4, 1fr); }
+    .print-grid { grid-template-columns: 1fr 1fr; }
+    .sign { max-width: 75%; margin-inline: auto; }
+  }
+</style>

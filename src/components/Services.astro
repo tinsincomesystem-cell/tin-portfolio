@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import { services, rich, showTodos } from '../lib/content';
+const o = services.otherBusinesses;
+---
+<section id="services" class="services s-light section" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-reveal>{services.eyebrow}</span>
+      <h2 id="services-title" class="h-1" data-reveal style="--d:.05" set:html={rich(services.title)} />
+      <p class="lead" data-reveal style="--d:.1">{services.intro}</p>
+    </div>
+
+    <div class="svc-grid">
+      {services.items.map((s: any, i: number) => (
+        <article class={`svc card ${s.featured ? 'is-featured neon-frame' : ''}`} data-reveal style={`--d:${i * .08}`}>
+          <div class="svc-top">
+            <span class="svc-icon"><Icon name={s.icon} size={26} /></span>
+            <span class="mono svc-num">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          {s.featured && <span class="chip svc-badge">Signature service</span>}
+          <h3 class="h-3">{s.title}</h3>
+          <p class="svc-tag">{s.tagline}</p>
+          <p class="svc-desc">{s.description}</p>
+          <ul class="svc-list" role="list">{s.deliverables.map((d: string) => <li><Icon name="check" size={16} />{d}</li>)}</ul>
+          <a href={s.link.href} class="svc-link">{s.link.label} <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+
+    <div class="other" data-reveal>
+      <div class="other-head">
+        <h3 class="h-3">{o.title}</h3>
+        {o.intro && <p class="muted other-intro">{o.intro}</p>}
+        {showTodos && o.todo && <span class="todo">TODO · {o.todo}</span>}
+      </div>
+      <ul class="other-list" role="list">
+        {o.offers.map((x: any) => (
+          <li>
+            <div><strong>{x.name}</strong><span class="muted">{x.for}</span></div>
+            <p>{x.includes}</p>
+            <span class="other-price mono">{x.price}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .svc-grid { display: grid; gap: 1rem; }
+  .svc { padding: clamp(1.25rem, 3vw, 2rem); display: flex; flex-direction: column; gap: .75rem; transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out); }
+  .svc:hover { transform: translateY(-4px); box-shadow: 0 30px 60px -40px rgb(42 31 26 / .45); }
+  .svc.is-featured { background: var(--espresso); color: var(--linen); --muted: #cbbfb2; --line: rgb(244 238 228 / .14); --accent: var(--champagne); }
+  .svc-top { display: flex; justify-content: space-between; align-items: center; }
+  .svc-icon { width: 3rem; height: 3rem; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); color: var(--accent); }
+  .svc-num { color: var(--muted); }
+  .svc-badge { align-self: flex-start; color: var(--champagne); border-color: rgb(200 169 126 / .4); }
+  .svc-tag { color: var(--accent); font-weight: 500; }
+  .svc-desc { color: var(--muted); }
+  .svc-list { list-style: none; padding: 0; display: grid; gap: .45rem; margin-top: .25rem; font-size: .92rem; }
+  .svc-list li { display: flex; gap: .55rem; align-items: flex-start; }
+  .svc-list :global(.icon) { flex: none; margin-top: .2rem; color: var(--accent); }
+  .svc-link { margin-top: auto; padding-top: .75rem; font-weight: 600; text-decoration: none; color: var(--accent); }
+  .svc-link:hover { text-decoration: underline; }
+
+  .other { margin-top: var(--space-xl); padding: clamp(1.25rem, 3vw, 2.25rem); border-radius: var(--radius-l); border: 1px solid var(--line); }
+  .other-head { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .other-intro { flex-basis: 100%; margin-top: -.5rem; }
+  .other-list { list-style: none; padding: 0; display: grid; }
+  .other-list li { display: grid; gap: .35rem; padding: 1rem 0; border-top: 1px solid var(--line); }
+  .other-list li > div { display: grid; }
+  .other-list p { color: var(--muted); font-size: .95rem; }
+  .other-price { color: var(--accent); }
+
+  @media (min-width: 768px) {
+    .svc-grid { grid-template-columns: repeat(2, 1fr); }
+    .other-list li { grid-template-columns: 1.1fr 2fr auto; align-items: center; gap: 1.5rem; }
+  }
+  @media (min-width: 1200px) {
+    .svc-grid { grid-template-columns: repeat(3, 1fr); }
+    .svc.is-featured { grid-column: span 2; }
+  }
+</style>

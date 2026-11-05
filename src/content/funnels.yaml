@@ -1,0 +1,20 @@
+# =====================================================================
+#  FUNNEL WALKTHROUGHS (videos are in public/video/)
+#  poster: picture inside src/assets/ shown before the video plays.
+# =====================================================================
+eyebrow: "Funnel design & strategy"
+title: "See how I build funnels designed to bring in *more revenue*."
+intro: "Two full video walkthroughs. I show you the offer, the pages, the booking and the follow-up, step by step."
+videos:
+  - title: "Medical spa booking funnel"
+    industry: "Med spa"
+    length: "14 min"
+    video: "/video/funnel-medspa.mp4"
+    poster: "websites/medspa-booking-funnel.png"
+    summary: "How a free Botox consultation turns into a booked appointment, with reminders and no-show recovery behind it."
+  - title: "Chiropractor patient funnel"
+    industry: "Chiropractic"
+    length: "18 min"
+    video: "/video/funnel-chiropractor.mp4"
+    poster: "websites/chiro-sales-funnel.png"
+    summary: "How a first-time back pain consultation offer brings in new patients, from landing page to payment and appointment."

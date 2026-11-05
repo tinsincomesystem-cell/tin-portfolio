@@ -1,0 +1,46 @@
+---
+// Color swatches. Click (or press Enter on) a swatch to copy its hex code.
+interface Props { brand: any; compact?: boolean }
+const { brand, compact = false } = Astro.props;
+const lumOf = (hex: string) => { const n = parseInt(hex.slice(1), 16); const [r, g, b] = [n >> 16, (n >> 8) & 255, n & 255].map((v) => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }); return .2126 * r + .7152 * g + .0722 * b; };
+const contrast = (a: number, b: number) => (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+// pick whichever text color reads better on the swatch
+const textOn = (hex: string) => { const L = lumOf(hex); return contrast(L, lumOf('#14110e')) >= contrast(L, lumOf('#ffffff')) ? '#14110e' : '#ffffff'; };
+---
+<ul class={`pal ${compact ? 'compact' : ''}`} role="list">
+  {brand.palette.map((p: any) => (
+    <li>
+      <button type="button" class="sw" data-copy={p.hex} style={`--c:${p.hex};--t:${textOn(p.hex)}`} data-cursor="Copy">
+        <span class="sw-name">{p.name}</span>
+        <span class="sw-hex mono">{p.hex}</span>
+        <span class="sw-role">{p.role}</span>
+        <span class="sr-only">(copy hex code)</span>
+        <span class="sw-copied mono" aria-hidden="true">Copied ✓</span>
+      </button>
+    </li>
+  ))}
+</ul>
+<style>
+  .pal { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: .6rem; width: 100%; }
+  .sw { position: relative; width: 100%; min-height: 9.5rem; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: .15rem; padding: .9rem; text-align: left; background: var(--c); color: var(--t); border-radius: 12px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08); transition: transform .35s var(--ease-out); }
+  .sw:hover { transform: translateY(-4px); }
+  .sw-name { font-weight: 600; font-size: .9rem; line-height: 1.2; }
+  .sw-hex { font-size: .78rem; }
+  .sw-role { font-size: .72rem; }
+  .sw-copied { position: absolute; top: .7rem; right: .7rem; font-size: .7rem; opacity: 0; transform: translateY(4px); transition: .3s var(--ease-out); }
+  .sw.is-copied .sw-copied { opacity: 1; transform: none; }
+  .compact .sw { min-height: 6.5rem; }
+</style>
+<script>
+  const live = (() => { let el = document.getElementById('copy-live'); if (!el) { el = document.createElement('div'); el.id = 'copy-live'; el.className = 'sr-only'; el.setAttribute('aria-live', 'polite'); document.body.append(el); } return el; })();
+  document.querySelectorAll<HTMLButtonElement>('.sw[data-copy]').forEach((b) => {
+    if (b.dataset.bound) return; b.dataset.bound = '1';
+    b.addEventListener('click', async () => {
+      const hex = b.dataset.copy!;
+      try { await navigator.clipboard.writeText(hex); }
+      catch { const t = document.createElement('textarea'); t.value = hex; document.body.append(t); t.select(); document.execCommand('copy'); t.remove(); }
+      b.classList.add('is-copied'); live.textContent = `Copied ${hex}`;
+      setTimeout(() => b.classList.remove('is-copied'), 1400);
+    });
+  });
+</script>

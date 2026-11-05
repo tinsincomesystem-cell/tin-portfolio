@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import { testimonials as t, rich, showTodos } from '../lib/content';
+import { img } from '../lib/images';
+const quotes = t.items.filter((x: any) => x.quote || showTodos);
+---
+<section id="testimonials" class="testi s-light section" aria-labelledby="t-title">
+  <div class="wrap">
+    {quotes.length > 0 && (
+      <div class="quotes">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal>{t.eyebrow}</span>
+          <h2 id="t-title" class="h-2" data-reveal set:html={rich(t.title)} />
+        </div>
+        <ul class="q-grid" role="list">
+          {quotes.map((q: any, i: number) => { const ph = img(q.photo); return (
+            <li class="quote card" data-reveal style={`--d:${i * .08}`}>
+              <span class="qmark" aria-hidden="true">“</span>
+              {q.quote ? <blockquote><p>{q.quote}</p></blockquote> : <p class="todo">TODO · paste {q.name}'s testimonial in testimonials.yaml</p>}
+              <footer class="q-who">
+                {ph ? <Image src={ph} alt="" width={56} height={56} class="q-photo" /> : <span class="q-initials" aria-hidden="true">{q.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}</span>}
+                <span><strong>{q.name}</strong><span class="muted">{q.role}</span><span class="mono q-proj">{q.project}</span></span>
+              </footer>
+            </li>
+          ); })}
+        </ul>
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .q-grid { list-style: none; padding: 0; display: grid; gap: 1rem; }
+  .quote { position: relative; padding: 1.75rem; display: flex; flex-direction: column; gap: 1.25rem; background: #fffdf9; }
+  .qmark { font-family: var(--font-display); font-size: 5rem; line-height: .5; height: 2rem; color: #1d8a72; text-shadow: 0 0 16px rgb(94 230 200 / .8); }
+  blockquote p { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.35; }
+  .q-who { display: flex; gap: .9rem; align-items: center; margin-top: auto; }
+  .q-who > span:last-child { display: grid; font-size: .88rem; }
+  .q-photo { border-radius: 50%; }
+  .q-initials { flex: none; width: 3.2rem; height: 3.2rem; border-radius: 50%; display: grid; place-items: center; background: var(--espresso); color: var(--champagne); font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 0 0 2px var(--linen), 0 0 0 3px var(--mint), 0 0 16px rgb(94 230 200 / .6); }
+  .q-proj { font-size: .68rem; color: #1d8a72; margin-top: .2rem; }
+  @media (min-width: 768px) { .q-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

@@ -1,0 +1,34 @@
+---
+import BrandLogo from './BrandLogo.astro';
+interface Props { brand: any }
+const { brand } = Astro.props;
+const c = brand.colors, f = brand.fonts, pc = brand.postcard;
+const vars = `--r:${brand.logo.style === 'arch' ? c.primary : c.accent};--d:${c.dark || c.primary};--p:${c.primary};--a:${c.accent};--l:${c.light};--k:${c.ink};--fd:'${f.display.family}';--fb:'${f.body.family}';--fs:'${f.script?.family || f.display.family}'`;
+const arch = brand.logo.style === 'arch';
+---
+<div class="bc-wrap" style={vars} role="img" aria-label={`${brand.name} business card, front and back`}>
+  <div class="bc bc-front dark">
+    <div class="bc-mark"><BrandLogo brand={brand} variant="stacked" tone="dark" /></div>
+  </div>
+  <div class="bc bc-back">
+    <div class="bc-name">{pc.agent}</div>
+    <div class="bc-role">{arch ? 'Real Estate Advisor' : 'REALTOR®'}</div>
+    <div class="bc-rule"></div>
+    <div class="bc-info">{pc.phone}<br />hello@{pc.web}<br />{pc.web}</div>
+    <div class="bc-hmark"><BrandLogo brand={brand} variant="mark" tone="light" /></div>
+  </div>
+</div>
+<style>
+  .bc-wrap { container-type: inline-size; position: relative; width: 100%; aspect-ratio: 1.3 / 1; }
+  .bc { position: absolute; width: 64%; aspect-ratio: 1.75; border-radius: 1.2cqw; box-shadow: 0 3cqw 5cqw -2cqw rgb(0 0 0 / .45); font-family: var(--fb); overflow: hidden; }
+  .bc-front { left: 0; top: 2%; transform: rotate(-5deg); display: grid; place-items: center; }
+  .bc-front.dark { background: var(--d); }
+  .bc-front.light { background: var(--l); }
+  .bc-mark { width: 52%; }
+  .bc-back { right: 0; bottom: 2%; transform: rotate(4deg); background: var(--l); color: var(--k); padding: 6cqw 6cqw; display: flex; flex-direction: column; gap: .8cqw; }
+  .bc-name { font-family: var(--fd); font-size: 5.2cqw; line-height: 1; color: var(--p); }
+  .bc-role { font-size: 1.9cqw; letter-spacing: .3em; text-transform: uppercase; color: var(--r); }
+  .bc-rule { width: 12cqw; height: 1px; background: var(--a); margin-block: 1.5cqw; }
+  .bc-info { font-size: 2.2cqw; line-height: 1.6; letter-spacing: .04em; }
+  .bc-hmark { position: absolute; right: 5cqw; bottom: 4cqw; width: 9cqw; opacity: .9; }
+</style>

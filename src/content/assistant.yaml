@@ -1,0 +1,32 @@
+# =====================================================================
+#  CHAT ASSISTANT (the floating "Ask Tin's assistant" button)
+#  A guided assistant: visitors tap a topic, get an answer, then book a call
+#  or leave their email (arrives in Netlify Forms → your inbox / CRM).
+#
+#  Want real AI? Paste your GoHighLevel chat widget code into ghlWidget
+#  below (Sites → Chat Widget → Get code). It will replace this assistant.
+# =====================================================================
+enabled: true
+ghlWidget: ""     # e.g. <script src="https://widgets.leadconnectorhq.com/loader.js" ...></script>
+launcher: "Ask my assistant"
+name: "Tin's assistant"
+status: "Replies instantly · Tin follows up personally"
+greeting: "Hi! I'm Tin's assistant 👋 What can I take off your plate this week?"
+topics:
+  - label: "Inbox & admin"
+    reply: "That's my bread and butter. I handle inbox triage, calendar and documents as your Executive VA, usually from 20 hrs/month."
+  - label: "Funnels"
+    reply: "Funnel design and strategy is my specialty: I map your offer and customer journey, then build the pages, booking, emails and follow-up. Watch the med spa and chiropractor walkthroughs above!"
+  - label: "Branding"
+    reply: "Full brand kits: logo suite, fonts, colors, social templates, print pieces, signage and a brand packet. Peek at the Luxe Realty Group and Naomi Rhodes brands above!"
+  - label: "Website"
+    reply: "I design and build business, clinic and real estate sites on Wix Studio and more, connected to your CRM so every inquiry gets followed up."
+  - label: "AI automation"
+    reply: "AI I train and manage: instant replies to new leads, pipelines that update themselves, long-term nurture and booked calls on autopilot."
+  - label: "Not sure yet"
+    reply: "Totally fine! Most clients start with the free 30-minute strategy call. We'll find the biggest time-saver first."
+nextStep: "Want to grab a free 30-minute call, or should Tin email you?"
+bookLabel: "Book a free call"
+emailLabel: "Email me instead"
+emailPrompt: "Drop your name and email, and Tin will reply within 1 business day."
+thanks: "Got it! Tin will email you within 1 business day. 🙌"

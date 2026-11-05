@@ -1,0 +1,124 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { about as a, rich } from '../lib/content';
+import { img } from '../lib/images';
+const photo = img(a.photo);
+const poster = img(a.videoPoster);
+const groups = [...new Set(a.tools.map((t: any) => t.group))] as string[];
+---
+<section id="about" class="about s-light section" aria-labelledby="about-title">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-media" data-reveal="mask">
+        {photo && <Image src={photo} alt={a.photoAlt} widths={[480, 800, 1100]} sizes="(min-width:1024px) 42vw, 92vw" class="about-photo" />}
+        {a.video && (
+          <button type="button" class="vid-btn" data-video-open data-cursor="Play" aria-label={a.videoLabel}>
+            {poster && <Image src={poster} alt="" widths={[320, 520]} sizes="260px" class="vid-poster" />}
+            <span class="vid-play"><Icon name="play" size={18} /></span>
+            <span class="vid-label">{a.videoLabel}</span>
+          </button>
+        )}
+      </div>
+      <div class="about-copy">
+        <span class="eyebrow" data-reveal>{a.eyebrow}</span>
+        <h2 id="about-title" class="h-1" data-reveal set:html={rich(a.title)} />
+        {a.paragraphs.map((p: string, i: number) => <p class="about-p" data-reveal style={`--d:${.05 + i * .05}`}>{p}</p>)}
+        <ul class="highlights" role="list">
+          {a.highlights.map((h: any, i: number) => <li data-reveal style={`--d:${i * .06}`}><strong>{h.value}</strong><span>{h.label}</span></li>)}
+        </ul>
+      </div>
+    </div>
+
+    <ul class="diff" role="list">
+      {a.differentiators.map((d: any, i: number) => (
+        <li data-reveal style={`--d:${i * .07}`}><span class="mono">{String(i + 1).padStart(2, '0')}</span><h3>{d.title}</h3><p class="muted">{d.text}</p></li>
+      ))}
+    </ul>
+
+    <div class="tools" data-reveal>
+      <h3 class="h-3">Tools I build with</h3>
+      <div class="tool-groups">
+        {groups.map((g) => (
+          <div class="tg"><span class="mono tg-name">{g}</span><ul role="list">{a.tools.filter((t: any) => t.group === g).map((t: any) => <li>{t.name}</li>)}</ul></div>
+        ))}
+      </div>
+    </div>
+
+    <div class="certs">
+      <h3 class="h-3" data-reveal>Certifications & training</h3>
+      <ul role="list" class="cert-row">
+        {a.certificates.map((c: any, i: number) => { const im = img(c.image); return (
+          <li class="cert" data-reveal style={`--d:${i * .07}`}>
+            {im && <Image src={im} alt={`${c.title} certificate`} widths={[360, 600]} sizes="(min-width:768px) 30vw, 90vw" />}
+            <strong>{c.title}</strong><span class="muted">{c.issuer}</span>
+          </li>
+        ); })}
+      </ul>
+    </div>
+  </div>
+
+  {a.video && (
+    <dialog class="vid-dialog" data-video-dialog aria-label="Intro video">
+      <button type="button" class="vid-close" data-video-close aria-label="Close video">✕</button>
+      <video controls playsinline preload="none" poster={poster?.src} data-video>
+        <source src={a.video} type="video/mp4" />
+      </video>
+    </dialog>
+  )}
+</section>
+<style>
+  .about-grid { display: grid; gap: var(--space-l); align-items: center; }
+  .about-media { position: relative; }
+  .about-photo { width: 100%; border-radius: var(--radius-l); aspect-ratio: 5 / 4; object-fit: cover; }
+  .vid-btn { position: absolute; left: 1rem; bottom: 1rem; display: flex; align-items: center; gap: .8rem; padding: .5rem 1rem .5rem .5rem; border-radius: 16px; background: rgb(11 10 10 / .82); color: var(--bone); backdrop-filter: blur(10px); text-align: left; transition: transform .4s var(--ease-out); }
+  .vid-btn:hover { transform: translateY(-3px); }
+  .vid-poster { width: 5.5rem; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; }
+  .vid-play { position: absolute; left: calc(.5rem + 2.75rem); top: 50%; transform: translate(-50%, -50%); width: 2.2rem; height: 2.2rem; border-radius: 50%; display: grid; place-items: center; background: var(--champagne); color: var(--onyx); }
+  .vid-label { font-size: .88rem; font-weight: 600; }
+  .about-copy { display: grid; gap: 1.1rem; }
+  .about-p { color: var(--muted); font-size: 1.05rem; max-width: 60ch; }
+  .highlights { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: .5rem; }
+  .highlights li { display: grid; padding-top: .8rem; border-top: 1px solid var(--line); }
+  .highlights strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-2); line-height: 1.1; }
+  .highlights span { font-size: .85rem; color: var(--muted); }
+  .diff { list-style: none; padding: 0; display: grid; gap: 1rem; margin-top: var(--space-xl); }
+  .diff li { display: grid; gap: .4rem; padding: 1.5rem; border-radius: var(--radius-m); background: var(--card); border: 1px solid var(--line); }
+  .diff .mono { color: var(--accent); font-size: .75rem; }
+  .diff h3 { font-size: var(--step-1); }
+  .tools { margin-top: var(--space-xl); display: grid; gap: 1.25rem; }
+  .tool-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.25rem; }
+  .tg { display: grid; gap: .5rem; align-content: start; }
+  .tg-name { font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
+  .tg ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
+  .tg li { font-size: .88rem; padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+  .certs { margin-top: var(--space-xl); display: grid; gap: 1.25rem; }
+  .cert-row { list-style: none; padding: 0; display: grid; gap: 1rem; }
+  .cert { display: grid; gap: .25rem; }
+  .cert img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #fff; border-radius: 12px; border: 1px solid var(--line); padding: .5rem; margin-bottom: .5rem; }
+  .cert span { font-size: .85rem; }
+  .vid-dialog { padding: 0; border: 0; background: transparent; width: min(1000px, 94vw); max-width: none; overflow: visible; }
+  .vid-dialog::backdrop { background: rgb(5 5 5 / .88); }
+  .vid-dialog video { width: 100%; border-radius: 14px; background: #000; }
+  .vid-close { position: absolute; top: -3.2rem; right: 0; width: 44px; height: 44px; border-radius: 50%; background: var(--panel); color: var(--bone); border: 1px solid var(--line-dark); }
+  @media (min-width: 768px) {
+    .highlights { grid-template-columns: repeat(4, 1fr); }
+    .diff { grid-template-columns: repeat(2, 1fr); }
+    .cert-row { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .about-grid { grid-template-columns: 1fr 1.1fr; gap: var(--space-xl); }
+    .about-photo { aspect-ratio: 4 / 5; }
+    .diff { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+<script>
+  import { getLenis } from '../scripts/core';
+  const dlg = document.querySelector<HTMLDialogElement>('[data-video-dialog]');
+  const vid = dlg?.querySelector<HTMLVideoElement>('[data-video]');
+  document.querySelector('[data-video-open]')?.addEventListener('click', () => { dlg?.showModal(); getLenis()?.stop(); vid?.play().catch(() => {}); });
+  const close = () => dlg?.close();
+  dlg?.querySelector('[data-video-close]')?.addEventListener('click', close);
+  dlg?.addEventListener('click', (e) => { if (e.target === dlg) close(); });
+  dlg?.addEventListener('close', () => { vid?.pause(); getLenis()?.start(); });
+</script>

@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found — Tin" noindex>
+  <main id="main" class="nf s-dark">
+    <div class="wrap nf-inner">
+      <span class="eyebrow">404</span>
+      <h1 class="h-display">This page didn't <em>close</em>.</h1>
+      <p class="lead">The link may be old or mistyped. Let's get you back to something useful.</p>
+      <div class="nf-ctas"><a class="btn" href="/">Go to homepage</a><a class="btn btn-ghost" href="/#va-meter">Take the VA Reality Check</a></div>
+    </div>
+  </main>
+</Base>
+<style>
+  .nf { min-height: 100svh; display: grid; place-items: center; }
+  .nf-inner { display: grid; gap: 1.5rem; justify-items: start; }
+  .nf em { color: var(--champagne); }
+  .nf-ctas { display: flex; flex-wrap: wrap; gap: .6rem; }
+</style>

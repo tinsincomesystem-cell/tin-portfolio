@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import BrandLogo from './BrandLogo.astro';
+import { img } from '../../lib/images';
+interface Props { brand: any }
+const { brand } = Astro.props;
+const s = brand.sign, c = brand.colors, f = brand.fonts;
+const bg = img(brand.photos.wide); // no street photo → drawn dusk street scene below
+const vars = `--d:${c.dark || c.primary};--p:${c.primary};--a:${c.accent};--l:${c.light};--k:${c.ink};--fd:'${f.display.family}';--fb:'${f.body.family}'`;
+const arch = brand.logo.style === 'arch';
+---
+<div class="ys-wrap">
+  <div class="ys" style={vars} role="img" aria-label={`${brand.name} yard sign and rider shown on a front lawn`}>
+    <div class="ys-bg">{bg ? <Image src={bg} alt="" widths={[500, 900]} sizes="(min-width:1024px) 40vw, 90vw" /> : (
+      <svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true" class="ys-scene">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9d8c4" /><stop offset=".7" stop-color="#f3e6d6" /><stop offset="1" stop-color="#efe1cd" /></linearGradient>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8dccb" /><stop offset="1" stop-color="#d6c7b2" /></linearGradient>
+        </defs>
+        <rect width="400" height="230" fill="url(#sky)" />
+        <ellipse cx="40" cy="168" rx="70" ry="60" fill="#7f8f6c" opacity=".7" />
+        <ellipse cx="370" cy="160" rx="80" ry="70" fill="#76875f" opacity=".75" />
+        <polygon points="110,92 215,40 320,92" fill="#4b3f38" />
+        <rect x="122" y="92" width="186" height="120" fill="url(#wall)" />
+        <polygon points="250,118 290,96 330,118" fill="#4b3f38" />
+        <rect x="258" y="118" width="64" height="94" fill="#ddd0bd" />
+        {[140, 180, 220].map((x) => <rect x={x} y="108" width="24" height="30" fill="#f6d9a6" stroke="#8b7a6a" stroke-width="2" />)}
+        {[140, 220].map((x) => <rect x={x} y="160" width="24" height="30" fill="#f2cf95" stroke="#8b7a6a" stroke-width="2" />)}
+        <rect x="178" y="156" width="28" height="56" rx="13" fill="#5a4636" />
+        <rect x="270" y="134" width="40" height="26" fill="#f6d9a6" stroke="#8b7a6a" stroke-width="2" />
+        <rect x="100" y="198" width="230" height="16" rx="8" fill="#5f7347" />
+      </svg>
+    )}</div>
+    <div class="ys-lawn"></div>
+    <div class="ys-post">
+      <i class="post"></i><i class="arm"></i><i class="cap"></i>
+      <i class="chain c1"></i><i class="chain c2"></i>
+      <div class="hang">
+      <div class={`panel ${arch ? 'dark' : 'light'}`}>
+        <span class="ptop">{s.top}</span>
+        <div class="plogo"><BrandLogo brand={brand} variant="stacked" tone={arch ? 'dark' : 'light'} /></div>
+        <span class="pphone">{s.phone}</span>
+      </div>
+      <div class="rider"><span>{s.rider}</span></div>
+      </div>
+    </div>
+    <div class="ys-shadow"></div>
+  </div>
+</div>
+<style>
+  .ys-wrap { container-type: inline-size; width: 100%; }
+  .ys { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 1.4cqw; background: #8aa0b5; }
+  .ys-bg { position: absolute; inset: 0 0 22%; }
+  .ys-bg img, .ys-scene { width: 100%; height: 100%; object-fit: cover; filter: blur(3px) saturate(.9) brightness(.92); transform: scale(1.06); }
+  .ys-scene { filter: blur(2.2px); }
+  .ys-lawn { position: absolute; inset: auto 0 0; height: 30%; background: linear-gradient(#5f7a43, #3f5a2c 60%, #33491f); }
+  .ys-lawn::before { content: ''; position: absolute; inset: -2cqw 0 auto; height: 3cqw; background: linear-gradient(transparent, #5f7a43); }
+  .ys-post { position: absolute; left: 30%; bottom: 7%; width: 44%; height: 86%; }
+  .post { position: absolute; left: 0; bottom: 0; width: 3.2%; height: 100%; background: linear-gradient(90deg, #f3f0ea, #cfcac1); box-shadow: 1px 0 0 rgb(0 0 0 / .15); }
+  .cap { position: absolute; left: -1.4%; top: -1.5%; width: 6%; aspect-ratio: 1; background: #ebe7df; border-radius: 1px; }
+  .arm { position: absolute; left: 0; top: 8%; width: 96%; height: 3%; background: linear-gradient(#f3f0ea, #cfcac1); box-shadow: 0 2px 3px rgb(0 0 0 / .25); }
+  .chain { position: absolute; top: 11%; width: .6%; height: 5%; background: repeating-linear-gradient(#999 0 3px, #666 3px 5px); }
+  .c1 { left: 24%; } .c2 { left: 86%; }
+    .hang { position: absolute; left: 18%; top: 16%; width: 76%; display: flex; flex-direction: column; gap: 1.2cqw; }
+  .panel { position: relative; width: 100%; aspect-ratio: 4 / 3.3; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 5% 6% 6%; box-shadow: 0 2cqw 3cqw -1cqw rgb(0 0 0 / .45); }
+  .panel.dark { background: var(--d); color: var(--l); }
+  .panel.light { background: var(--l); color: var(--a); border: 3px solid var(--p); }
+  .ptop { font-family: var(--fb); letter-spacing: .5em; font-size: 2.1cqw; padding-left: .5em; }
+  .plogo { width: 56%; margin-block: -2%; }
+  .pphone { font-family: var(--fb); font-size: 2.6cqw; letter-spacing: .12em; color: var(--a); }
+  .panel.light .pphone { color: var(--p); }
+  .rider { padding: 2.2% 0; text-align: center; background: var(--l); color: var(--p); font-family: var(--fb); font-size: 1.9cqw; letter-spacing: .4em; box-shadow: 0 1cqw 2cqw -1cqw rgb(0 0 0 / .4); border: 1px solid color-mix(in srgb, var(--p) 25%, transparent); }
+  .panel.light ~ .rider { background: var(--p); color: var(--l); }
+  .ys-shadow { position: absolute; left: 26%; bottom: 5%; width: 46%; height: 4%; background: radial-gradient(closest-side, rgb(0 0 0 / .45), transparent); }
+</style>

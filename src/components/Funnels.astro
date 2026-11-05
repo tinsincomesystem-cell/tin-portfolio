@@ -1,0 +1,43 @@
+---
+// Funnel walkthrough videos. Copy lives in src/content/funnels.yaml.
+import { getImage } from 'astro:assets';
+import { funnels, rich } from '../lib/content';
+import { img } from '../lib/images';
+const videos = await Promise.all(funnels.videos.map(async (v: any) => {
+  const im = img(v.poster);
+  const poster = im ? (await getImage({ src: im, width: 960, format: 'webp' })).src : undefined;
+  return { ...v, posterUrl: poster };
+}));
+---
+<section id="funnels" class="funnels s-light section" aria-labelledby="funnels-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-reveal>{funnels.eyebrow}</span>
+      <h2 id="funnels-title" class="h-1" data-reveal style="--d:.05" set:html={rich(funnels.title)} />
+      <p class="lead" data-reveal style="--d:.1">{funnels.intro}</p>
+    </div>
+    <ul class="f-grid" role="list">
+      {videos.map((v: any, i: number) => (
+        <li class="f-card card" data-reveal style={`--d:${i * .08}`}>
+          <video class="f-video" controls playsinline preload="none" poster={v.posterUrl} aria-label={`${v.title} walkthrough video`}>
+            <source src={v.video} type="video/mp4" />
+          </video>
+          <div class="f-body">
+            <span class="mono f-tag">{v.industry} · {v.length}</span>
+            <h3 class="h-3">{v.title}</h3>
+            <p class="muted">{v.summary}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .f-grid { list-style: none; padding: 0; display: grid; gap: 1.25rem; }
+  .f-card { overflow: hidden; display: flex; flex-direction: column; }
+  .f-video { display: block; width: 100%; aspect-ratio: 1240 / 1080; object-fit: cover; object-position: top; background: var(--espresso); }
+  .f-body { display: grid; gap: .45rem; padding: clamp(1rem, 3vw, 1.5rem); }
+  .f-tag { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); }
+  @media (min-width: 768px) { .f-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>

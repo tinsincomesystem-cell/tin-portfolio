@@ -1,0 +1,162 @@
+# =====================================================================
+#  PRICING — change any price, feature or plan here.
+#  mode: "monthly" plans show under the Monthly toggle,
+#        "project" plans show under One-time projects.
+#  popular: true  → gets the "Most popular" highlight (one per category).
+#  todo: "..."    → shows a TODO badge on the test site.
+# =====================================================================
+
+eyebrow: "Investment"
+title: "Clear pricing. *No* surprises."
+intro: "Starting investments. Final scope is confirmed on a free strategy call before anything starts."
+currencyNote: "All prices in USD."
+toggle: { monthly: "Monthly support", project: "One-time projects" }
+
+categories:
+  # ---------------- MONTHLY ----------------
+  - id: executive-va
+    label: "Executive VA"
+    mode: monthly
+    plans:
+      - name: "Essentials"
+        price: "$650"
+        period: "/month"
+        note: "Up to 20 hrs/month"
+        features: ["Email & calendar management", "Data entry & file organization", "Social media scheduling (2 platforms)", "Basic CRM management", "Weekly progress reports", "Response within 24 hours"]
+        footer: "3-month minimum · Best for focused execution"
+      - name: "Operator"
+        price: "$1,500"
+        period: "/month"
+        note: "Up to 40 hrs/week"
+        popular: true
+        features: ["Everything in Essentials", "CRM management & lead follow-up", "Content creation + email marketing", "Social media management (3 platforms)", "Drip campaign setup & management", "Basic CRM & automation support", "AI-powered workflow optimization", "Daily check-ins & reporting"]
+        footer: "3-month minimum · Best for growing businesses"
+      - name: "Systems Partner"
+        price: "$2,500"
+        period: "/month"
+        note: "Systems + priority"
+        features: ["Everything in Operator", "CRM & automation setup and management", "Funnel building (1 per quarter)", "Advanced automation setup", "AI integration across workflows", "Basic bookkeeping support", "Priority response within 4 hours", "Monthly strategy review call"]
+        footer: "3-month minimum · Best for high-growth teams"
+
+  - id: retainer
+    label: "Retainer"
+    mode: monthly
+    plans:
+      - name: "Retainer Fee"
+        price: "$300"
+        period: "/month"
+        note: "Ongoing support for any project"
+        popular: true
+        features: ["Website, funnel & automation upkeep", "Small updates & edits", "Workflow & pipeline adjustments", "Form & calendar updates", "Basic troubleshooting", "Monthly system review"]
+        footer: "Best for keeping your website, funnel or system healthy after launch"
+
+  - id: bookkeeping
+    label: "Bookkeeping"
+    mode: monthly
+    plans:
+      - name: "Bookkeeping Essentials"
+        price: "$300"
+        period: "/month"
+        features: ["Transaction categorization", "Bank reconciliation", "Basic financial organization", "Monthly bookkeeping review", "Profit & loss report", "Organized account records"]
+        footer: "Best for small businesses needing clean monthly books"
+      - name: "Ongoing Financial Support"
+        price: "$600"
+        period: "/month"
+        popular: true
+        features: ["Everything in Essentials", "Multiple account reconciliation", "Invoice tracking", "Accounts receivable support", "Expense monitoring", "Monthly financial reports", "Bookkeeping cleanup & organization", "Priority monthly support"]
+        footer: "Best for businesses with more active finances"
+
+  # ---------------- ONE-TIME PROJECTS ----------------
+  - id: branding
+    label: "Branding"
+    mode: project
+    todo: "Draft branding prices — confirm or change these"
+    plans:
+      - name: "Brand Essentials"
+        price: "$450"
+        period: "starting"
+        features: ["Primary logo + monogram", "Color palette & font pairing", "5 social media templates", "Business card design", "Mini brand guide (PDF)"]
+        footer: "Best for new businesses that need to look established fast"
+      - name: "Full Brand Kit"
+        price: "$1,200"
+        period: "starting"
+        popular: true
+        features: ["Everything in Essentials", "Full logo suite (primary, secondary, monogram)", "15 social templates (offers, tips, updates)", "Postcard & mailer designs", "Signage designs", "Email signature", "Full brand guidelines packet"]
+        footer: "Best for businesses ready to own their market"
+      - name: "Brand + Website"
+        price: "$2,500"
+        period: "starting"
+        features: ["Everything in Full Brand Kit", "Up to 8-page website in your new brand", "CRM-connected lead forms", "Key page templates", "Launch social kit", "Full testing & launch support"]
+        footer: "Best for businesses launching or rebranding"
+
+  - id: websites
+    label: "Websites"
+    mode: project
+    plans:
+      - name: "Starter"
+        price: "$500"
+        period: "starting"
+        note: "4-page website"
+        features: ["Up to 4 pages", "Responsive website design", "Mobile optimization", "Contact form setup", "Basic SEO structure", "Social links integration", "Basic performance optimization"]
+        footer: "Best for a clean, professional online presence"
+      - name: "Growth"
+        price: "$1,200"
+        period: "starting"
+        note: "Business website"
+        popular: true
+        features: ["Everything in Starter", "Up to 8 pages", "Custom page layouts", "Lead capture forms", "CRM or email integration", "On-page SEO setup", "Website speed optimization", "Analytics integration"]
+        footer: "Best for a website built to generate leads"
+      - name: "Premium"
+        price: "$2,000"
+        period: "starting"
+        note: "Website + automation"
+        features: ["Everything in Growth", "Up to 12 pages", "Advanced custom layouts", "Automated form follow-up", "Booking or calendar integration", "Advanced SEO foundation", "Conversion optimization", "Custom integrations", "Full testing & launch support"]
+        footer: "Best for a complete website + lead-generation system"
+
+  - id: automation
+    label: "AI & Automation"
+    mode: project
+    plans:
+      - name: "Automation Foundation"
+        price: "$600"
+        period: "starting"
+        features: ["Core CRM setup", "CRM configuration", "1 pipeline setup", "Calendar integration", "Forms & basic workflows", "Basic lead notifications"]
+        footer: "Best for getting your core system running"
+      - name: "Funnels + Automation"
+        price: "$1,500"
+        period: "starting"
+        popular: true
+        features: ["Everything in Foundation", "Custom funnel build", "Lead capture setup", "CRM pipeline automation", "Email & SMS follow-up", "Appointment reminders", "Lead nurture workflows", "Testing & optimization"]
+        footer: "Best for automating lead generation & follow-up"
+      - name: "Advanced AI System"
+        price: "$2,500"
+        period: "starting"
+        features: ["Everything in Funnels + Automation", "Advanced CRM configuration", "AI chat / voice agent", "Lead qualification system", "Custom workflow integrations", "Advanced pipeline logic", "Custom integrations", "Full system testing & handoff"]
+        footer: "Best for a complete automated sales system"
+
+  - id: funnels
+    label: "Funnels"
+    mode: project
+    plans:
+      - name: "Essential Funnel"
+        price: "$500"
+        period: "starting"
+        features: ["Funnel strategy", "Landing page", "Lead capture form", "Thank-you page", "Mobile optimization", "Basic tracking setup", "Launch testing"]
+        footer: "Best for one focused lead or booking funnel"
+      - name: "Funnel + Automation"
+        price: "$1,500"
+        period: "starting"
+        popular: true
+        features: ["Everything in Essential", "Multi-step funnel", "Email nurture sequence", "SMS follow-up automation", "Lead tagging & segmentation", "Appointment reminders", "CRM integration", "Conversion optimization"]
+        footer: "Best when the funnel and follow-up work together"
+      - name: "AI Conversion System"
+        price: "$2,500"
+        period: "starting"
+        features: ["Everything in Funnel + Automation", "Advanced funnel architecture", "AI conversation bot", "Automated lead qualification", "Conditional workflows", "Advanced email & SMS sequences", "Custom integrations", "Full testing & optimization"]
+        footer: "Best for funnels that qualify and convert on their own"
+
+hourly:
+  title: "Need something smaller?"
+  text: "Flexible hourly support for updates, fixes, one-off designs or overflow work."
+  price: "$15"
+  period: "/hour"

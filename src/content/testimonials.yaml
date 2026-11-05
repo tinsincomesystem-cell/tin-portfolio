@@ -1,0 +1,25 @@
+# =====================================================================
+#  TESTIMONIALS — only real words from real clients.
+#  A testimonial with quote: "" is hidden on the live site (showTodos: false).
+#  photo: optional headshot inside src/assets/ (e.g. "testimonials/neel.jpg")
+# =====================================================================
+
+eyebrow: "Kind words"
+title: "From the people I've *built* for."
+
+items:
+  - name: "McMillen Equipment"
+    role: "Pressure washer & drain jetter service center · San Diego"
+    project: "Website + branding"
+    quote: "It was a pleasure working with Tin. We will definitely contact her for future website development projects."
+    photo: ""
+  - name: "Neel Midha"
+    role: "Realtor & Brokerage Owner · Atlanta"
+    project: "Website + automation"
+    quote: "We love the website Tin created for my brokerage. She knows exactly what she's doing. She also set up automations and drip campaigns for me. I love working with her and will continue to, because my business needs someone like her."
+    photo: ""
+  - name: "Linda Olson"
+    role: "Realtor & Educator · Atlanta"
+    project: "Website"
+    quote: "The process is very clear when you work with Tin, from what to expect on the project to the timelines, which she never misses. She's very responsive and included me every step of the way. What she says she'll do, she makes happen, and sometimes she goes the extra mile. She's flexible too. Thank you, Tin! I would definitely recommend you to other agents who need help with websites and marketing."
+    photo: ""

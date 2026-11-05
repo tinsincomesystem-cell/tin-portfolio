@@ -1,0 +1,95 @@
+---
+// Illustrated desk objects for the laptop scroll scene. icon: envelope | calendar | phone | sign | key | folder | mug | robot | megaphone
+interface Props { icon: string }
+const { icon } = Astro.props;
+---
+{icon === 'envelope' && (
+  <svg viewBox="0 0 140 100" aria-hidden="true">
+    <defs><linearGradient id="env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f08a5d" /><stop offset="1" stop-color="#c65d3b" /></linearGradient></defs>
+    <rect x="4" y="10" width="132" height="84" rx="8" fill="url(#env)" />
+    <path d="M6 16 L70 62 L134 16" fill="none" stroke="#a3462a" stroke-width="3" />
+    <path d="M6 92 L54 52 M134 92 L86 52" stroke="#b5502f" stroke-width="2" />
+    <rect x="96" y="2" width="30" height="22" rx="4" fill="#f4eee4" transform="rotate(8 111 13)" />
+    <text x="111" y="18" text-anchor="middle" font-family="JetBrains Mono Variable, monospace" font-size="9" fill="#a3462a" transform="rotate(8 111 13)">99+</text>
+  </svg>
+)}
+{icon === 'calendar' && (
+  <svg viewBox="0 0 120 120" aria-hidden="true">
+    <path d="M14 30 L60 112 L106 30 Z" fill="#5d6b4b" />
+    <rect x="10" y="14" width="100" height="84" rx="8" fill="#fbf8f3" stroke="#5d6b4b" stroke-width="3" />
+    <rect x="10" y="14" width="100" height="22" rx="8" fill="#8a9a7b" />
+    {[24, 40, 56, 72, 88].map((x) => <circle cx={x + 4} cy="14" r="4" fill="#3f4a33" />)}
+    <text x="60" y="78" text-anchor="middle" font-family="Instrument Serif, serif" font-size="40" fill="#2a1f1a">14</text>
+    <text x="60" y="31" text-anchor="middle" font-family="JetBrains Mono Variable, monospace" font-size="10" fill="#fbf8f3">BOOKED</text>
+    <circle cx="86" cy="64" r="11" fill="none" stroke="#c65d3b" stroke-width="3" />
+  </svg>
+)}
+{icon === 'phone' && (
+  <svg viewBox="0 0 80 140" aria-hidden="true">
+    <rect x="4" y="4" width="72" height="132" rx="14" fill="#1b1a1d" />
+    <rect x="9" y="12" width="62" height="116" rx="9" fill="#f4eee4" />
+    <rect x="14" y="26" width="40" height="16" rx="8" fill="#e2dbcf" />
+    <rect x="26" y="48" width="40" height="22" rx="8" fill="#5ee6c8" />
+    <rect x="14" y="76" width="34" height="14" rx="7" fill="#e2dbcf" />
+    <rect x="30" y="6" width="20" height="4" rx="2" fill="#333" />
+    <circle cx="60" cy="20" r="7" fill="#c65d3b" /><text x="60" y="23" text-anchor="middle" font-size="8" font-family="JetBrains Mono Variable, monospace" fill="#fff">1</text>
+  </svg>
+)}
+{icon === 'sign' && (
+  <svg viewBox="0 0 120 130" aria-hidden="true">
+    <rect x="16" y="6" width="5" height="124" fill="#ebe7df" />
+    <rect x="16" y="14" width="90" height="5" fill="#ebe7df" />
+    <line x1="40" y1="19" x2="40" y2="28" stroke="#777" stroke-width="1.5" /><line x1="94" y1="19" x2="94" y2="28" stroke="#777" stroke-width="1.5" />
+    <rect x="30" y="28" width="76" height="58" fill="#1c2333" />
+    <text x="68" y="46" text-anchor="middle" font-family="Jost, sans-serif" font-size="8" letter-spacing="3" fill="#f5f2ec">NOW LIVE</text>
+    <text x="68" y="70" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="20" fill="#f5f2ec">LR</text>
+    <rect x="30" y="90" width="76" height="12" fill="#b8925a" />
+    <text x="68" y="99" text-anchor="middle" font-family="Jost, sans-serif" font-size="6" letter-spacing="2" fill="#1c2333">SOLD</text>
+  </svg>
+)}
+{icon === 'key' && (
+  <svg viewBox="0 0 130 80" aria-hidden="true">
+    <circle cx="30" cy="40" r="22" fill="none" stroke="#c8a97e" stroke-width="9" />
+    <rect x="50" y="35" width="66" height="10" rx="3" fill="#c8a97e" />
+    <rect x="96" y="45" width="8" height="14" fill="#c8a97e" /><rect x="108" y="45" width="8" height="10" fill="#c8a97e" />
+    <path d="M16 18 L4 4" stroke="#8a6a3d" stroke-width="2" />
+    <rect x="-6" y="-12" width="30" height="18" rx="3" fill="#fbf8f3" stroke="#8a6a3d" transform="rotate(-30 9 -3)" />
+  </svg>
+)}
+{icon === 'folder' && (
+  <svg viewBox="0 0 130 110" aria-hidden="true">
+    <path d="M6 22 Q6 14 14 14 H48 L58 24 H116 Q124 24 124 32 V96 Q124 104 116 104 H14 Q6 104 6 96 Z" fill="#a8975f" />
+    <rect x="18" y="8" width="84" height="70" rx="3" fill="#fbf8f3" transform="rotate(-5 60 43)" />
+    {[24, 34, 44, 54].map((y) => <rect x="28" y={y} width="56" height="4" rx="2" fill="#d9d1c3" transform="rotate(-5 60 43)" />)}
+    <path d="M6 40 Q6 34 14 34 H116 Q124 34 124 42 V96 Q124 104 116 104 H14 Q6 104 6 96 Z" fill="#c2b07a" />
+    <text x="65" y="78" text-anchor="middle" font-family="JetBrains Mono Variable, monospace" font-size="10" fill="#5a4d2c">CLIENT FILES</text>
+  </svg>
+)}
+{icon === 'mug' && (
+  <svg viewBox="0 0 110 110" aria-hidden="true">
+    <path d="M78 46 Q100 46 100 64 Q100 82 76 80" fill="none" stroke="#f2ece4" stroke-width="8" />
+    <path d="M14 34 H82 V86 Q82 102 64 102 H32 Q14 102 14 86 Z" fill="#f2ece4" />
+    <ellipse cx="48" cy="34" rx="34" ry="8" fill="#5a3a26" />
+    <path d="M36 22 Q30 12 38 4 M52 22 Q46 12 54 4" fill="none" stroke="#b1a99f" stroke-width="2.5" stroke-linecap="round" opacity=".7" />
+    <text x="48" y="74" text-anchor="middle" font-family="Instrument Serif, serif" font-size="16" fill="#c65d3b">Tin.</text>
+  </svg>
+)}
+<style>svg { width: 100%; height: auto; display: block; overflow: visible; filter: drop-shadow(0 18px 22px rgb(42 31 26 / .28)); }</style>
+{icon === 'robot' && (
+  <svg viewBox="0 0 120 120" aria-hidden="true">
+    <line x1="60" y1="8" x2="60" y2="26" stroke="#5ee6c8" stroke-width="4" /><circle cx="60" cy="8" r="6" fill="#5ee6c8" />
+    <rect x="16" y="26" width="88" height="66" rx="18" fill="#1b1a1d" stroke="#5ee6c8" stroke-width="3" />
+    <rect x="4" y="46" width="12" height="26" rx="5" fill="#c8a97e" /><rect x="104" y="46" width="12" height="26" rx="5" fill="#c8a97e" />
+    <circle cx="42" cy="56" r="10" fill="#5ee6c8" /><circle cx="78" cy="56" r="10" fill="#5ee6c8" />
+    <path d="M42 76 Q60 86 78 76" fill="none" stroke="#f4eee4" stroke-width="4" stroke-linecap="round" />
+    <rect x="44" y="94" width="32" height="14" rx="5" fill="#c8a97e" />
+  </svg>
+)}
+{icon === 'megaphone' && (
+  <svg viewBox="0 0 140 110" aria-hidden="true">
+    <path d="M34 40 L104 10 V94 L34 66 Z" fill="#c65d3b" stroke="#8f3f25" stroke-width="3" stroke-linejoin="round" />
+    <rect x="14" y="38" width="24" height="30" rx="6" fill="#f4eee4" />
+    <path d="M42 68 L52 102 H68 L58 72" fill="#2a1f1a" />
+    <path d="M114 36 Q128 52 114 68 M122 24 Q144 52 122 80" fill="none" stroke="#c8a97e" stroke-width="5" stroke-linecap="round" />
+  </svg>
+)}

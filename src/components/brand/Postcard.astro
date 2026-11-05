@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import BrandLogo from './BrandLogo.astro';
+import { img } from '../../lib/images';
+interface Props { brand: any; side?: 'front' | 'back' }
+const { brand, side = 'front' } = Astro.props;
+const pc = brand.postcard, c = brand.colors, f = brand.fonts;
+const photo = img(brand.photos.wide || brand.photos.hero);
+const vars = `--d:${c.dark || c.primary};--p:${c.primary};--a:${c.accent};--l:${c.light};--k:${c.ink};--fd:'${f.display.family}';--fb:'${f.body.family}';--fs:'${f.script?.family || f.display.family}'`;
+const isArch = brand.logo.style === 'arch';
+---
+<div class="pc-wrap">
+{side === 'front' ? (
+  <div class={`pc pc-front ${isArch ? 'is-arch' : 'is-soft'}`} style={vars} role="img" aria-label={`${brand.name} ${pc.kind} postcard, front`}>
+    <div class="pc-photo">{photo && <Image src={photo} alt="" widths={[400, 700]} sizes="(min-width:1024px) 30vw, 60vw" />}</div>
+    <div class="pc-panel">
+      <span class="pc-kicker">{brand.name.toUpperCase()}</span>
+      <span class="pc-head">{pc.headline}</span>
+      <span class="pc-line">{pc.line}</span>
+      <span class="pc-addr">{pc.address}</span>
+      <div class="pc-logo"><BrandLogo brand={brand} variant="horizontal" tone={isArch ? 'dark' : 'light'} /></div>
+    </div>
+  </div>
+) : (
+  <div class={`pc pc-back ${isArch ? 'is-arch' : 'is-soft'}`} style={vars} role="img" aria-label={`${brand.name} postcard, back`}>
+    <div class="pcb-left">
+      <div class="pcb-mark"><BrandLogo brand={brand} variant="mark" tone="light" /></div>
+      <p class="pcb-msg">Thinking of selling? Homes in your neighborhood are moving fast. Let's talk about what yours could sell for.</p>
+      {brand.logo.script && <p class="pcb-script">{brand.logo.script}</p>}
+      <p class="pcb-agent"><strong>{pc.agent}</strong><br />{pc.phone} · {pc.web}</p>
+    </div>
+    <div class="pcb-right">
+      <span class="pcb-stamp">PRSRT STD<br />US POSTAGE<br />PAID</span>
+      <span class="pcb-to">Current Resident<br />123 Your Street<br />Your City, ST 00000</span>
+    </div>
+  </div>
+)}
+</div>
+<style>
+  .pc-wrap { container-type: inline-size; width: 100%; }
+  .pc { aspect-ratio: 3 / 2; width: 100%; border-radius: 1.2cqw; overflow: hidden; display: grid; box-shadow: 0 3cqw 6cqw -3cqw rgb(0 0 0 / .45); font-family: var(--fb); }
+  .pc-front { grid-template-columns: 1.15fr 1fr; background: var(--d); }
+  .pc-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .pc-panel { display: flex; flex-direction: column; justify-content: center; gap: 1.6cqw; padding: 5cqw 4.5cqw; color: var(--l); position: relative; }
+  .is-soft .pc-panel { background: var(--l); color: var(--a); }
+  .pc-kicker { font-size: 1.5cqw; letter-spacing: .4em; color: var(--a); }
+  .is-arch .pc-kicker { color: var(--a); }
+  .is-soft .pc-kicker { color: var(--p); }
+  .pc-head { font-family: var(--fd); font-size: 9cqw; line-height: .95; }
+  .is-soft .pc-head { font-family: var(--fs); font-size: 10cqw; color: var(--p); }
+  .pc-line { font-size: 2.4cqw; opacity: .9; }
+  .pc-addr { font-size: 1.8cqw; letter-spacing: .12em; text-transform: uppercase; opacity: .75; border-top: 1px solid currentColor; padding-top: 1.6cqw; margin-top: .6cqw; }
+  .pc-logo { width: 62%; margin-top: 2cqw; }
+  .pc-back { grid-template-columns: 1.1fr 1fr; background: var(--l); color: var(--k); }
+  .pcb-left { padding: 5cqw; display: flex; flex-direction: column; gap: 2cqw; border-right: 1px solid color-mix(in srgb, var(--a) 40%, transparent); }
+  .pcb-mark { width: 13cqw; }
+  .pcb-msg { font-family: var(--fd); font-size: 3.2cqw; line-height: 1.25; }
+  .pcb-script { font-family: var(--fs); font-size: 4.6cqw; color: var(--p); line-height: 1; }
+  .pcb-agent { font-size: 1.9cqw; line-height: 1.5; margin-top: auto; letter-spacing: .04em; }
+  .pcb-right { position: relative; padding: 5cqw 4cqw; }
+  .pcb-stamp { position: absolute; right: 4cqw; top: 4cqw; border: 1px solid currentColor; padding: 1cqw 1.4cqw; font-size: 1.3cqw; text-align: center; line-height: 1.3; opacity: .6; }
+  .pcb-to { position: absolute; left: 4cqw; bottom: 9cqw; font-size: 2.2cqw; line-height: 1.6; opacity: .75; }
+</style>

@@ -1,0 +1,191 @@
+---
+// Scroll scene: laptop opens, a lead moves through the pipeline on screen,
+// and desk objects fly in around it. Edit words & objects in src/content/scene.yaml.
+import DeskObject from './DeskObject.astro';
+import { scene as s, rich } from '../lib/content';
+---
+<section class="scene s-dark" aria-labelledby="scene-title" data-scene>
+  <div class="floor" aria-hidden="true"><div class="floor-grid"></div></div>
+  <div class="scene-pin">
+    <div class="scene-head">
+      <span class="eyebrow">{s.eyebrow}</span>
+      <h2 id="scene-title" class="h-1 scene-h">
+        <span class="sh sh-1" set:html={rich(s.headlineStart)} />
+        <span class="sh sh-2" aria-hidden="true" set:html={rich(s.headlineEnd)} />
+      </h2>
+      <p class="scene-sub muted">{s.subEnd}</p>
+    </div>
+
+    <div class="stage">
+      <svg class="traces" aria-hidden="true">
+        {s.objects.map((o: any) => (<g class={o.mobile === false ? 'desk-only' : ''}><path class="trace" pathLength="1" /><path class="pulse" pathLength="1" /></g>))}
+      </svg>
+      <div class="laptop-wrap">
+        <div class="laptop">
+          <div class="lid">
+            <div class="lid-front">
+              <div class="screen">
+                <div class="scr-bar"><i></i><i></i><i></i><span>{s.screenTitle}</span></div>
+                <div class="cols">
+                  {s.columns.map((c: string) => (
+                    <div class="col"><span class="col-h">{c}</span><span class="ghost"></span><span class="ghost short"></span></div>
+                  ))}
+                </div>
+                <div class="mover"><b></b><span>{s.movingCard}</span></div>
+              </div>
+            </div>
+            <div class="lid-back"><span>Tin.</span></div>
+          </div>
+          <div class="base"><div class="keys"></div><div class="pad"></div></div>
+        </div>
+        <div class="laptop-shadow"></div>
+      </div>
+
+      <ul class="objs" role="list">
+        {s.objects.map((o: any, i: number) => (
+          <li class={`obj ${o.mobile === false ? 'desk-only' : ''}`} style={`--x:${o.x}%;--y:${o.y}%;--mx:${o.mx ?? o.x}%;--my:${o.my ?? o.y}%;--r:${o.rotate || 0}deg;--i:${i}`}>
+            <div class="obj-art"><DeskObject icon={o.icon} /></div>
+            <span class="obj-label mono">{o.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .scene { position: relative; background: radial-gradient(ellipse 70% 55% at 50% 45%, #112421 0%, var(--onyx) 70%); overflow: clip; }
+  .floor { position: absolute; left: -50%; right: -50%; bottom: 0; height: 55%; perspective: 500px; pointer-events: none; -webkit-mask-image: linear-gradient(transparent, #000 40%); mask-image: linear-gradient(transparent, #000 40%); }
+  .floor-grid { position: absolute; inset: -100% 0 0; transform-origin: 50% 100%; transform: rotateX(72deg); background-image: linear-gradient(rgb(94 230 200 / .35) 1.5px, transparent 1.5px), linear-gradient(90deg, rgb(94 230 200 / .35) 1.5px, transparent 1.5px); background-size: 70px 70px; animation: floor 4s linear infinite; filter: drop-shadow(0 0 4px rgb(94 230 200 / .6)); }
+  @keyframes floor { to { background-position: 0 70px; } }
+  .scene-pin { min-height: 100svh; display: grid; grid-template-rows: auto 1fr; align-items: center; padding: 5.5rem var(--gutter) 2rem; gap: 1rem; }
+  .scene-head { text-align: center; display: grid; justify-items: center; gap: .6rem; position: relative; z-index: 3; }
+  .scene-h { position: relative; display: grid; }
+  .sh { grid-area: 1 / 1; }
+  .js .sh-2 { opacity: 0; }
+  .scene-sub { max-width: 40ch; font-size: .98rem; }
+  .scene-h :global(em) { color: var(--mint); text-shadow: 0 0 18px rgb(94 230 200 / .55); }
+  .js .scene-sub { opacity: 0; }
+
+  .stage { position: relative; width: min(1000px, 100%); margin-inline: auto; aspect-ratio: 1 / 1.05; }
+  .laptop-wrap { z-index: 2; position: absolute; left: 50%; top: 52%; width: 62%; transform: translate(-50%, -50%); perspective: 1400px; perspective-origin: 50% 0%; }
+  .laptop { position: relative; transform-style: preserve-3d; transform: rotateX(-22deg); }
+  .lid { position: relative; aspect-ratio: 16 / 10.4; transform-origin: 50% 100%; transform-style: preserve-3d; transform: rotateX(var(--lid, -6deg)); }
+  .lid-front, .lid-back { position: absolute; inset: 0; border-radius: 4.2% 4.2% 1% 1% / 6.5% 6.5% 1.5% 1.5%; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .lid-front { background: #111114; padding: 2.4% 2.4% 3%; box-shadow: inset 0 0 0 1px #3a3a40, 0 0 40px rgb(94 230 200 / .35), 0 0 120px rgb(94 230 200 / .18); }
+  .lid-back { background: linear-gradient(160deg, #e3e3e8, #b9b9c1); transform: rotateY(180deg); display: grid; place-items: center; }
+  .lid-back span { font-family: var(--font-display); font-size: clamp(1rem, 3vw, 2rem); color: #8b8b95; transform: scaleY(-1) rotate(180deg); }
+  .base { position: absolute; left: -7%; width: 114%; top: 100%; aspect-ratio: 16 / 7.4; transform-origin: 50% 0; transform: rotateX(90deg); background: linear-gradient(#e7e7ec, #babac2); border-radius: 0 0 3% 3% / 0 0 8% 8%; box-shadow: inset 0 2px 0 #fff; }
+  .keys { position: absolute; left: 10%; right: 10%; top: 9%; height: 50%; border-radius: 4px; background: repeating-linear-gradient(90deg, #2b2b30 0 6.6%, transparent 6.6% 7.2%), #2b2b30; opacity: .85; -webkit-mask: repeating-linear-gradient(#000 0 15%, transparent 15% 18%); mask: repeating-linear-gradient(#000 0 15%, transparent 15% 18%); }
+  .pad { position: absolute; left: 35%; width: 30%; top: 66%; height: 27%; border-radius: 6px; background: rgb(0 0 0 / .07); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08); }
+  .laptop-shadow { position: absolute; left: -10%; right: -10%; bottom: -30%; height: 26%; background: radial-gradient(closest-side, rgb(94 230 200 / .35), transparent); z-index: -1; filter: blur(6px); }
+
+  .screen { position: relative; height: 100%; border-radius: 3px; overflow: hidden; background: radial-gradient(circle at 70% 0%, #163430, #0c1110 70%); container-type: inline-size; }
+  .screen::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 3px, rgb(94 230 200 / .04) 3px 4px); pointer-events: none; }
+  .scr-bar { display: flex; align-items: center; gap: 1cqw; padding: 2cqw 3cqw; background: rgb(255 255 255 / .03); border-bottom: 1px solid rgb(94 230 200 / .18); font-family: var(--font-mono); font-size: 2.2cqw; color: var(--mint); }
+  .scr-bar i { width: 1.6cqw; height: 1.6cqw; border-radius: 50%; background: rgb(242 236 228 / .2); }
+  .scr-bar span { margin-left: 2cqw; }
+  .cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2cqw; padding: 3cqw; }
+  .col { display: grid; gap: 1.6cqw; align-content: start; }
+  .col-h { font-family: var(--font-mono); font-size: 1.8cqw; color: var(--champagne); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ghost { height: 9cqw; border-radius: 1.4cqw; background: rgb(255 255 255 / .05); border: 1px solid rgb(94 230 200 / .12); }
+  .ghost.short { height: 6cqw; opacity: .7; }
+  .mover { position: absolute; left: 3cqw; top: 17cqw; width: calc((100% - 12cqw) / 4); display: grid; gap: .8cqw; padding: 1.6cqw; border-radius: 1.4cqw; background: rgb(94 230 200 / .14); color: #eafff9; border: 1px solid var(--mint); box-shadow: 0 0 2cqw rgb(94 230 200 / .7), inset 0 0 2cqw rgb(94 230 200 / .25); transition: transform .5s var(--ease-out); }
+  .mover b { width: 40%; height: 1.4cqw; border-radius: 1cqw; background: var(--mint); }
+  .mover span { font-size: 1.8cqw; line-height: 1.3; }
+
+  .objs { list-style: none; padding: 0; position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+  .obj { position: absolute; left: var(--x); top: var(--y); width: clamp(64px, 13%, 132px); transform: translate(-50%, -50%) rotate(var(--r)); display: grid; justify-items: center; gap: .4rem; z-index: 2; }
+  .obj-label { font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; background: rgb(11 10 10 / .85); border: 1px solid var(--mint); padding: .25rem .6rem; border-radius: 999px; white-space: nowrap; color: #eafff9; box-shadow: 0 0 10px rgb(94 230 200 / .55), inset 0 0 8px rgb(94 230 200 / .2); }
+  .obj-art { filter: drop-shadow(0 0 1px rgb(234 255 249 / .9)) drop-shadow(0 0 10px rgb(94 230 200 / .55)); }
+  .obj:nth-child(even) .obj-art { filter: drop-shadow(0 0 1px rgb(255 240 220 / .9)) drop-shadow(0 0 10px rgb(200 169 126 / .6)); }
+
+  .traces { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 1; }
+  .trace { fill: none; stroke: var(--mint); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 3px var(--mint)); opacity: .75; }
+  .pulse { fill: none; stroke: #eafff9; stroke-width: 2.5; stroke-dasharray: .06 .94; stroke-dashoffset: 1; filter: drop-shadow(0 0 4px var(--mint)) drop-shadow(0 0 8px var(--mint)); opacity: 0; }
+  .scene.is-live .pulse { opacity: 1; animation: pulse 2.6s linear infinite; animation-delay: calc(var(--k, 0) * .3s); }
+  @keyframes pulse { to { stroke-dashoffset: 0; } }
+
+  @media (max-width: 767px) {
+    .stage { aspect-ratio: 1 / 1.45; }
+    .laptop-wrap { width: 60%; top: 46%; }
+    .desk-only { display: none; }
+    .obj { width: 16%; left: var(--mx); top: var(--my); }
+    .obj-label { font-size: .56rem; padding: .2rem .45rem; }
+  }
+  @media (min-width: 1024px) {
+    .scene-pin { padding-top: 6rem; }
+    .stage { aspect-ratio: 16 / 8.6; max-height: 68svh; width: auto; height: 68svh; }
+    .laptop-wrap { width: 40%; top: 40%; }
+  }
+</style>
+
+<script>
+  import { gsap, reducedMotion } from '../scripts/core';
+  const sec = document.querySelector<HTMLElement>('[data-scene]')!;
+  const lid = sec.querySelector<HTMLElement>('.lid')!;
+  const laptop = sec.querySelector<HTMLElement>('.laptop')!;
+  const mover = sec.querySelector<HTMLElement>('.mover')!;
+  const objs = [...sec.querySelectorAll<HTMLElement>('.obj')];
+  const h1 = sec.querySelector('.sh-1'), h2 = sec.querySelector('.sh-2'), sub = sec.querySelector('.scene-sub');
+  const traces = [...sec.querySelectorAll<SVGPathElement>('.trace')];
+  const pulses = [...sec.querySelectorAll<SVGPathElement>('.pulse')];
+  const stageEl = sec.querySelector<HTMLElement>('.stage')!;
+  const wrap = sec.querySelector<HTMLElement>('.laptop-wrap')!;
+  // Circuit traces from the laptop to where each object lands (pixel coordinates)
+  function layoutTraces() {
+    const W = stageEl.clientWidth, H = stageEl.clientHeight;
+    const cx = W / 2, cy = wrap.offsetTop; void H;
+    objs.forEach((o, i) => {
+      const x = o.offsetLeft, y = o.offsetTop; // landing spot (before animation transforms)
+      const mx = (cx + x) / 2;
+      const d = `M ${cx} ${cy} H ${mx} V ${y} H ${x}`;
+      traces[i]?.setAttribute('d', d); pulses[i]?.setAttribute('d', d);
+    });
+  }
+  layoutTraces();
+  window.addEventListener('resize', layoutTraces);
+  sec.querySelectorAll<SVGPathElement>('.pulse').forEach((p, i) => p.style.setProperty('--k', String(i)));
+
+  // Mover card hops column to column
+  const setCol = (c: number) => {
+    const col = sec.querySelectorAll<HTMLElement>('.col')[c];
+    const first = sec.querySelector<HTMLElement>('.col')!;
+    mover.style.transform = `translateX(${col.offsetLeft - first.offsetLeft}px)`;
+  };
+
+  if (reducedMotion()) {
+    lid.style.setProperty('--lid', '-6deg');
+    gsap.set([h2, sub], { opacity: 1 }); gsap.set(h1, { opacity: 0 });
+    setCol(3);
+    gsap.set(traces, { strokeDashoffset: 0 });
+  } else {
+    // Starting state: closed laptop, objects scattered off-stage
+    gsap.set(lid, { '--lid': '90deg' });
+    gsap.set(laptop, { rotateY: -28, scale: .82, y: 40 });
+    objs.forEach((o, i) => {
+      const left = parseFloat(o.style.getPropertyValue('--x')) < 50;
+      gsap.set(o, { xPercent: -50 + (left ? -260 : 260), yPercent: -50 + (i % 2 ? 180 : -160), rotate: (left ? -1 : 1) * (35 + i * 6), opacity: 0, scale: .6 });
+    });
+    const steps = { c: 0 };
+    const mm = gsap.matchMedia();
+    mm.add({ desk: '(min-width: 1024px)', mob: '(max-width: 1023px)' }, (ctx) => {
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.out' },
+        scrollTrigger: { trigger: sec, start: 'top top', end: ctx.conditions!.desk ? '+=220%' : '+=170%', pin: sec.querySelector('.scene-pin'), scrub: .7, anticipatePin: 1, onUpdate: (st) => sec.classList.toggle('is-live', st.progress > .72) },
+      });
+      tl.to(laptop, { rotateY: 0, scale: 1, y: 0, duration: 1 })
+        .to(lid, { '--lid': '-6deg', duration: 1.1, ease: 'power2.inOut' }, '<.15')
+        .to(steps, { c: 3, duration: 2.2, ease: 'none', onUpdate: () => setCol(Math.min(3, Math.floor(steps.c + .001))) }, '>-.1')
+        .to(objs, { xPercent: -50, yPercent: -50, rotate: (i: number, el: HTMLElement) => parseFloat(el.style.getPropertyValue('--r')) || 0, opacity: 1, scale: 1, duration: 1, stagger: .22, ease: 'back.out(1.4)' }, '<')
+        .to(traces, { strokeDashoffset: 0, duration: .6, stagger: .22, ease: 'power1.inOut' }, '<.5')
+        .to(h1, { opacity: 0, y: -24, duration: .4 }, '-=.6')
+        .fromTo(h2, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .5 }, '<.2')
+        .fromTo(sub, { opacity: 0 }, { opacity: 1, duration: .4 }, '<.2')
+        .to({}, { duration: .4 });
+      return () => {};
+    });
+    // idle bob for landed objects
+    objs.forEach((o, i) => gsap.to(o.querySelector('.obj-art'), { y: i % 2 ? 6 : -6, duration: 2.4 + i * .25, yoyo: true, repeat: -1, ease: 'sine.inOut' }));
+  }
+</script>

@@ -1,0 +1,94 @@
+# =====================================================================
+#  BRANDING CASE STUDIES + BRAND PACKETS
+#  Each brand below becomes:
+#   1) a cinematic scroll story on the homepage (#branding)
+#   2) a printable brand packet page at /brand/<slug>  (Save as PDF button)
+#  Logos, postcards, signs and cards are drawn from these values, so if you
+#  change a color or name here, every piece updates.
+#
+#  concept: true → not a paying client (no label is shown on the site)
+#  fonts.*.family must be a font loaded in src/layouts/Base.astro
+# =====================================================================
+
+eyebrow: "Luxury branding"
+title: "From logo to *storefront*: complete brand systems."
+intro: "Every brand kit is a full system, not just a logo: a mark, a type system, a palette, social templates, postcards, signs out in the world, and a website. Scroll through two of them."
+
+brands:
+  - slug: luxe-realty-group
+    name: "Luxe Realty Group"
+    concept: true
+    industry: "Luxury brokerage · Miami"
+    summary: "A brokerage that sells waterfront and modern estates. It needed to look as considered as the homes it lists: quiet confidence, navy and gold, and a monogram that works on a pen or a 4-foot sign."
+    voice: ["Assured, never loud", "Lifestyle over square footage", "Short sentences. Big white space."]
+    logo:
+      style: arch        # arch = monogram inside a doorway arch
+      monogram: "LR"
+      wordmark: "LUXE REALTY"
+      sub: "GROUP"
+    fonts:
+      display: { family: "Cormorant Garamond", role: "Headlines & monogram", sample: "Your vision. Our expertise." }
+      body: { family: "Jost", role: "Body, labels & signage", sample: "EXCLUSIVE PROPERTIES · EXPERT GUIDANCE" }
+    palette:
+      - { name: "Harbor Navy", hex: "#1C2333", role: "Primary" }
+      - { name: "Gilded Sand", hex: "#B8925A", role: "Accent" }
+      - { name: "Marble", hex: "#F5F2EC", role: "Background" }
+      - { name: "Slate Mist", hex: "#8C93A1", role: "Secondary text" }
+      - { name: "Midnight", hex: "#0F131C", role: "Deep shadow" }
+    colors: { primary: "#1C2333", accent: "#B8925A", light: "#F5F2EC", ink: "#0F131C", dark: "#1C2333" }
+    photos: { hero: "brands/luxe-dusk.jpg", wide: "brands/luxe-coast.jpg" }
+    social:
+      - { image: "social/luxe-seller-tip.png", alt: "Luxe Realty Group seller tip post: First Impressions Sell Homes" }
+      - { image: "social/luxe-next-move.png", alt: "Luxe Realty Group lifestyle post: What if your next move changes everything?" }
+    postcard: { kind: "Just Sold", headline: "Just Sold", line: "Another beautiful home, sold.", address: "4120 Bayshore Dr · Miami", agent: "James Anderson", phone: "(555) 123-4567", web: "luxerealtygroup.com" }
+    sign: { top: "FOR SALE", rider: "BY APPOINTMENT", phone: "(555) 123-4567" }
+    website: { image: "websites/luxe-realty-mockup.png", alt: "Luxe Realty Group website on desktop and mobile" }
+
+  - slug: naomi-rhodes
+    name: "Naomi Rhodes Real Estate"
+    concept: true
+    industry: "Solo agent personal brand · Atlanta"
+    summary: "A personal brand for an agent clients hire because of her. It's warm, feminine and quietly luxe, with a signature script line that becomes her sign-off on everything."
+    voice: ["Personal & reassuring", "Speaks to the dream, then the plan", "Signature sign-off: Let's get you home."]
+    logo:
+      style: overlap     # overlap = interlocking letters
+      monogram: "NR"
+      wordmark: "NAOMI RHODES"
+      sub: "REAL ESTATE"
+      script: "Let's get you home."
+    fonts:
+      display: { family: "Gilda Display", role: "Headlines & monogram", sample: "The best deals aren't always listed." }
+      script: { family: "Allura", role: "Signature line", sample: "Let's get you home." }
+      body: { family: "Tenor Sans", role: "Body & labels", sample: "YOUR GOALS. MY MISSION." }
+    palette:
+      - { name: "Champagne Gold", hex: "#B08D57", role: "Primary" }
+      - { name: "Ivory Silk", hex: "#F7F1E8", role: "Background" }
+      - { name: "Cocoa", hex: "#3B2A22", role: "Text" }
+      - { name: "Blush Stone", hex: "#E3CFC0", role: "Soft accent" }
+      - { name: "Onyx", hex: "#161312", role: "Contrast" }
+    colors: { primary: "#B08D57", accent: "#3B2A22", light: "#F7F1E8", ink: "#161312", dark: "#161312" }
+    photos: { hero: "brands/naomi-portrait.jpg" }   # no street photo → the yard sign uses a drawn street scene
+    social:
+      - { image: "social/naomi-buyer-tip.png", alt: "Naomi Rhodes buyer tip post: The best deals aren't always listed" }
+    postcard: { kind: "Just Listed", headline: "Just Listed", line: "4 bed · 3 bath · Buckhead", address: "2290 Peachtree Hills Ave · Atlanta", agent: "Naomi Rhodes", phone: "(555) 987-6543", web: "naomirhodes.com" }
+    sign: { top: "FOR SALE", rider: "CALL NAOMI", phone: "(555) 987-6543" }
+    # No website screenshot yet, so the site shows a built-in homepage concept in this brand.
+    website: { image: "", alt: "Naomi Rhodes website" }
+
+# ---------- Extra designs shown under the brand stories ----------
+# Images are in src/assets/social/.
+moreTitle: "More luxury content I design"
+moreIntro: "Luxury design across industries, from real estate to clinics, hospitality and professional firms."
+more:
+  - { image: "social/design-just-listed.png", industry: "Real estate", alt: "Just Listed post for a waterfront home" }
+  - { image: "social/design-private-preview.png", industry: "Real estate", alt: "Private preview invitation for a coastal estate" }
+  - { image: "social/design-market-letter.png", industry: "Real estate", alt: "Navy and gold market letter cover" }
+  - { image: "social/design-medspa.png", industry: "Med spa", alt: "Treatment menu for a med spa" }
+  - { image: "social/design-chiro.png", industry: "Chiropractic", alt: "Wellness post for a chiropractic clinic" }
+  - { image: "social/design-dental.png", industry: "Dental", alt: "Consultation post for a dental studio" }
+  - { image: "social/design-law.png", industry: "Law firm", alt: "Editorial post for a law firm" }
+  - { image: "social/design-restaurant.png", industry: "Hospitality", alt: "Tasting menu post for a restaurant" }
+  - { image: "social/design-hotel.png", industry: "Boutique hotel", alt: "Stay campaign post for a boutique hotel" }
+  - { image: "social/realtor-just-listed.png", industry: "Real estate", alt: "Real estate Just Listed social graphic", realWork: true }
+  - { image: "social/realtor-why-agent.png", industry: "Real estate", alt: "Real estate educational social graphic", realWork: true }
+  - { image: "social/realtor-home-tips.png", industry: "Real estate", alt: "Real estate home tips social graphic", realWork: true }

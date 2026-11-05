@@ -1,0 +1,147 @@
+# =====================================================================
+#  "VA REALITY CHECK" METER
+#  - Each question has a weight (how much it counts) and an area.
+#  - Each answer has points from 0 (no problem) to 10 (big problem).
+#  - Score = weighted average of all answers, shown as 0–100%.
+#  - The 3 areas with the highest scores show as "where you're losing time".
+#  - hours = rough hours per WEEK that answer costs you (adds up to "hours back").
+# =====================================================================
+
+eyebrow: "2-minute self check"
+title: "Time for a *VA Reality Check*."
+intro: "10 quick questions. One tap each. You'll get a score, the places your week is leaking, and what fixes each one."
+startLabel: "Start the check"
+
+# The areas questions belong to. "fix" names the service that solves it.
+areas:
+  admin:     { label: "Admin overload",        leak: "Your hours go to inbox, calendar and paperwork instead of clients.", fix: "Executive VA", service: "executive-va" }
+  speed:     { label: "Slow speed-to-lead",     leak: "New leads wait too long for a reply, and the fastest business usually wins the customer.", fix: "AI auto-reply", service: "automation" }
+  followup:  { label: "Follow-up gaps",         leak: "Leads who aren't ready yet slip away because nobody keeps in touch.", fix: "Automated nurture sequences", service: "automation" }
+  crm:       { label: "Messy CRM & pipeline",   leak: "You can't see where every deal stands, so things fall through.", fix: "CRM pipeline build + upkeep", service: "automation" }
+  social:    { label: "Inconsistent social",    leak: "Posting in bursts makes you look less active than you really are.", fix: "Social media management", service: "executive-va" }
+  brand:     { label: "Brand inconsistency",    leak: "Mismatched logos, fonts and colors make you look smaller than you are.", fix: "Full brand kit", service: "branding" }
+  website:   { label: "Website not converting", leak: "Your site looks fine but doesn't capture or route leads.", fix: "Lead-generating website", service: "websites" }
+  tech:      { label: "Tech overwhelm",         leak: "Tools you pay for sit half set up because there's no time to learn them.", fix: "Done-for-you systems setup", service: "automation" }
+
+questions:
+  - id: hours-admin
+    area: admin
+    weight: 1.4
+    question: "How many hours a week do you spend on admin (email, scheduling, paperwork)?"
+    answers:
+      - { label: "Under 3 hours", points: 0, hours: 0 }
+      - { label: "3–8 hours", points: 4, hours: 5 }
+      - { label: "8–15 hours", points: 7, hours: 11 }
+      - { label: "15+ hours, it's basically a second job", points: 10, hours: 18 }
+
+  - id: speed-to-lead
+    area: speed
+    weight: 1.5
+    question: "When a new lead comes in, how fast do they usually hear back?"
+    answers:
+      - { label: "Within 5 minutes, automatically", points: 0, hours: 0 }
+      - { label: "Within the hour", points: 4, hours: 1 }
+      - { label: "Same day, when I get to it", points: 7, hours: 3 }
+      - { label: "Honestly? Sometimes never", points: 10, hours: 5 }
+
+  - id: missed-leads
+    area: speed
+    weight: 1.3
+    question: "How often do calls, texts or DMs from leads get missed?"
+    answers:
+      - { label: "Almost never", points: 0, hours: 0 }
+      - { label: "A few times a month", points: 4, hours: 1 }
+      - { label: "Weekly", points: 7, hours: 2 }
+      - { label: "All the time", points: 10, hours: 4 }
+
+  - id: long-followup
+    area: followup
+    weight: 1.3
+    question: "Do leads who aren't ready yet get followed up for months?"
+    answers:
+      - { label: "Yes, an automated nurture runs for every lead", points: 0, hours: 0 }
+      - { label: "Some of them, manually", points: 5, hours: 2 }
+      - { label: "Only if I remember", points: 8, hours: 3 }
+      - { label: "No follow-up after the first try", points: 10, hours: 4 }
+
+  - id: crm-state
+    area: crm
+    weight: 1.1
+    question: "How would you describe your CRM right now?"
+    answers:
+      - { label: "Clean pipeline, every deal tracked", points: 0, hours: 0 }
+      - { label: "It's there, but half-updated", points: 5, hours: 1 }
+      - { label: "Spreadsheets, sticky notes and memory", points: 8, hours: 2 }
+      - { label: "What CRM?", points: 10, hours: 3 }
+
+  - id: social-consistency
+    area: social
+    weight: 1.0
+    question: "How consistent is your social media posting?"
+    answers:
+      - { label: "Scheduled weeks ahead", points: 0, hours: 0 }
+      - { label: "A few times a week, unplanned", points: 4, hours: 1 }
+      - { label: "In bursts, then nothing", points: 7, hours: 2 }
+      - { label: "I haven't posted in a month+", points: 10, hours: 3 }
+
+  - id: brand-consistency
+    area: brand
+    weight: 1.0
+    question: "Do your logo, colors and fonts match across your signs, social, cards and website?"
+    answers:
+      - { label: "Yes, I have a real brand kit", points: 0, hours: 0 }
+      - { label: "Mostly, with a few odd pieces", points: 4, hours: 0.5 }
+      - { label: "Every piece looks a bit different", points: 7, hours: 1 }
+      - { label: "I don't really have a brand yet", points: 10, hours: 2 }
+
+  - id: website-leads
+    area: website
+    weight: 1.0
+    question: "Does your website bring in leads on its own?"
+    answers:
+      - { label: "Yes, leads every week", points: 0, hours: 0 }
+      - { label: "Occasionally", points: 4, hours: 0 }
+      - { label: "It's more of a business card", points: 7, hours: 1 }
+      - { label: "No website (or I'm embarrassed by it)", points: 10, hours: 1 }
+
+  - id: tech-overwhelm
+    area: tech
+    weight: 1.1
+    question: "How do you feel about the tech tools you pay for?"
+    answers:
+      - { label: "Fully set up and working for me", points: 0, hours: 0 }
+      - { label: "Using maybe half the features", points: 4, hours: 1 }
+      - { label: "Paying for things I never set up", points: 7, hours: 2 }
+      - { label: "Overwhelmed, I avoid it", points: 10, hours: 3 }
+
+  - id: delegation
+    area: admin
+    weight: 1.2
+    question: "If you had 15 extra hours next week, what would happen?"
+    answers:
+      - { label: "Nothing much, I'm already balanced", points: 0, hours: 0 }
+      - { label: "I'd finally catch up", points: 5, hours: 0 }
+      - { label: "I'd prospect & close more deals", points: 8, hours: 0 }
+      - { label: "I'd get my life back", points: 10, hours: 0 }
+
+# Result tiers (by score). The first tier whose "min" the score reaches wins, top to bottom.
+tiers:
+  - { min: 80, name: "You're drowning", color: "terracotta", summary: "You're doing a whole team's job alone, and leads, money and weekends are paying for it. A VA plus basic automation would change your month right away." }
+  - { min: 60, name: "You're leaking leads", color: "champagne", summary: "The business works, but deals slip through slow replies, patchy follow-up and admin drag. Plugging those leaks is the fastest path to more closings." }
+  - { min: 35, name: "You're ready to scale", color: "mint", summary: "Your foundations are decent. The next level comes from handing off the repeatable work and automating follow-up so you can grow without burning out." }
+  - { min: 0,  name: "You're running lean", color: "sage", summary: "You've got things handled. A few targeted systems could still win back hours, so let's see where." }
+
+# Sticker on the quiz card
+sticker: "Be honest!"
+# Plan recommended for each tier (by tier name above) + where its button goes
+recommend:
+  "You're drowning": { plan: "Systems Partner", tab: "executive-va" }
+  "You're leaking leads": { plan: "Operator", tab: "executive-va" }
+  "You're ready to scale": { plan: "Funnels + Automation", tab: "automation" }
+  "You're running lean": { plan: "Retainer Fee", tab: "retainer" }
+resultCta: "Talk through my results"
+emailCapture:
+  title: "Want a copy of your results?"
+  text: "I'll email your score and breakdown, plus a quick note on what I'd fix first."
+  button: "Email my results"
+  success: "Sent! Check your inbox. I'll reply personally within 1 business day."

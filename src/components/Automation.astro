@@ -1,0 +1,258 @@
+---
+import { Image } from 'astro:assets';
+import { automation as a, about, rich } from '../lib/content';
+const tools = about.tools.map((t: any) => t.name);
+const rowA = tools.filter((_: any, i: number) => i % 2 === 0), rowB = tools.filter((_: any, i: number) => i % 2 === 1);
+import { img } from '../lib/images';
+const calc = a.calculator;
+const icons: Record<string, string> = {
+  in: '<path d="M4 12h11M11 7l5 5-5 5"/><path d="M19 4v16"/>',
+  ai: '<rect x="4" y="5" width="16" height="12" rx="3"/><path d="M8 21l3-4M9 10h.01M15 10h.01M9.5 13.5c1.5 1 3.5 1 5 0"/>',
+  crm: '<rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="6" rx="1.5"/>',
+  nurture: '<path d="M4 6h16v10H8l-4 4z"/><path d="M8 10h8M8 13h5"/>',
+  booked: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15l2 2 4-4"/>',
+};
+---
+<section id="automation" class="auto s-dark section" aria-labelledby="auto-title">
+  <div class="auto-grid-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow mint" data-reveal>{a.eyebrow}</span>
+      <h2 id="auto-title" class="h-1" data-reveal style="--d:.05" set:html={rich(a.title)} />
+      <p class="lead" data-reveal style="--d:.1">{a.intro}</p>
+    </div>
+  </div>
+
+  <div class="flow-pin">
+    <div class="wrap">
+      <div class="flow" data-flow>
+        <svg class="flow-svg" aria-hidden="true"><path class="flow-base" /><path class="flow-line" /><circle class="flow-dot" r="7" /></svg>
+        <ol class="flow-steps" role="list">
+          {a.flow.map((s: any, i: number) => (
+            <li class="fstep" data-step>
+              <span class="fnode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.id] || icons.in} /></span>
+              <div class="ftext">
+                <span class="mono fnum">{String(i + 1).padStart(2, '0')} · {s.tool}</span>
+                <h3 class="ftitle">{s.title}</h3>
+                <p class="muted">{s.text}</p>
+                <p class="fgoal mono">{s.goal}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="calc card" data-calc data-assume={JSON.stringify({ ...calc.assumptions, weeks: calc.weeksPerMonth })} data-reveal>
+      <div class="calc-in">
+        <h3 class="h-3">{calc.title}</h3>
+        <p class="muted calc-note">{calc.note}</p>
+        {calc.inputs.map((inp: any) => (
+          <div class="slider">
+            <div class="slider-row"><label for={`c-${inp.id}`}>{inp.label}</label><output for={`c-${inp.id}`} class="mono" data-out={inp.id}>{inp.value} {inp.unit}</output></div>
+            <input type="range" id={`c-${inp.id}`} data-in={inp.id} data-unit={inp.unit} min={inp.min} max={inp.max} step={inp.step} value={inp.value} />
+          </div>
+        ))}
+        <div class="slider">
+          <div class="slider-row"><label for="c-rate">{calc.rateLabel}</label><output for="c-rate" class="mono" data-out="rate">${calc.rateDefault}/hr</output></div>
+          <input type="range" id="c-rate" data-in="rate" min="15" max="300" step="5" value={calc.rateDefault} />
+        </div>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <span class="mono calc-label">Estimated hours back / month</span>
+        <div class="calc-big"><span data-hours>0</span><small>hrs</small></div>
+        <ul class="calc-break" role="list">
+          <li><span>Lead follow-up</span><b class="mono" data-b="follow">0</b></li>
+          <li><span>Admin handed off</span><b class="mono" data-b="admin">0</b></li>
+          <li><span>Social media</span><b class="mono" data-b="social">0</b></li>
+        </ul>
+        <div class="calc-value"><span class="muted">Worth about</span><strong data-value>$0</strong><span class="muted">of your time every month</span></div>
+        <a class="btn btn-mint" href="#contact" data-magnetic>Get these hours back <span class="arrow" aria-hidden="true">→</span></a>
+        <details class="calc-math"><summary>How is this calculated?</summary>
+          <p>Follow-up: leads × minutes per lead × {Math.round(calc.assumptions.followupAutomatable * 100)}% automated. Admin: weekly hours × {calc.weeksPerMonth} × {Math.round(calc.assumptions.adminDelegable * 100)}% delegated. Social: posts per week × {calc.assumptions.minutesPerPost} min × {calc.weeksPerMonth} × {Math.round(calc.assumptions.socialDelegable * 100)}% handed off. These are estimates, not guarantees.</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="stack" aria-label="Tools I work in">
+      <h3 class="h-2" data-reveal>Plugged into your stack <em>from day one</em>.</h3>
+      <div class="marquee" aria-hidden="true">
+        <div class="mq-row"><div class="mq-track">{[...rowA, ...rowA].map((t: string, i: number) => <span class={`pill p${i % 3}`}>{t}</span>)}</div></div>
+        <div class="mq-row rev"><div class="mq-track">{[...rowB, ...rowB].map((t: string, i: number) => <span class={`pill p${(i + 1) % 3}`}>{t}</span>)}</div></div>
+      </div>
+      <p class="sr-only">{tools.join(', ')}</p>
+    </div>
+
+    <div class="proof">
+      <h3 class="h-3" data-reveal>{a.proof.title}</h3>
+      <ul class="proof-row" role="list" tabindex="0" aria-label="Screenshots of systems Tin has built. Scroll sideways.">
+        {a.proof.items.map((p: any) => { const im = img(p.image); return im && (
+          <li class="proof-item">
+            <Image src={im} alt={p.title} widths={[420, 720]} sizes="(min-width:1024px) 32vw, 80vw" />
+            <strong>{p.title}</strong><span class="muted">{p.text}</span>
+          </li>
+        ); })}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .auto { overflow: clip; }
+  .auto-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgb(94 230 200 / .045) 1px, transparent 1px), linear-gradient(90deg, rgb(94 230 200 / .045) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%); pointer-events: none; }
+  .eyebrow.mint { color: var(--mint); }
+  .auto :global(.h-1 em) { color: var(--mint); }
+
+  .flow { position: relative; }
+  .flow-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .flow-base { fill: none; stroke: var(--line-dark); stroke-width: 2; stroke-dasharray: 4 6; }
+  .flow-line { fill: none; stroke: var(--mint); stroke-width: 2.5; filter: drop-shadow(0 0 6px rgb(94 230 200 / .7)); }
+  .flow-dot { fill: var(--mint); filter: drop-shadow(0 0 10px var(--mint)); opacity: 0; }
+  .flow-steps { list-style: none; padding: 0; display: grid; gap: 2.25rem; position: relative; }
+  .fstep { display: grid; grid-template-columns: 3.5rem 1fr; gap: 1rem; align-items: start; }
+  .fnode { position: relative; z-index: 1; width: 3.5rem; height: 3.5rem; display: grid; place-items: center; border-radius: 50%; background: var(--panel); border: 1px solid var(--line-dark); color: var(--smoke); transition: color .4s, border-color .4s, box-shadow .4s, background .4s; }
+  .fnode svg { width: 1.5rem; height: 1.5rem; }
+  .fstep.is-on .fnode { color: var(--onyx); background: var(--mint); border-color: var(--mint); box-shadow: 0 0 0 6px rgb(94 230 200 / .12), 0 0 30px rgb(94 230 200 / .5); }
+  .ftext { display: grid; gap: .35rem; padding-top: .3rem; transition: opacity .4s; }
+  .fnum { font-size: .7rem; color: var(--champagne); letter-spacing: .04em; }
+  .ftitle { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.05; }
+  .ftext p.muted { font-size: .93rem; }
+  .fgoal { font-size: .72rem; color: var(--mint); padding: .35rem .6rem; border: 1px solid rgb(94 230 200 / .3); border-radius: 8px; justify-self: start; }
+  .js .fstep:not(.is-on) .ftext { opacity: .45; }
+
+  .calc { margin-top: var(--space-2xl); display: grid; overflow: hidden; }
+  .calc-in { padding: clamp(1.25rem, 3vw, 2.25rem); display: grid; gap: 1.25rem; align-content: start; }
+  .calc-note { font-size: .9rem; }
+  .slider { display: grid; gap: .5rem; }
+  .slider-row { display: flex; justify-content: space-between; gap: 1rem; font-size: .95rem; }
+  .slider-row output { color: var(--mint); white-space: nowrap; }
+  input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 2.25rem; background: transparent; }
+  input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--mint) var(--p, 50%), var(--line-dark) var(--p, 50%)); }
+  input[type='range']::-moz-range-track { height: 4px; border-radius: 4px; background: var(--line-dark); }
+  input[type='range']::-moz-range-progress { height: 4px; border-radius: 4px; background: var(--mint); }
+  input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border-radius: 50%; background: var(--bone); border: 4px solid var(--mint); box-shadow: 0 0 0 6px rgb(94 230 200 / .12); }
+  input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--bone); border: 4px solid var(--mint); }
+  .calc-out { padding: clamp(1.25rem, 3vw, 2.25rem); background: linear-gradient(160deg, #10201c, #0e1211); border-top: 1px solid var(--line-dark); display: grid; gap: 1rem; align-content: start; }
+  .calc-label { font-size: .72rem; color: var(--smoke); text-transform: uppercase; letter-spacing: .12em; }
+  .calc-big { font-family: var(--font-display); font-size: clamp(4rem, 12vw, 7rem); line-height: .9; color: var(--mint); display: flex; align-items: baseline; gap: .15em; }
+  .calc-big small { font-size: .3em; color: var(--smoke); }
+  .calc-break { list-style: none; padding: 0; display: grid; gap: .4rem; }
+  .calc-break li { display: flex; justify-content: space-between; padding-bottom: .4rem; border-bottom: 1px solid var(--line-dark); font-size: .93rem; }
+  .calc-value { display: grid; gap: .1rem; }
+  .calc-value strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-3); color: var(--bone); line-height: 1; }
+  .calc-out .btn { justify-self: start; }
+  .calc-math summary { cursor: pointer; font-size: .85rem; color: var(--smoke); }
+  .calc-math p { font-size: .82rem; color: var(--smoke); margin-top: .5rem; }
+
+  .stack { margin-top: var(--space-2xl); display: grid; gap: 1.5rem; }
+  .stack h3 em { color: var(--mint); text-shadow: 0 0 18px rgb(94 230 200 / .5); }
+  .marquee { display: grid; gap: .75rem; margin-inline: calc(var(--gutter) * -1); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .mq-row { overflow: hidden; }
+  .mq-track { display: flex; gap: .75rem; width: max-content; animation: mq 36s linear infinite; }
+  .mq-row.rev .mq-track { animation-direction: reverse; animation-duration: 42s; }
+  .marquee:hover .mq-track { animation-play-state: paused; }
+  @keyframes mq { to { transform: translateX(-50%); } }
+  .pill { font-family: var(--font-mono); font-size: .9rem; padding: .6rem 1.1rem; border-radius: 12px; white-space: nowrap; border: 1px solid; transform: rotate(var(--t, 0deg)); }
+  .p0 { color: #eafff9; border-color: var(--mint); background: rgb(94 230 200 / .08); box-shadow: 0 0 14px -3px rgb(94 230 200 / .7); --t: -1.5deg; }
+  .p1 { color: #fff3e2; border-color: var(--champagne); background: rgb(200 169 126 / .1); box-shadow: 0 0 14px -3px rgb(200 169 126 / .7); --t: 1deg; }
+  .p2 { color: var(--bone); border-color: var(--line-dark); background: var(--panel); --t: 0deg; }
+  .proof { margin-top: var(--space-2xl); display: grid; gap: 1.25rem; }
+  .proof-row { list-style: none; padding: 0 0 1rem; display: grid; grid-auto-flow: column; grid-auto-columns: min(80%, 420px); gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--panel-2) transparent; }
+  .proof-item { scroll-snap-align: start; display: grid; gap: .35rem; align-content: start; }
+  .proof-item img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: top; border-radius: 12px; border: 1px solid var(--line-dark); margin-bottom: .4rem; }
+  .proof-item strong { font-weight: 600; }
+  .proof-item span { font-size: .88rem; }
+
+  @media (min-width: 1024px) {
+    .flow-pin { min-height: 100svh; display: flex; align-items: center; }
+    .flow-steps { grid-template-columns: repeat(5, 1fr); gap: 1.5rem; padding-top: 0; }
+    .fstep { grid-template-columns: 1fr; justify-items: start; gap: 1.25rem; }
+    .fnode { width: 4.25rem; height: 4.25rem; }
+    .calc { grid-template-columns: 1.2fr 1fr; }
+    .calc-out { border-top: 0; border-left: 1px solid var(--line-dark); }
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, reducedMotion } from '../scripts/core';
+
+  const flow = document.querySelector<HTMLElement>('[data-flow]')!;
+  const svg = flow.querySelector<SVGSVGElement>('.flow-svg')!;
+  const base = svg.querySelector<SVGPathElement>('.flow-base')!;
+  const line = svg.querySelector<SVGPathElement>('.flow-line')!;
+  const dot = svg.querySelector<SVGCircleElement>('.flow-dot')!;
+  const steps = [...flow.querySelectorAll<HTMLElement>('[data-step]')];
+  let stops: number[] = [], total = 1, progress = 0;
+
+  function build() {
+    const fr = flow.getBoundingClientRect();
+    const pts = steps.map((s) => { const r = s.querySelector('.fnode')!.getBoundingClientRect(); return { x: r.left - fr.left + r.width / 2, y: r.top - fr.top + r.height / 2 }; });
+    const horizontal = Math.abs(pts[pts.length - 1].x - pts[0].x) > Math.abs(pts[pts.length - 1].y - pts[0].y);
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    const partial: string[] = [d];
+    for (let i = 1; i < pts.length; i++) {
+      const p = pts[i - 1], q = pts[i];
+      if (horizontal) { const mx = (p.x + q.x) / 2, bend = i % 2 ? -46 : 46; d += ` C ${mx} ${p.y + bend}, ${mx} ${q.y + bend}, ${q.x} ${q.y}`; }
+      else d += ` L ${q.x} ${q.y}`;
+      partial.push(d);
+    }
+    base.setAttribute('d', d); line.setAttribute('d', d);
+    total = line.getTotalLength() || 1;
+    // length at each node: measure the path up to that node (one measurement per node)
+    const probe = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    svg.append(probe);
+    stops = partial.map((pd, i) => { if (i === 0) return 0; probe.setAttribute('d', pd); return probe.getTotalLength() / total; });
+    probe.remove();
+    line.style.strokeDasharray = `${total}`;
+    render(progress);
+  }
+  function render(p: number) {
+    progress = p;
+    line.style.strokeDashoffset = String(total * (1 - p));
+    const P = line.getPointAtLength(total * p);
+    dot.setAttribute('cx', String(P.x)); dot.setAttribute('cy', String(P.y));
+    dot.style.opacity = p > 0.001 && p < 0.999 ? '1' : '0';
+    steps.forEach((s, i) => s.classList.toggle('is-on', p >= stops[i] - 0.01));
+  }
+  build();
+  
+
+  if (reducedMotion()) { render(1); window.addEventListener('resize', () => { build(); render(1); }); }
+  else {
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 1024px)', () => {
+      ScrollTrigger.create({ trigger: flow.closest('.flow-pin'), start: 'center center', end: '+=120%', pin: true, scrub: .6, anticipatePin: 1, onUpdate: (st) => render(st.progress), onRefresh: build });
+    });
+    mm.add('(max-width: 1023px)', () => {
+      ScrollTrigger.create({ trigger: flow, start: 'top 65%', end: 'bottom 55%', scrub: .5, onUpdate: (st) => render(st.progress), onRefresh: build });
+    });
+  }
+
+  // ---------- Hours-saved calculator ----------
+  const calc = document.querySelector<HTMLElement>('[data-calc]')!;
+  const A = JSON.parse(calc.dataset.assume!);
+  const ins = Object.fromEntries([...calc.querySelectorAll<HTMLInputElement>('[data-in]')].map((i) => [i.dataset.in, i]));
+  const out = (k: string) => calc.querySelector<HTMLElement>(`[data-out="${k}"]`)!;
+  const hoursEl = calc.querySelector<HTMLElement>('[data-hours]')!;
+  const shown = { h: 0 };
+  const fmt = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  function update() {
+    Object.values(ins).forEach((i) => { const pct = ((+i.value - +i.min) / (+i.max - +i.min)) * 100; i.style.setProperty('--p', pct + '%'); });
+    const v = (k: string) => Number(ins[k].value);
+    const follow = (v('leads') * v('perLead') / 60) * A.followupAutomatable;
+    const admin = v('admin') * A.weeks * A.adminDelegable;
+    const social = (v('social') * A.minutesPerPost / 60) * A.weeks * A.socialDelegable;
+    const total = follow + admin + social;
+    Object.values(ins).forEach((i) => { if (i.dataset.in === 'rate') out('rate').textContent = `$${i.value}/hr`; else out(i.dataset.in!).textContent = `${i.value} ${i.dataset.unit}`; });
+    calc.querySelector('[data-b="follow"]')!.textContent = `${fmt(follow)} hrs`;
+    calc.querySelector('[data-b="admin"]')!.textContent = `${fmt(admin)} hrs`;
+    calc.querySelector('[data-b="social"]')!.textContent = `${fmt(social)} hrs`;
+    calc.querySelector('[data-value]')!.textContent = `$${fmt(total * v('rate'))}`;
+    if (reducedMotion()) hoursEl.textContent = fmt(total);
+    else gsap.to(shown, { h: total, duration: .6, ease: 'power3.out', onUpdate: () => { hoursEl.textContent = fmt(shown.h); } });
+  }
+  Object.values(ins).forEach((i) => i.addEventListener('input', update));
+  update();
+</script>

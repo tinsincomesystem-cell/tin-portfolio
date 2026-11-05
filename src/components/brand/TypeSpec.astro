@@ -1,0 +1,27 @@
+---
+interface Props { brand: any }
+const { brand } = Astro.props;
+const fonts = Object.values(brand.fonts) as any[];
+---
+<div class="ts">
+  {fonts.map((f) => (
+    <div class="ts-row">
+      <div class="ts-aa" style={`font-family:'${f.family}'`} aria-hidden="true">Aa</div>
+      <div class="ts-meta">
+        <span class="ts-name">{f.family}</span>
+        <span class="ts-role mono">{f.role}</span>
+        <span class="ts-sample" style={`font-family:'${f.family}'`}>{f.sample}</span>
+      </div>
+    </div>
+  ))}
+</div>
+<style>
+  .ts { display: grid; gap: 1.25rem; width: 100%; }
+  .ts-row { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+  .ts-row:last-child { border-bottom: 0; }
+  .ts-aa { font-size: clamp(3.2rem, 6vw, 5rem); line-height: 1; min-width: 1.4em; }
+  .ts-meta { display: grid; gap: .25rem; min-width: 0; }
+  .ts-name { font-weight: 600; }
+  .ts-role { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; }
+  .ts-sample { font-size: clamp(1.15rem, 2vw, 1.6rem); line-height: 1.2; overflow-wrap: anywhere; }
+</style>

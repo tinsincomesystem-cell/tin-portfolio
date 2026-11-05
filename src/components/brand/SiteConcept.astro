@@ -1,0 +1,61 @@
+---
+// A live-coded homepage concept in the brand (used when no website screenshot exists).
+import { Image } from 'astro:assets';
+import BrandLogo from './BrandLogo.astro';
+import { img } from '../../lib/images';
+interface Props { brand: any }
+const { brand } = Astro.props;
+const c = brand.colors, f = brand.fonts;
+const photo = img(brand.photos.hero);
+const vars = `--p:${c.primary};--a:${c.accent};--l:${c.light};--k:${c.ink};--fd:'${f.display.family}';--fb:'${f.body.family}';--fs:'${f.script?.family || f.display.family}'`;
+const headline = brand.fonts.display.sample;
+---
+<div class="sc-wrap" style={vars} role="img" aria-label={`${brand.name} website homepage in a browser window`}>
+  <div class="sc">
+    <div class="sc-bar"><i></i><i></i><i></i><span>{brand.postcard.web}</span></div>
+    <div class="sc-page">
+      <div class="sc-nav">
+        <div class="sc-logo"><BrandLogo brand={brand} variant="horizontal" tone="light" /></div>
+        <span>Buy</span><span>Sell</span><span>Neighborhoods</span><span>About</span>
+        <span class="sc-btn">Book a call</span>
+      </div>
+      <div class="sc-hero">
+        <div class="sc-copy">
+          <span class="sc-kick">{brand.industry.split('·')[1]?.trim() || ''} REAL ESTATE</span>
+          <span class="sc-h">{headline}</span>
+          {brand.logo.script && <span class="sc-script">{brand.logo.script}</span>}
+          <span class="sc-cta">Find your home →</span>
+        </div>
+        <div class="sc-photo">{photo && <Image src={photo} alt="" widths={[400, 700]} sizes="(min-width:1024px) 25vw, 50vw" />}</div>
+      </div>
+      <div class="sc-cards">
+        <div><b>Buy</b><span>Off-market access</span></div>
+        <div><b>Sell</b><span>Free home valuation</span></div>
+        <div><b>Relocate</b><span>Neighborhood guides</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .sc-wrap { container-type: inline-size; width: 100%; }
+  .sc { border-radius: 1.4cqw; overflow: hidden; background: #fff; box-shadow: 0 4cqw 8cqw -4cqw rgb(0 0 0 / .5); font-family: var(--fb); }
+  .sc-bar { display: flex; align-items: center; gap: .8cqw; padding: 1.4cqw 1.8cqw; background: #ece8e2; }
+  .sc-bar i { width: 1.3cqw; aspect-ratio: 1; border-radius: 50%; background: #cfc8be; }
+  .sc-bar span { margin-left: 2cqw; font-size: 1.4cqw; background: #fff; padding: .4cqw 2cqw; border-radius: 1cqw; color: #776; }
+  .sc-page { background: var(--l); color: var(--k); }
+  .sc-nav { display: flex; align-items: center; gap: 3cqw; padding: 2.4cqw 4cqw; font-size: 1.5cqw; letter-spacing: .14em; text-transform: uppercase; }
+  .sc-logo { width: 22cqw; margin-right: auto; }
+  .sc-btn { background: var(--p); color: var(--l); padding: 1cqw 2cqw; letter-spacing: .1em; }
+  .sc-hero { display: grid; grid-template-columns: 1.1fr 1fr; align-items: stretch; min-height: 34cqw; }
+  .sc-copy { padding: 4cqw; display: flex; flex-direction: column; justify-content: center; gap: 1.8cqw; }
+  .sc-kick { font-size: 1.4cqw; letter-spacing: .4em; color: var(--p); }
+  .sc-h { font-family: var(--fd); font-size: 4.8cqw; line-height: 1.05; color: var(--a); }
+  .sc-script { font-family: var(--fs); font-size: 4cqw; color: var(--p); line-height: 1; }
+  .sc-cta { align-self: flex-start; border: 1px solid var(--p); padding: 1.2cqw 2.4cqw; font-size: 1.5cqw; letter-spacing: .14em; text-transform: uppercase; color: var(--a); }
+  .sc-photo { position: relative; min-height: 34cqw; }
+  .sc-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .sc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; padding: 3cqw 4cqw 4cqw; }
+  .sc-cards div { display: grid; gap: .6cqw; padding: 2cqw; background: #fff; border-top: 2px solid var(--p); }
+  .sc-cards b { font-family: var(--fd); font-weight: 400; font-size: 2.6cqw; color: var(--a); }
+  .sc-cards span { font-size: 1.4cqw; color: #7a6d63; }
+</style>

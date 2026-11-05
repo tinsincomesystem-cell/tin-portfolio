@@ -1,0 +1,130 @@
+---
+// Intro video with a live neon network behind it. Copy lives in src/content/intro.yaml.
+import { getImage } from 'astro:assets';
+import { intro, rich } from '../lib/content';
+import { img } from '../lib/images';
+const im = img(intro.poster);
+const poster = im ? (await getImage({ src: im, width: 1280, format: 'webp' })).src : undefined;
+---
+<section id="intro-film" class="film s-dark section grain" aria-labelledby="film-title">
+  <canvas class="film-net" aria-hidden="true"></canvas>
+  <div class="wrap film-inner">
+    <div class="section-head film-head">
+      <span class="eyebrow" data-reveal>{intro.eyebrow}</span>
+      <h2 id="film-title" class="h-1" data-reveal style="--d:.05" set:html={rich(intro.title)} />
+      <p class="lead" data-reveal style="--d:.1">{intro.intro}</p>
+    </div>
+    <div class="film-tilt" data-reveal style="--d:.15">
+      <div class="film-frame">
+        <video class="film-video" playsinline preload="none" poster={poster} aria-label="Tin's intro video">
+          <source src={intro.video} type="video/mp4" />
+        </video>
+        <button type="button" class="film-play" aria-label={intro.playLabel}>
+          <span class="film-orbit" aria-hidden="true"></span>
+          <span class="film-icon" aria-hidden="true"></span>
+          <span class="film-label mono">{intro.playLabel}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .film { position: relative; overflow: hidden; }
+  .film-net { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .film-inner { position: relative; z-index: 1; display: grid; gap: var(--space-l); justify-items: center; }
+  .film-head { text-align: center; justify-items: center; margin-inline: auto; }
+  .film-head :global(em) { color: var(--champagne); }
+  .film-tilt { width: 100%; max-width: 960px; perspective: 1200px; }
+  .film-frame { --ang: 0deg; position: relative; border-radius: 18px; transform-style: preserve-3d; transition: transform .25s ease-out; box-shadow: 0 40px 90px -40px #000, 0 0 60px -18px rgb(94 230 200 / .55); }
+  @property --film-ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  .film-frame::before { content: ''; position: absolute; inset: -2px; border-radius: 20px; background: conic-gradient(from var(--film-ang), transparent 0 50%, var(--mint) 68%, #eafff9 74%, var(--champagne) 86%, transparent 96%); animation: filmspin 5s linear infinite; }
+  @keyframes filmspin { to { --film-ang: 360deg; } }
+  .film-video { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 18px; background: var(--onyx); }
+  .film-play { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .9rem; border: 0; border-radius: 18px; background: linear-gradient(to top, rgb(0 0 0 / .55), rgb(0 0 0 / .08) 60%); color: var(--bone); cursor: pointer; transition: opacity .35s; }
+  .film-frame.is-playing .film-play { opacity: 0; pointer-events: none; }
+  .film-orbit { position: absolute; left: 50%; top: 50%; width: clamp(92px, 16vw, 132px); aspect-ratio: 1; translate: -50% -66%; border-radius: 50%; border: 1px dashed rgb(94 230 200 / .8); box-shadow: 0 0 24px rgb(94 230 200 / .6), inset 0 0 18px rgb(94 230 200 / .4); animation: filmorbit 9s linear infinite; }
+  @keyframes filmorbit { to { rotate: 360deg; } }
+  .film-icon { width: clamp(56px, 10vw, 78px); aspect-ratio: 1; border-radius: 50%; background: var(--mint); box-shadow: 0 0 34px rgb(94 230 200 / .85); position: relative; transition: scale .25s; }
+  .film-icon::after { content: ''; position: absolute; left: 54%; top: 50%; translate: -50% -50%; border-style: solid; border-width: 12px 0 12px 19px; border-color: transparent transparent transparent var(--onyx); }
+  .film-play:hover .film-icon, .film-play:focus-visible .film-icon { scale: 1.1; }
+  .film-label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; margin-top: 1rem; }
+  @media (prefers-reduced-motion: reduce) { .film-frame::before, .film-orbit { animation: none; } .film-frame { transition: none; } }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.film')!;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cv = section.querySelector<HTMLCanvasElement>('.film-net')!;
+  const frame = section.querySelector<HTMLElement>('.film-frame')!;
+  const video = section.querySelector<HTMLVideoElement>('.film-video')!;
+  const play = section.querySelector<HTMLButtonElement>('.film-play')!;
+  const ctx = cv.getContext('2d')!;
+
+  // Network that leans toward the cursor/finger and connects to it with neon lines
+  type N = { x: number; y: number; hx: number; hy: number; vx: number; vy: number };
+  let w = 0, h = 0, nodes: N[] = [];
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const ptr = { x: -9999, y: -9999, on: false };
+  function size() {
+    const r = cv.getBoundingClientRect(); w = r.width; h = r.height;
+    cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(70, (w * h) / 16000));
+    nodes = Array.from({ length: n }, () => { const x = Math.random() * w, y = Math.random() * h; return { x, y, hx: x, hy: y, vx: 0, vy: 0 }; });
+  }
+  let t = 0, raf = 0, visible = false;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    t += .006;
+    nodes.forEach((n, i) => {
+      if (!reduce) {
+        const dx = ptr.x - n.x, dy = ptr.y - n.y, d = Math.hypot(dx, dy);
+        if (ptr.on && d < 240) { n.vx += (dx / d) * .09; n.vy += (dy / d) * .09; }
+        n.vx += (n.hx + Math.sin(t + i) * 16 - n.x) * .004; n.vy += (n.hy + Math.cos(t * .8 + i) * 16 - n.y) * .004;
+        n.vx *= .93; n.vy *= .93; n.x += n.vx; n.y += n.vy;
+      }
+    });
+    for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < 130) { ctx.strokeStyle = `rgba(200,169,126,${(1 - d / 130) * .26})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+    }
+    for (const n of nodes) {
+      const d = Math.hypot(ptr.x - n.x, ptr.y - n.y);
+      if (ptr.on && d < 200) {
+        ctx.strokeStyle = `rgba(94,230,200,${(1 - d / 200) * .9})`; ctx.lineWidth = 1.2;
+        ctx.shadowColor = '#5ee6c8'; ctx.shadowBlur = 8;
+        ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(ptr.x, ptr.y); ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+      ctx.fillStyle = 'rgba(200,169,126,.65)'; ctx.beginPath(); ctx.arc(n.x, n.y, 1.5, 0, 7); ctx.fill();
+    }
+    if (visible && !reduce) raf = requestAnimationFrame(draw);
+  }
+  size(); draw();
+  window.addEventListener('resize', () => { size(); if (reduce) draw(); });
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting; cancelAnimationFrame(raf);
+    if (visible && !reduce) raf = requestAnimationFrame(draw);
+    if (!visible && !video.paused) video.pause(); // stop playing once scrolled away
+  }, { threshold: .05 }).observe(section);
+
+  function move(e: PointerEvent) {
+    const r = cv.getBoundingClientRect();
+    ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top; ptr.on = true;
+    if (reduce || e.pointerType === 'touch') return;
+    const fr = frame.getBoundingClientRect();
+    const rx = ((e.clientY - fr.top) / fr.height - .5) * -5, ry = ((e.clientX - fr.left) / fr.width - .5) * 6;
+    frame.style.transform = `rotateX(${Math.max(-5, Math.min(5, rx))}deg) rotateY(${Math.max(-6, Math.min(6, ry))}deg)`;
+  }
+  section.addEventListener('pointermove', move);
+  section.addEventListener('pointerdown', move);
+  section.addEventListener('pointerleave', () => { ptr.on = false; frame.style.transform = ''; });
+
+  play.addEventListener('click', () => {
+    video.controls = true;
+    frame.style.transform = '';
+    video.play();
+  });
+  video.addEventListener('play', () => frame.classList.add('is-playing'));
+  video.addEventListener('ended', () => { frame.classList.remove('is-playing'); video.controls = false; video.load(); });
+</script>

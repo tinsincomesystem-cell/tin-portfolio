@@ -1,0 +1,412 @@
+---
+// "VA Reality Check" meter. All questions, weights, hours and tiers live in src/content/quiz.yaml.
+import { quiz, site, services, rich } from '../lib/content';
+const serviceTitles = Object.fromEntries(services.items.map((s: any) => [s.id, s.title]));
+const data = { questions: quiz.questions, areas: quiz.areas, tiers: quiz.tiers, serviceTitles, recommend: quiz.recommend || {} };
+const n = quiz.questions.length;
+---
+<section id="va-meter" class="meter s-dark section grain" aria-labelledby="meter-title">
+  <div class="meter-bg" aria-hidden="true"></div>
+  <div class="wrap meter-grid">
+    <div class="section-head meter-head">
+      <span class="eyebrow" data-reveal>{quiz.eyebrow}</span>
+      <h2 id="meter-title" class="h-1" data-reveal style="--d:.05" set:html={rich(quiz.title)} />
+      <p class="lead" data-reveal style="--d:.1">{quiz.intro}</p>
+    </div>
+
+    <div class="quiz" data-quiz data-reveal style="--d:.15">
+      <span class="sticker" aria-hidden="true">{quiz.sticker || 'Be honest!'}</span>
+
+      <div class="q-screen is-active" data-screen="start">
+        <div class="deck">
+          <div class="ghost g2"></div><div class="ghost g1"></div>
+          <div class="qcard start-card">
+            <div class="start-gauge" aria-hidden="true">
+              <svg viewBox="0 0 200 120"><path d="M20 110 A80 80 0 0 1 180 110" class="g-track" /><path d="M20 110 A80 80 0 0 1 180 110" class="g-demo" /></svg>
+              <span class="mono">VA REALITY CHECK</span>
+            </div>
+            <ul class="start-points" role="list"><li>{n} one-tap questions</li><li>Live score</li><li>No email required</li></ul>
+            <button type="button" class="btn btn-mint" data-start data-magnetic>{quiz.startLabel} <span class="arrow" aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-screen" data-screen="question">
+        <div class="q-layout">
+          <div class="deck">
+            <div class="ghost g2"></div><div class="ghost g1"></div>
+            <div class="qcard" data-qcard>
+              <div class="q-top mono"><span data-count>01 / {String(n).padStart(2, '0')}</span><button type="button" class="q-back" data-back>← Back</button></div>
+              <h3 class="q-text" tabindex="-1" data-qtext></h3>
+              <div class="q-answers" role="group" data-answers></div>
+              <div class="q-bar" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax={n} aria-valuenow="0"><i data-bar></i></div>
+            </div>
+          </div>
+          <div class="live" aria-hidden="true">
+            <div class="live-dial">
+              <svg viewBox="0 0 120 120" class="live-ring"><circle cx="60" cy="60" r="50" class="lr-track" /><circle cx="60" cy="60" r="50" class="lr-fill" pathLength="100" data-live-fill /></svg>
+              <div class="live-num"><span data-live>0</span><small>%</small></div>
+            </div>
+            <span class="mono live-label">Overwhelm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-screen" data-screen="result">
+        <div class="r-card">
+          <div class="r-top">
+            <div class="gauge" data-gauge role="img" aria-label="VA Reality Check score">
+              <svg viewBox="0 0 200 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#8a9a7b" /><stop offset=".45" stop-color="#5ee6c8" /><stop offset=".7" stop-color="#c8a97e" /><stop offset="1" stop-color="#c65d3b" /></linearGradient>
+                  <filter id="gglow" x="-20%" y="-30%" width="140%" height="170%"><feGaussianBlur stdDeviation="3" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+                </defs>
+                <path d="M20 110 A80 80 0 0 1 180 110" class="g-track" />
+                <path d="M20 110 A80 80 0 0 1 180 110" class="g-fill" data-gfill pathLength="100" filter="url(#gglow)" />
+                <g class="g-needle" data-needle><line x1="100" y1="110" x2="100" y2="52" /><circle cx="100" cy="110" r="6" /></g>
+              </svg>
+              <div class="g-num"><span data-score>0</span><small>%</small></div>
+              <span class="mono g-label">REALITY CHECK</span>
+            </div>
+            <div class="r-tier">
+              <span class="eyebrow">Your result</span>
+              <h3 class="h-2" data-tier tabindex="-1"></h3>
+              <p class="muted" data-summary></p>
+            </div>
+          </div>
+
+          <ul class="stats" role="list">
+            <li><span class="mono">Hours back / week</span><strong>~<span data-hw>0</span></strong></li>
+            <li><span class="mono">Hours back / month</span><strong>~<span data-hm>0</span></strong></li>
+            <li><span class="mono">My pick for you</span><strong data-pick>—</strong></li>
+          </ul>
+
+          <div class="r-break">
+            <h4 class="r-h">Where you're losing time</h4>
+            <ul class="tags" role="list" data-tags></ul>
+            <ol class="leaks" data-leaks role="list"></ol>
+            <details class="all-areas"><summary>See all 8 areas</summary><ul class="bars" data-bars role="list"></ul></details>
+          </div>
+
+          <div class="r-cta">
+            <a class="btn" href="#pricing" data-plan-btn data-magnetic><span data-plan-label>See the plan</span> <span class="arrow" aria-hidden="true">→</span></a>
+            <button type="button" class="btn btn-ghost" data-ask>Ask my assistant</button>
+            <a class="btn btn-ghost" href={site.bookingUrl} target="_blank" rel="noopener">{quiz.resultCta}</a>
+            <button type="button" class="retake" data-restart>↻ Retake</button>
+          </div>
+
+          <form class="r-email" name="va-score" method="POST" data-netlify="true" netlify-honeypot="company-website" action="/thank-you" data-email-form data-success={quiz.emailCapture.success}>
+            <input type="hidden" name="form-name" value="va-score" />
+            <input type="hidden" name="score" data-f-score />
+            <input type="hidden" name="tier" data-f-tier />
+            <input type="hidden" name="top-leaks" data-f-leaks />
+            <input type="hidden" name="hours-per-week" data-f-hours />
+            <input type="hidden" name="answers" data-f-answers />
+            <p class="sr-only"><label>Don't fill this out: <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
+            <div class="re-copy"><strong>{quiz.emailCapture.title}</strong><span class="muted">{quiz.emailCapture.text}</span></div>
+            <div class="re-row">
+              <label class="sr-only" for="va-name">First name</label>
+              <input id="va-name" name="name" type="text" placeholder="First name" autocomplete="given-name" />
+              <label class="sr-only" for="va-email">Email</label>
+              <input id="va-email" name="email" type="email" placeholder="you@email.com" required autocomplete="email" />
+              <button class="btn btn-mint" type="submit">{quiz.emailCapture.button}</button>
+            </div>
+            <p class="re-status" role="status" data-email-status></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" id="quiz-data" set:html={JSON.stringify(data)} />
+  <p class="sr-only" aria-live="assertive" data-announce></p>
+</section>
+
+<style>
+  .meter { overflow: clip; }
+  .meter-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 60% at 75% 50%, rgb(94 230 200 / .09), transparent 70%), radial-gradient(ellipse 40% 50% at 15% 80%, rgb(200 169 126 / .07), transparent 70%); pointer-events: none; }
+  .meter-grid { display: grid; gap: var(--space-l); align-items: start; position: relative; }
+  .meter-head { margin-bottom: 0; }
+  .meter :global(.h-1 em) { color: var(--mint); text-shadow: 0 0 22px rgb(94 230 200 / .45); }
+  .quiz { position: relative; }
+  .sticker { position: absolute; z-index: 5; top: -1.1rem; right: 1.2rem; transform: rotate(7deg); font-family: var(--font-display); font-style: italic; font-size: 1.35rem; color: #fff; background: var(--terracotta-ink); padding: .15rem .9rem .3rem; border-radius: 6px; box-shadow: 0 0 0 2px #0b0a0a, 0 0 22px rgb(198 93 59 / .65); }
+  .q-screen { display: none; }
+  .q-screen.is-active { display: block; animation: qin .5s var(--ease-out); }
+  @keyframes qin { from { opacity: 0; transform: translateY(16px); } }
+
+  .deck { position: relative; padding: 0 1.1rem 1.4rem 0; }
+  .ghost { position: absolute; inset: 0 1.1rem 1.4rem 0; border-radius: 22px; background: var(--panel); border: 1px solid rgb(94 230 200 / .16); }
+  .g1 { transform: translate(.6rem, .7rem) rotate(1.6deg); opacity: .7; }
+  .g2 { transform: translate(1.1rem, 1.4rem) rotate(3.2deg); opacity: .4; }
+  .qcard { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 1.1rem; padding: clamp(1.25rem, 3.5vw, 2rem); min-height: 27rem; border-radius: 22px; background: linear-gradient(170deg, #1a1816, #121110); border: 1px solid rgb(94 230 200 / .38); box-shadow: 0 0 0 1px rgb(94 230 200 / .08), 0 0 44px -10px rgb(94 230 200 / .4), 0 40px 80px -40px #000; will-change: transform; }
+  .start-card { justify-content: center; align-items: center; text-align: center; }
+  .start-gauge { display: grid; justify-items: center; gap: .25rem; color: var(--smoke); width: 100%; }
+  .start-gauge svg { width: min(240px, 70%); }
+  .start-points { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+  .start-points li { font-size: .85rem; color: var(--smoke); padding: .35rem .8rem; border: 1px solid var(--line-dark); border-radius: 999px; }
+  .g-track { fill: none; stroke: var(--line-dark); stroke-width: 12; stroke-linecap: round; }
+  .g-demo { fill: none; stroke: var(--mint); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 60 300; animation: demo 3.6s var(--ease-in-out) infinite alternate; filter: drop-shadow(0 0 6px var(--mint)); }
+  @keyframes demo { from { stroke-dasharray: 20 300; } to { stroke-dasharray: 230 300; } }
+
+  .q-layout { display: grid; gap: 1rem; }
+  .q-top { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; color: var(--mint); }
+  .q-back { color: var(--smoke); padding: .5rem 0; font-size: .8rem; }
+  .q-back:hover { color: var(--bone); }
+  .q-back[disabled] { visibility: hidden; }
+  .q-text { outline: none; font-size: var(--step-2); line-height: 1.2; min-height: 2.5em; }
+  .q-answers { display: grid; gap: .55rem; }
+  :global(.ans) { display: flex; align-items: center; gap: .9rem; width: 100%; min-height: 3.4rem; padding: .8rem 1rem; text-align: left; border-radius: 14px; background: rgb(255 255 255 / .03); border: 1px solid var(--line-dark); font-size: 1rem; transition: border-color .2s, background .2s, transform .2s var(--ease-out), box-shadow .2s; }
+  :global(.ans:hover) { border-color: rgb(94 230 200 / .6); transform: translateX(3px); box-shadow: 0 0 18px -6px rgb(94 230 200 / .6); }
+  :global(.ans[aria-pressed='true']) { border-color: var(--mint); background: rgb(94 230 200 / .1); box-shadow: 0 0 22px -4px rgb(94 230 200 / .7); }
+  :global(.ans kbd) { flex: none; width: 1.8rem; height: 1.8rem; display: grid; place-items: center; border-radius: 8px; border: 1px solid var(--line-dark); font-family: var(--font-mono); font-size: .75rem; color: var(--smoke); }
+  :global(.ans[aria-pressed='true'] kbd) { background: var(--mint); color: var(--onyx); border-color: var(--mint); }
+  .q-bar { height: 3px; border-radius: 3px; background: var(--line-dark); overflow: hidden; margin-top: auto; }
+  .q-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--mint), var(--champagne)); box-shadow: 0 0 10px var(--mint); transition: width .6s var(--ease-out); }
+
+  .live { display: flex; align-items: center; gap: .9rem; padding: .7rem 1rem; border-radius: 18px; border: 1px solid var(--line-dark); background: var(--panel); }
+  .live-dial { position: relative; width: 60px; height: 60px; display: grid; place-items: center; }
+  .live-ring { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .lr-track { fill: none; stroke: var(--line-dark); stroke-width: 10; }
+  .lr-fill { fill: none; stroke: var(--mint); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 0 100; transition: stroke-dasharray .8s var(--ease-out), stroke .5s; filter: drop-shadow(0 0 5px rgb(94 230 200 / .8)); }
+  .live-num { position: relative; font-family: var(--font-display); font-size: 1.15rem; line-height: 1; }
+  .live-num small { font-size: .6em; color: var(--smoke); }
+  .live-label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--smoke); }
+
+  .r-card { display: grid; gap: 1.5rem; padding: clamp(1.25rem, 3.5vw, 2rem); border-radius: 22px; background: linear-gradient(170deg, #1a1816, #121110); border: 1px solid rgb(94 230 200 / .3); box-shadow: 0 0 50px -14px rgb(94 230 200 / .4); }
+  .r-top { display: grid; gap: 1.25rem; align-items: center; }
+  .gauge { position: relative; width: min(300px, 86%); justify-self: center; display: grid; justify-items: center; }
+  .gauge svg { width: 100%; overflow: visible; }
+  .g-fill { fill: none; stroke: url(#gg); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 0 100; }
+  .g-needle { transform-origin: 100px 110px; transform: rotate(-90deg); }
+  .g-needle line { stroke: var(--bone); stroke-width: 3; stroke-linecap: round; }
+  .g-needle circle { fill: var(--bone); }
+  .g-num { margin-top: .6rem; font-family: var(--font-display); font-size: clamp(3rem, 9vw, 4.4rem); line-height: 1; display: flex; align-items: baseline; }
+  .g-num small { font-size: .45em; color: var(--smoke); margin-left: .05em; }
+  .g-label { color: var(--smoke); font-size: .7rem; letter-spacing: .14em; margin-top: .2rem; }
+  .r-tier { display: grid; gap: .5rem; text-align: center; justify-items: center; }
+  .r-tier h3 { outline: none; }
+  .r-tier h3[data-color='terracotta'] { color: #f08a68; text-shadow: 0 0 20px rgb(240 138 104 / .45); }
+  .r-tier h3[data-color='champagne'] { color: var(--champagne); text-shadow: 0 0 20px rgb(200 169 126 / .4); }
+  .r-tier h3[data-color='mint'] { color: var(--mint); text-shadow: 0 0 20px rgb(94 230 200 / .45); }
+  .r-tier h3[data-color='sage'] { color: #b4c3a5; }
+  .stats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+  .stats li { display: grid; gap: .3rem; padding: .8rem; border-radius: 14px; background: rgb(255 255 255 / .03); border: 1px solid var(--line-dark); }
+  .stats .mono { font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--smoke); }
+  .stats strong { font-family: var(--font-display); font-weight: 400; font-size: var(--step-2); line-height: 1.05; color: var(--mint); text-shadow: 0 0 16px rgb(94 230 200 / .35); }
+  .r-h { font-family: var(--font-mono); font-weight: 500; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--smoke); margin-bottom: .75rem; }
+  .tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1rem; }
+  .tags :global(li) { position: relative; font-family: var(--font-mono); font-size: .78rem; padding: .35rem .8rem; border-radius: 999px; border: 1px solid var(--mint); color: #eafff9; box-shadow: 0 0 12px -2px rgb(94 230 200 / .6); transform: rotate(var(--rot, 0deg)); }
+  .tags :global(li)::before { content: '✕'; position: absolute; top: -.45rem; left: -.35rem; width: 1rem; height: 1rem; display: grid; place-items: center; border-radius: 50%; background: var(--terracotta-ink); color: #fff; font-size: .55rem; }
+  .leaks { list-style: none; padding: 0; display: grid; gap: .6rem; counter-reset: leak; }
+  .leaks :global(li) { counter-increment: leak; display: grid; grid-template-columns: auto 1fr; gap: .25rem 1rem; padding: 1rem; border-radius: 14px; background: rgb(255 255 255 / .03); border: 1px solid var(--line-dark); }
+  .leaks :global(li)::before { content: counter(leak, decimal-leading-zero); grid-row: span 3; font-family: var(--font-mono); font-size: .8rem; color: var(--champagne); padding-top: .2rem; }
+  .leaks :global(.lk-title) { font-weight: 600; display: flex; justify-content: space-between; gap: .75rem; }
+  .leaks :global(.lk-title b) { font-family: var(--font-mono); font-weight: 500; font-size: .8rem; color: var(--smoke); }
+  .leaks :global(.lk-leak) { color: var(--smoke); font-size: .92rem; }
+  .leaks :global(.lk-fix) { font-size: .88rem; color: var(--mint); }
+  .leaks :global(.lk-fix a) { color: inherit; }
+  .all-areas { margin-top: 1rem; }
+  .all-areas summary { cursor: pointer; color: var(--smoke); font-size: .9rem; padding: .5rem 0; }
+  .bars { list-style: none; padding: 0; display: grid; gap: .55rem; margin-top: .5rem; }
+  .bars :global(li) { display: grid; grid-template-columns: 9.5rem 1fr 2.6rem; gap: .75rem; align-items: center; font-size: .82rem; }
+  .bars :global(.bar) { height: 6px; border-radius: 6px; background: var(--line-dark); overflow: hidden; }
+  .bars :global(.bar i) { display: block; height: 100%; background: var(--champagne); width: 0; transition: width 1s var(--ease-out); }
+  .bars :global(.pct) { font-family: var(--font-mono); color: var(--smoke); text-align: right; }
+  .r-cta { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+  .retake { color: var(--smoke); font-size: .9rem; padding: .6rem; }
+  .retake:hover { color: var(--bone); }
+  .r-email { display: grid; gap: .8rem; padding: 1.1rem; border-radius: 16px; border: 1px dashed rgb(94 230 200 / .35); }
+  .re-copy { display: grid; gap: .2rem; font-size: .92rem; }
+  .re-row { display: grid; gap: .5rem; }
+  .re-row input { min-height: 3.1rem; padding: .7rem 1rem; border-radius: 12px; background: var(--onyx); border: 1px solid var(--line-dark); color: var(--bone); }
+  .re-row input:focus { border-color: var(--mint); outline: none; box-shadow: 0 0 0 3px rgb(94 230 200 / .15); }
+  .re-status { font-size: .88rem; color: var(--mint); min-height: 1.2em; }
+  .re-status.is-error { color: #f08a68; }
+
+  @media (max-width: 479px) { .stats { grid-template-columns: 1fr 1fr; } .stats li:last-child { grid-column: span 2; } }
+  @media (min-width: 640px) {
+    .re-row { grid-template-columns: 1fr 1.4fr auto; }
+    .r-top { grid-template-columns: 1fr 1.1fr; }
+    .r-tier { text-align: left; justify-items: start; }
+    .q-layout { grid-template-columns: 1fr auto; align-items: start; }
+    .live { flex-direction: column; padding: 1.2rem 1rem; position: sticky; top: 7rem; }
+    .live-dial { width: 110px; height: 110px; }
+    .live-num { font-size: 2rem; }
+  }
+  @media (min-width: 1024px) {
+    .meter-grid { grid-template-columns: .75fr 1.25fr; gap: var(--space-xl); }
+    .meter-head { position: sticky; top: 7rem; }
+  }
+</style>
+
+<script>
+  import { gsap, reducedMotion, scrollToTarget } from '../scripts/core';
+
+  const root = document.querySelector<HTMLElement>('[data-quiz]')!;
+  const data = JSON.parse(document.getElementById('quiz-data')!.textContent!);
+  const { questions, areas, tiers, serviceTitles, recommend } = data;
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+  const screens = root.querySelectorAll<HTMLElement>('[data-screen]');
+  const announce = document.querySelector<HTMLElement>('[data-announce]')!;
+  const card = $('[data-qcard]');
+  const answers: (number | null)[] = questions.map(() => null);
+  const totalMax = questions.reduce((s: number, q: any) => s + q.weight * 10, 0);
+  let idx = 0, busy = false, pickTab = '';
+  const pad = (v: number) => String(v).padStart(2, '0');
+  const show = (name: string) => screens.forEach((s) => s.classList.toggle('is-active', s.dataset.screen === name));
+
+  function liveScore() {
+    const pts = questions.reduce((s: number, q: any, i: number) => s + (answers[i] == null ? 0 : q.weight * q.answers[answers[i]!].points), 0);
+    const v = Math.round((pts / totalMax) * 100);
+    $('[data-live]').textContent = String(v);
+    const f = $('[data-live-fill]');
+    f.style.strokeDasharray = `${v} 100`;
+    f.style.stroke = v >= 80 ? '#c65d3b' : v >= 60 ? '#c8a97e' : '#5ee6c8';
+  }
+
+  function fill() {
+    const q = questions[idx];
+    $('[data-count]').textContent = `${pad(idx + 1)} / ${pad(questions.length)}`;
+    $('[data-bar]').style.width = `${(idx / questions.length) * 100}%`;
+    $('[role="progressbar"]').setAttribute('aria-valuenow', String(idx));
+    $<HTMLButtonElement>('[data-back]').disabled = idx === 0;
+    const qt = $('[data-qtext]');
+    qt.textContent = q.question;
+    const wrap = $('[data-answers]');
+    wrap.setAttribute('aria-label', q.question);
+    wrap.innerHTML = '';
+    q.answers.forEach((a: any, i: number) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'ans';
+      b.setAttribute('aria-pressed', String(answers[idx] === i));
+      b.innerHTML = `<kbd aria-hidden="true">${'ABCD'[i] ?? i + 1}</kbd><span></span>`;
+      b.querySelector('span')!.textContent = a.label;
+      b.addEventListener('click', () => choose(i));
+      wrap.append(b);
+    });
+    liveScore();
+    qt.focus({ preventScroll: true });
+  }
+
+  // Throw the top card off the stack, then deal the next one
+  function turn(dir: 1 | -1, then: () => void) {
+    if (reducedMotion()) { then(); return; }
+    busy = true;
+    gsap.to(card, { xPercent: dir * 130, rotate: dir * 12, opacity: 0, duration: .36, ease: 'power2.in', onComplete: () => {
+      then();
+      gsap.fromTo(card, { xPercent: 0, y: 26, rotate: dir * -2, scale: .95, opacity: 0 }, { y: 0, rotate: 0, scale: 1, opacity: 1, duration: .45, ease: 'back.out(1.6)', onComplete: () => { busy = false; } });
+    } });
+  }
+
+  function choose(i: number) {
+    if (busy) return;
+    answers[idx] = i;
+    root.querySelectorAll('.ans').forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
+    liveScore();
+    setTimeout(() => {
+      if (idx < questions.length - 1) turn(1, () => { idx++; fill(); });
+      else turn(1, results);
+    }, reducedMotion() ? 0 : 180);
+  }
+
+  function compute() {
+    let num = 0, hours = 0;
+    const per: Record<string, { pts: number; max: number }> = {};
+    questions.forEach((q: any, i: number) => {
+      const a = q.answers[answers[i] ?? 0];
+      num += q.weight * a.points; hours += a.hours || 0;
+      per[q.area] ??= { pts: 0, max: 0 };
+      per[q.area].pts += q.weight * a.points; per[q.area].max += q.weight * 10;
+    });
+    const score = Math.round((num / totalMax) * 100);
+    const byArea = Object.entries(per).map(([k, v]) => ({ key: k, pct: Math.round((v.pts / v.max) * 100), ...areas[k] })).sort((a, b) => b.pct - a.pct);
+    const tier = tiers.find((t: any) => score >= t.min) ?? tiers[tiers.length - 1];
+    return { score, byArea, tier, hours: Math.round(hours) };
+  }
+
+  function results() {
+    const { score, byArea, tier, hours } = compute();
+    show('result');
+    const tierEl = $('[data-tier]');
+    tierEl.textContent = tier.name; tierEl.dataset.color = tier.color;
+    $('[data-summary]').textContent = tier.summary;
+    $('[data-gauge]').setAttribute('aria-label', `VA Reality Check score: ${score} percent. ${tier.name}.`);
+    $('[data-hw]').textContent = String(hours);
+    $('[data-hm]').textContent = String(Math.round(hours * 4.33));
+    const rec = recommend[tier.name] || {};
+    $('[data-pick]').textContent = rec.plan || 'Free call';
+    pickTab = rec.tab || '';
+    $('[data-plan-label]').textContent = rec.plan ? `See the ${rec.plan} plan` : 'See pricing';
+
+    const tags = $('[data-tags]'); tags.innerHTML = '';
+    byArea.filter((a) => a.pct >= 50).slice(0, 6).forEach((a, i) => {
+      const li = document.createElement('li'); li.textContent = a.label.toLowerCase();
+      li.style.setProperty('--rot', `${[-3, 2, -1.5, 3, -2, 1][i]}deg`); tags.append(li);
+    });
+    const leaks = byArea.filter((a) => a.pct > 0).slice(0, 3);
+    const ol = $('[data-leaks]'); ol.innerHTML = '';
+    (leaks.length ? leaks : byArea.slice(0, 1)).forEach((a) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="lk-title"><span></span><b>${a.pct}%</b></span><span class="lk-leak"></span><span class="lk-fix">Fix → <a href="#pricing"></a></span>`;
+      li.querySelector('.lk-title span')!.textContent = a.label;
+      li.querySelector('.lk-leak')!.textContent = a.leak;
+      li.querySelector('.lk-fix a')!.textContent = `${a.fix} (${serviceTitles[a.service] ?? ''})`;
+      ol.append(li);
+    });
+    const ul = $('[data-bars]'); ul.innerHTML = '';
+    byArea.forEach((a) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span></span><span class="bar"><i></i></span><span class="pct">${a.pct}%</span>`;
+      li.querySelector('span')!.textContent = a.label;
+      ul.append(li);
+      requestAnimationFrame(() => requestAnimationFrame(() => { (li.querySelector('.bar i') as HTMLElement).style.width = a.pct + '%'; }));
+    });
+
+    ($('[data-f-score]') as HTMLInputElement).value = String(score);
+    ($('[data-f-tier]') as HTMLInputElement).value = tier.name;
+    ($('[data-f-leaks]') as HTMLInputElement).value = leaks.map((l) => `${l.label} (${l.pct}%)`).join(', ');
+    ($('[data-f-hours]') as HTMLInputElement).value = String(hours);
+    ($('[data-f-answers]') as HTMLInputElement).value = questions.map((q: any, i: number) => `${q.question} → ${q.answers[answers[i] ?? 0].label}`).join('\n');
+    window.dispatchEvent(new CustomEvent('va:result', { detail: { score, tier: tier.name, leaks: leaks.map((l) => l.label), plan: rec.plan, hours } }));
+
+    const fillEl = $('[data-gfill]'), needle = $('[data-needle]'), num = $('[data-score]');
+    const o = { v: 0 };
+    const draw = () => { fillEl.style.strokeDasharray = `${o.v} 100`; needle.style.transform = `rotate(${-90 + o.v * 1.8}deg)`; num.textContent = String(Math.round(o.v)); };
+    if (reducedMotion()) { o.v = score; draw(); }
+    else {
+      gsap.to(o, { v: score, duration: 1.8, ease: 'power3.out', onUpdate: draw, delay: .2 });
+      gsap.from(root.querySelector('.r-card'), { y: 30, opacity: 0, duration: .6, ease: 'expo.out' });
+      gsap.from(tags.children, { scale: 0, rotate: 20, opacity: 0, duration: .5, stagger: .07, ease: 'back.out(2)', delay: .6 });
+    }
+    announce.textContent = `Your VA Reality Check score is ${score} percent: ${tier.name}. About ${hours} hours a week could be handed off.`;
+    tierEl.focus({ preventScroll: true });
+  }
+
+  $('[data-start]').addEventListener('click', () => { idx = 0; show('question'); fill(); if (!reducedMotion()) gsap.from(card, { y: 30, opacity: 0, duration: .5, ease: 'expo.out' }); });
+  $('[data-back]').addEventListener('click', () => { if (idx > 0 && !busy) turn(-1, () => { idx--; fill(); }); });
+  $('[data-restart]').addEventListener('click', () => { answers.fill(null); idx = 0; show('question'); fill(); });
+  $('[data-plan-btn]').addEventListener('click', (e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('pricing:select', { detail: { tab: pickTab } })); scrollToTarget('#pricing'); });
+  $('[data-ask]').addEventListener('click', () => window.dispatchEvent(new CustomEvent('assistant:open', { detail: { from: 'quiz' } })));
+  root.addEventListener('keydown', (e) => {
+    if (!$('[data-screen="question"]').classList.contains('is-active')) return;
+    const k = e.key.toUpperCase(); const map: Record<string, number> = { A: 0, B: 1, C: 2, D: 3, '1': 0, '2': 1, '3': 2, '4': 3 };
+    if (k in map && !(e.target as HTMLElement).matches('input')) { e.preventDefault(); choose(map[k]); }
+  });
+
+  const form = $<HTMLFormElement>('[data-email-form]');
+  const status = $('[data-email-status]');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    btn.disabled = true; status.classList.remove('is-error'); status.textContent = 'Sending…';
+    try {
+      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as any).toString() });
+      if (!res.ok) throw new Error(String(res.status));
+      status.textContent = form.dataset.success || 'Sent!';
+      form.querySelector<HTMLElement>('.re-row')!.hidden = true;
+    } catch {
+      status.classList.add('is-error');
+      status.textContent = "Couldn't send right now. Please try again, or book a call above.";
+      btn.disabled = false;
+    }
+  });
+</script>

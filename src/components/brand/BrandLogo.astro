@@ -1,0 +1,72 @@
+---
+// Draws a brand's logo from brands.yaml values.
+// variant: mark (monogram only) · stacked (mark over wordmark) · horizontal (mark | wordmark)
+// tone: light (for light backgrounds) · dark (for dark backgrounds)
+interface Props { brand: any; variant?: 'mark' | 'stacked' | 'horizontal'; tone?: 'light' | 'dark'; class?: string; size?: string }
+const { brand, variant = 'stacked', tone = 'light', class: cls = '', size = '100%' } = Astro.props;
+const L = brand.logo, c = brand.colors, f = brand.fonts;
+const markColor = tone === 'dark' ? c.light : c.primary;
+const lineColor = brand.logo.style === 'arch' ? c.accent : c.primary;
+const textColor = tone === 'dark' ? c.light : (brand.logo.style === 'arch' ? c.primary : c.accent);
+const rColor = tone === 'dark' ? c.light : c.accent; // second monogram letter (overlap style)
+const label = `${brand.name} logo`;
+const [a, b] = [L.monogram[0], L.monogram.slice(1)];
+---
+{variant === 'mark' && (
+  <svg class={`blogo ${cls}`} viewBox="0 0 200 240" width={size} role="img" aria-label={label}>
+    {L.style === 'arch' ? (
+      <g>
+        <path d="M44 232V104a56 56 0 0 1 112 0v128" fill="none" stroke={lineColor} stroke-width="2.2" />
+        <path d="M56 232V106a44 44 0 0 1 88 0v126" fill="none" stroke={lineColor} stroke-width=".8" opacity=".7" />
+        <text x="100" y="178" text-anchor="middle" font-family={f.display.family} font-weight="500" font-size="74" letter-spacing="-2" fill={markColor}>{L.monogram}</text>
+      </g>
+    ) : (
+      <g>
+        <circle cx="100" cy="120" r="88" fill="none" stroke={lineColor} stroke-width="1.2" opacity=".55" />
+        <text x="84" y="160" text-anchor="middle" font-family={f.display.family} font-size="118" fill={c.primary}>{a}</text>
+        <text x="124" y="160" text-anchor="middle" font-family={f.display.family} font-size="118" fill={rColor} opacity=".92">{b}</text>
+      </g>
+    )}
+  </svg>
+)}
+{variant === 'stacked' && (
+  <svg class={`blogo ${cls}`} viewBox="0 0 400 400" width={size} role="img" aria-label={label}>
+    {L.style === 'arch' ? (
+      <g>
+        <path d="M150 220V112a50 50 0 0 1 100 0v108" fill="none" stroke={lineColor} stroke-width="2" />
+        <text x="200" y="196" text-anchor="middle" font-family={f.display.family} font-weight="500" font-size="64" letter-spacing="-2" fill={markColor}>{L.monogram}</text>
+        <text x="200" y="282" text-anchor="middle" font-family={f.body.family} font-weight="400" font-size="27" letter-spacing="9" fill={textColor}>{L.wordmark}</text>
+        <line x1="150" y1="304" x2="250" y2="304" stroke={lineColor} stroke-width="1" />
+        <text x="200" y="334" text-anchor="middle" font-family={f.body.family} font-size="14" letter-spacing="8" fill={lineColor}>{L.sub}</text>
+      </g>
+    ) : (
+      <g>
+        <text x="182" y="190" text-anchor="middle" font-family={f.display.family} font-size="128" fill={c.primary}>{a}</text>
+        <text x="222" y="190" text-anchor="middle" font-family={f.display.family} font-size="128" fill={rColor} opacity=".92">{b}</text>
+        <text x="200" y="262" text-anchor="middle" font-family={f.display.family} font-size="30" letter-spacing="9" fill={textColor}>{L.wordmark}</text>
+        <text x="200" y="292" text-anchor="middle" font-family={f.body.family} font-size="13" letter-spacing="7" fill={c.primary}>{L.sub}</text>
+        {L.script && <text x="200" y="346" text-anchor="middle" font-family={f.script?.family} font-size="38" fill={c.primary}>{L.script}</text>}
+      </g>
+    )}
+  </svg>
+)}
+{variant === 'horizontal' && (
+  <svg class={`blogo ${cls}`} viewBox="0 0 520 120" width={size} role="img" aria-label={label}>
+    {L.style === 'arch' ? (
+      <g>
+        <text x="64" y="84" text-anchor="middle" font-family={f.display.family} font-weight="500" font-size="72" letter-spacing="-2" fill={markColor}>{L.monogram}</text>
+        <line x1="128" y1="22" x2="128" y2="98" stroke={lineColor} stroke-width="1.4" />
+        <text x="152" y="62" font-family={f.body.family} font-size="30" letter-spacing="8" fill={textColor}>{L.wordmark}</text>
+        <text x="152" y="90" font-family={f.body.family} font-size="13" letter-spacing="7" fill={lineColor}>{L.sub}</text>
+      </g>
+    ) : (
+      <g>
+        <text x="46" y="92" text-anchor="middle" font-family={f.display.family} font-size="96" fill={c.primary}>{a}</text>
+        <text x="80" y="92" text-anchor="middle" font-family={f.display.family} font-size="96" fill={rColor} opacity=".92">{b}</text>
+        <text x="136" y="64" font-family={f.display.family} font-size="32" letter-spacing="7" fill={textColor}>{L.wordmark}</text>
+        <text x="138" y="92" font-family={f.body.family} font-size="13" letter-spacing="6" fill={c.primary}>{L.sub}</text>
+      </g>
+    )}
+  </svg>
+)}
+<style>.blogo { display: block; height: auto; overflow: visible; }</style>

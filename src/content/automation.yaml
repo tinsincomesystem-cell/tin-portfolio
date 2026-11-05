@@ -1,0 +1,51 @@
+# =====================================================================
+#  AI AUTOMATION SECTION
+# =====================================================================
+
+eyebrow: "AI automation · Built and managed by a human"
+title: "Watch a lead go from *stranger* to booked call."
+intro: "This is the backbone I build for businesses in any industry. Scroll to send a lead through it."
+
+# The steps of the animated diagram, in order (5–6 works best).
+# tool: shown as a small tag. goal: what this step is BUILT to do (a design target, not a past result).
+flow:
+  - { id: in,      title: "Lead comes in",   tool: "Ads · Website · Referrals · Events", text: "Every source lands in one place: website forms, Facebook lead ads, directories and QR codes at events.", goal: "One inbox for every source" }
+  - { id: ai,      title: "AI replies",      tool: "Conversation AI", text: "An AI assistant I train texts back in your voice, answers basic questions and asks the qualifying ones: need, timeline and budget.", goal: "Built to reply in under 60 seconds, 24/7" }
+  - { id: crm,     title: "CRM sorts it",    tool: "CRM + workflows", text: "The contact is enriched and tagged by what they need; the pipeline stage updates on its own and you get pinged on hot leads.", goal: "Every lead tagged, staged and visible" }
+  - { id: nurture, title: "Follow-up runs",  tool: "SMS · Email · Voicemail drops", text: "Not ready yet? A long-term nurture keeps you top of mind with useful updates, offers and check-ins for months.", goal: "No lead goes cold from silence" }
+  - { id: booked,  title: "Call booked",     tool: "Calendar + reminders", text: "The lead picks a time, reminders cut no-shows, and you walk into the call already knowing their story.", goal: "You only show up for the conversation" }
+
+# ---------- Hours-saved calculator ----------
+# Each input is a slider. "automatable" = share of that work a system can take over (0–1).
+# These are estimates. Visitors can see the math. Adjust if your experience differs.
+calculator:
+  title: "How many hours could you get back?"
+  note: "Rough estimate based on the share of each task that automation and a VA typically take over. Move the sliders to match your week."
+  weeksPerMonth: 4.33
+  inputs:
+    - { id: leads,   label: "New leads per month",                 min: 0, max: 300, step: 5, value: 60, unit: "leads" }
+    - { id: perLead, label: "Minutes spent following up each lead", min: 0, max: 60, step: 5, value: 20, unit: "min" }
+    - { id: admin,   label: "Admin hours per week",                min: 0, max: 40, step: 1, value: 10, unit: "hrs" }
+    - { id: social,  label: "Social posts per week",               min: 0, max: 21, step: 1, value: 4, unit: "posts" }
+  assumptions:
+    followupAutomatable: 0.7   # AI reply + nurture handles ~70% of manual follow-up time
+    adminDelegable: 0.6        # a VA can take ~60% of admin hours
+    minutesPerPost: 45         # time to create + publish one post yourself
+    socialDelegable: 0.8       # share of posting work handed off
+  rateLabel: "What's an hour of your time worth?"
+  rateDefault: 75
+
+# ---------- Proof: real systems & tools I've built ----------
+proof:
+  title: "Systems I've actually built"
+  items:
+    - { image: "automation/ai-followup-system.png", title: "AI lead follow-up system", text: "AI bot replies, qualifies and books, all inside GoHighLevel." }
+    - { image: "automation/client-onboarding.png", title: "Client onboarding automation", text: "Contract → welcome sequence → task assignments, automatically." }
+    - { image: "automation/lead-nurture.png", title: "Lead nurture workflow", text: "Branching SMS + email nurture based on lead behavior." }
+    - { image: "automation/pipeline-crm.png", title: "Pipeline & CRM configuration", text: "Custom stages, tags, smart lists and task reminders that match the deal flow." }
+    - { image: "automation/ghl-subaccount.png", title: "Full GHL sub-account setup", text: "Pipelines, calendars, workflows, reputation and dashboards, built from scratch." }
+    - { image: "automation/ai-chat.png", title: "AI chat in action", text: "Conversation AI handling a live booking request." }
+    - { image: "saas/tios-crm.png", title: "TIOS: my own CRM SaaS", text: "I designed and built my own client & project operating system." }
+    - { image: "saas/content-calendar.png", title: "Client content calendar app", text: "Custom planning + approval tool built for a client." }
+    - { image: "saas/task-tracker.png", title: "Task tracker app", text: "Priorities, due dates and daily summaries in one place." }
+    - { image: "saas/penny-budget.png", title: "Penny budget app", text: "A personal finance tracker I built end to end." }

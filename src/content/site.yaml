@@ -1,0 +1,91 @@
+# =====================================================================
+#  SITE SETTINGS — your name, links, contact details and SEO.
+#  Edit the text after the colon. Keep the quotes if a line has them.
+#  Anything marked TODO still needs your real info.
+# =====================================================================
+
+name: "Tin"
+fullName: "Tin Arca"            # TODO: confirm how you want your full name shown
+role: "AI Empowered Strategist"
+location: "Philippines · Working with US, AU & EU clients"
+timezone: "PHT (UTC+8)"
+
+# Shown on the test site so you can find unfinished spots.
+# Set to false before going live — TODO badges and TODO cards will disappear.
+showTodos: false
+
+# ---------- Contact ----------
+email: "tinsincomesystem@gmail.com"
+bookingUrl: "https://calendly.com/tinsincomesystem/30min"
+bookingLabel: "Book a Free Strategy Call"
+
+# Optional: send every form submission into your CRM (GoHighLevel inbound
+# webhook or an n8n Webhook node). Do NOT paste the URL here — add it in Netlify:
+# Site configuration → Environment variables → CRM_WEBHOOK_URL. See README.
+
+# ---------- Social links (leave "" to hide an icon) ----------
+social:
+  linkedin: ""
+  instagram: ""
+  facebook: ""
+  tiktok: ""
+  youtube: ""
+
+# ---------- SEO (what Google and link previews show) ----------
+seo:
+  title: "Tin — AI Empowered Strategist | Funnels, Websites, Branding & Automation"
+  description: "Funnel strategy, websites, luxury branding and AI automation for medical professionals, real estate agents and growing businesses. AI-empowered, with human judgment. Book a free strategy call."
+  ogImage: "/og-image.jpg"
+
+# ---------- Navigation ----------
+nav:
+  - { label: "Services", href: "#services" }
+  - { label: "Funnels", href: "#funnels" }
+  - { label: "Branding", href: "#branding" }
+  - { label: "Websites", href: "#websites" }
+  - { label: "Automation", href: "#automation" }
+  - { label: "Pricing", href: "#pricing" }
+  - { label: "Reality Check", href: "#va-meter" }
+  - { label: "About", href: "#about" }
+# The button at the top right of the menu
+navCta: { label: "Let's chat", href: "#contact" }
+
+# ---------- Hero (top of the page) ----------
+hero:
+  eyebrow: "AI Empowered Strategist · Funnels · Websites · Branding"
+  # Each line is one line of the big headline. Wrap a word in *stars* to make it italic gold.
+  headline:
+    - "Less Stress."
+    - "More Time."
+    - "Income While *You Sleep*."
+  subhead: "Six years. Countless systems built. One goal: giving you a business that runs without running you into the ground. I combine strategy, organization, and AI automation to eliminate the busywork, capture every lead, and keep your brand looking sharp everywhere it shows up. I won't work for you, I'll work with you."
+  secondaryCta: { label: "Take the VA Reality Check", href: "#va-meter" }
+  # Photo of you in the hero (transparent PNG works best). Path is inside src/assets/.
+  photo: "me/tin-arms-crossed.png"
+  photoAlt: "Tin, smiling with arms crossed"
+  # Scroll-played clip of you moving the mockups. Put the frames in
+  # public/hero-frames/ (frame-001.webp, frame-002.webp …) and set the count below.
+  # Leave at 0 to use the photo above. See README → "Hero motion clip".
+  frames: { count: 59, folder: "/hero-frames/", pattern: "frame-{n}.webp", digits: 3 }
+  # Chat bubbles that pop up at the end of the hero animation
+  chat:
+    client: "Hi! Do you take new clients?"
+    reply: "Yes! Let's book a call 🙂"
+  # The cards that orbit around you and follow your hand as people scroll.
+  # image: picture inside src/assets/. href: where the card goes when clicked.
+  mockups:
+    - { label: "Luxury branding", title: "Luxe Realty Group brand kit", state: "Brand approved", image: "social/hero-brand-kit.png", href: "#branding" }
+    - { label: "Website", title: "McMillen Equipment", state: "Site delivered", image: "websites/mcmillen-home.png", href: "#websites" }
+    - { label: "Funnel", title: "Med spa booking funnel", state: "Funnel built", image: "websites/medspa-booking-funnel.png", href: "#funnels" }
+
+# ---------- Short facts strip under the hero (only true facts!) ----------
+facts:
+  - { value: "6+ yrs", label: "Hands-on business systems" }
+  - { value: "Funnels", label: "Strategy, design and build" }
+  - { value: "AI Empowered", label: "Strategist" }
+  - { value: "US hours", label: "Flexible around your time zone" }
+
+# ---------- Footer ----------
+footer:
+  tagline: "Funnels, websites, branding and AI automation for businesses in every industry."
+  copyright: "Tin's Income System"

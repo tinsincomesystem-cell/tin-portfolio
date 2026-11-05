@@ -1,0 +1,123 @@
+# =====================================================================
+#  WEBSITES GALLERY
+#  type:  client  → real paid client work
+#         concept → shows the tag "Design"
+#         sample  → shows the tag "Build"
+#  image:   main screenshot (inside src/assets/)
+#  scroll:  OPTIONAL tall full-page screenshot, scrolls on hover / tap
+#  url:     live link. Leave "" to hide the "Visit live site" button.
+#  filters: which filter buttons this site appears under (must match "filters" list)
+# =====================================================================
+
+eyebrow: "Websites"
+title: "Sites that look *expensive* and actually bring in leads."
+intro: "Hover (or tap) a project to preview the full page. Filter by industry."
+filters: ["All", "Real Estate", "Local Business", "Health & Wellness", "Funnels"]
+
+items:
+  - title: "McMillen Equipment"
+    client: "McMillen Equipment · San Diego"
+    type: client
+    filters: ["Local Business"]
+    image: "websites/mcmillen-home.png"
+    gallery: ["websites/mcmillen-page-2.png", "websites/mcmillen-page-3.png"]
+    summary: "Full website and brand refresh for San Diego's pressure washer and drain jetter service center: factory-authorized dealer pages, service requests and a quote flow."
+    stack: ["Wix", "Branding", "Lead forms"]
+    url: ""
+
+  - title: "Neel Midha Real Estate"
+    client: "Neel Midha · Realtor & Brokerage Owner · Atlanta"
+    type: client
+    filters: ["Real Estate"]
+    image: "websites/realty-purple-page.png"
+    scroll: "websites/realty-purple-page.png"
+    summary: "Brokerage website for an Atlanta realtor and brokerage owner, with a bold brand and a lead-capture structure throughout."
+    stack: ["Brokerage website", "Custom design", "Lead capture"]
+    url: ""
+
+  - title: "Linda Olson Real Estate Education"
+    client: "Linda Olson · Realtor & Educator · Atlanta"
+    type: client
+    filters: ["Real Estate"]
+    image: "websites/linda-olson-home.png"
+    scroll: "websites/linda-olson-page.png"
+    summary: "Continuing education website for a realtor and real estate educator: class listings, state CE pages for Florida, Georgia and Tennessee, a blog, her podcast feature and student testimonials."
+    stack: ["Wix", "Class listings", "Blog"]
+    url: ""
+
+  - title: "Luxe Realty Group"
+    client: "Luxury brokerage · Miami"
+    type: concept
+    filters: ["Real Estate"]
+    image: "websites/luxe-realty-mockup.png"
+    summary: "Dark, cinematic luxury brokerage site with a booking-first hero, a 4-step buyer process and featured listings. Part of the Luxe brand kit."
+    stack: ["Custom design", "Booking CTA", "Listings grid"]
+    url: ""
+
+  - title: "Prestige Realty"
+    client: "Real estate brokerage"
+    type: concept
+    filters: ["Real Estate"]
+    image: "websites/prestige-realty-mockup.png"
+    scroll: "websites/prestige-realty-page.png"
+    summary: "Full brokerage homepage: search-led hero, handpicked homes, agent team, market updates and a valuation lead magnet."
+    stack: ["IDX-ready layout", "Lead magnet", "Responsive"]
+    url: ""
+
+  - title: "Wellness Practitioner Site"
+    client: "Holistic health practitioner"
+    type: sample
+    filters: ["Health & Wellness"]
+    image: "websites/wellness-home.png"
+    scroll: "websites/wellness-page.png"
+    summary: "Services, practitioner bio, blog, booking integration and a lead-magnet opt-in, built to build trust and turn visitors into consultations."
+    stack: ["Booking", "Lead magnet", "Blog"]
+    url: ""
+
+  - title: "Med Spa Booking Funnel"
+    client: "Med spa · Botox & aesthetics"
+    type: sample
+    filters: ["Health & Wellness", "Funnels"]
+    image: "websites/medspa-booking-funnel.png"
+    summary: "Pre-qualifying booking funnel with a short application, confirmation page, automated reminders and a no-show recovery workflow in GHL."
+    stack: ["GoHighLevel", "Reminders", "No-show recovery"]
+    url: ""
+
+  - title: "Dental Booking Page"
+    client: "Dental clinic"
+    type: sample
+    filters: ["Health & Wellness", "Funnels"]
+    image: "websites/dental-booking-page.png"
+    scroll: "websites/dental-booking-page.png"
+    summary: "Offer-led booking page with social proof, FAQs and a single clear call to action."
+    stack: ["GoHighLevel", "Booking funnel"]
+    url: ""
+
+  - title: "Chiropractor Sales Funnel"
+    client: "Chiropractic clinic"
+    type: sample
+    filters: ["Health & Wellness", "Funnels"]
+    image: "websites/chiro-sales-funnel.png"
+    summary: "Landing page, opt-in, thank-you page, a 7-email nurture series and a sales page with an order form, mapped and built inside GoHighLevel."
+    stack: ["GoHighLevel", "7-email nurture", "Order form"]
+    url: ""
+
+  - title: "Fitness Coaching Sales Page"
+    client: "Fitness coach"
+    type: sample
+    filters: ["Funnels"]
+    image: "websites/fitness-sales-page.png"
+    scroll: "websites/fitness-sales-page.png"
+    summary: "Long-form sales page with transformation story, program breakdown and testimonials."
+    stack: ["Sales page", "Funnel"]
+    url: ""
+
+  - title: "Coach Lead-Gen Funnel"
+    client: "Life coach"
+    type: sample
+    filters: ["Funnels"]
+    image: "websites/coach-lead-funnel.png"
+    scroll: "websites/coach-lead-funnel.png"
+    summary: "Free-resource opt-in, video thank-you page, lead magnet delivery and a 5-day email nurture that moves readers toward a discovery call."
+    stack: ["Opt-in", "5-day nurture", "Automation"]
+    url: ""

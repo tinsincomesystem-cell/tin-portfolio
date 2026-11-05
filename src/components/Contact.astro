@@ -1,0 +1,139 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../lib/content';
+const embed = `${site.bookingUrl}${site.bookingUrl.includes('?') ? '&' : '?'}hide_gdpr_banner=1&background_color=161412&text_color=f2ece4&primary_color=c8a97e`;
+---
+<section id="contact" class="contact s-dark section grain" aria-labelledby="contact-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-reveal>Let's talk</span>
+      <h2 id="contact-title" class="h-display" data-reveal>Ready to get your <em>week</em> back?</h2>
+      <p class="lead" data-reveal>Pick a time for a free 30-minute strategy call, or send me a note and I'll reply within one business day.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="cal card" data-reveal>
+        <div class="cal-head"><Icon name="calendar" size={20} /><strong>Book a free strategy call</strong><span class="mono muted">30 min · Zoom / Google Meet</span></div>
+        <div class="cal-frame" data-cal data-src={embed}>
+          <div class="cal-placeholder">
+            <p class="muted">Pick a time that works for you. Your timezone is detected automatically.</p>
+            <button type="button" class="btn" data-cal-load>Show available times</button>
+            <a class="cal-alt" href={site.bookingUrl} target="_blank" rel="noopener">Or open the booking page in a new tab ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <form class="form card" name="contact" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" data-contact data-reveal>
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="sr-only"><label>Don't fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <strong class="form-title">Or send a message</strong>
+        <div class="row2">
+          <div class="field"><label for="f-name">Name <span aria-hidden="true">*</span></label><input id="f-name" name="name" required autocomplete="name" /></div>
+          <div class="field"><label for="f-email">Email <span aria-hidden="true">*</span></label><input id="f-email" name="email" type="email" required autocomplete="email" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="f-phone">Phone <span class="opt">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="f-biz">You are a…</label>
+            <select id="f-biz" name="business-type">
+              <option>Medical or health professional</option><option>Real estate professional</option><option>Local or service business</option><option>Coach or consultant</option><option>Other business owner</option>
+            </select>
+          </div>
+        </div>
+        <fieldset class="field">
+          <legend>What do you need help with?</legend>
+          <div class="checks">
+            {['Funnel design & strategy', 'Branding', 'Website', 'AI automation', 'Executive VA', 'Not sure yet'].map((o) => (
+              <label class="check"><input type="checkbox" name="interests" value={o} /><span>{o}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="field"><label for="f-budget">Estimated budget</label>
+          <select id="f-budget" name="budget"><option>Not sure yet</option><option>Under $650</option><option>$650 – $1,500</option><option>$1,500 – $2,500</option><option>$2,500+</option><option>Monthly support</option></select>
+        </div>
+        <div class="field"><label for="f-msg">Tell me about your business <span class="opt">(optional)</span></label><textarea id="f-msg" name="message" rows="4"></textarea></div>
+        <button class="btn" type="submit" data-magnetic=".2">Send message <span class="arrow" aria-hidden="true">→</span></button>
+        <p class="form-status" role="status" data-status></p>
+        <p class="form-alt muted">Prefer email? <a href={`mailto:${site.email}`}>{site.email}</a></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact .h-display em { color: var(--champagne); }
+  .contact-grid { display: grid; gap: 1rem; align-items: start; }
+  .cal { overflow: hidden; display: grid; }
+  .cal-head { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--line-dark); color: var(--champagne); }
+  .cal-head strong { color: var(--bone); }
+  .cal-head .mono { font-size: .72rem; margin-left: auto; }
+  .cal-frame { min-height: 34rem; display: grid; }
+  .cal-frame :global(iframe) { width: 100%; height: 100%; min-height: 44rem; border: 0; }
+  .cal-placeholder { display: grid; gap: 1rem; place-content: center; justify-items: center; text-align: center; padding: 2rem; }
+  .cal-alt { font-size: .88rem; color: var(--smoke); }
+  .form { padding: clamp(1.25rem, 3vw, 2rem); display: grid; gap: 1rem; }
+  .form-title { font-size: 1.1rem; }
+  .row2 { display: grid; gap: 1rem; }
+  .field { display: grid; gap: .4rem; border: 0; padding: 0; min-width: 0; }
+  .field label, .field legend { font-size: .88rem; color: var(--smoke); }
+  .opt { opacity: .7; }
+  .field input, .field select, .field textarea { width: 100%; min-height: 3rem; padding: .7rem .9rem; border-radius: 12px; background: var(--onyx); border: 1px solid var(--line-dark); color: var(--bone); font-size: 1rem; }
+  .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--smoke) 50%), linear-gradient(135deg, var(--smoke) 50%, transparent 50%); background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 2.2rem; }
+  .field textarea { resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--champagne); outline: none; box-shadow: 0 0 0 3px rgb(200 169 126 / .18); }
+  .field input:user-invalid { border-color: #f08a68; }
+  .checks { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .35rem; }
+  .check { position: relative; }
+  .check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .check span { display: inline-flex; min-height: 2.6rem; align-items: center; padding: .45rem .95rem; border-radius: 999px; border: 1px solid var(--line-dark); font-size: .9rem; color: var(--smoke); transition: .2s; cursor: pointer; }
+  .check input:checked + span { background: var(--champagne); border-color: var(--champagne); color: var(--onyx); }
+  .check input:focus-visible + span { outline: 2px solid var(--mint); outline-offset: 2px; }
+  .form .btn { justify-self: start; }
+  .form-status { min-height: 1.2em; font-size: .95rem; color: var(--mint); }
+  .form-status.is-error { color: #f08a68; }
+  .form-alt { font-size: .88rem; }
+  .form-alt a { color: var(--champagne); }
+  .form.is-sent > :not(.form-status):not(.form-title) { display: none; }
+  .form.is-sent .form-status { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; color: var(--bone); }
+  @media (min-width: 640px) { .row2 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1.1fr 1fr; gap: 1.5rem; } }
+</style>
+
+<script>
+  // Calendly: load only when asked (or when the section is close), so the page stays fast.
+  const frame = document.querySelector<HTMLElement>('[data-cal]')!;
+  const load = () => {
+    if (frame.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.src = frame.dataset.src!; f.title = 'Book a free strategy call (Calendly)'; f.loading = 'lazy';
+    frame.replaceChildren(f);
+  };
+  frame.querySelector('[data-cal-load]')!.addEventListener('click', load);
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { load(); io.disconnect(); } }, { rootMargin: '300px' });
+    io.observe(frame);
+  }
+
+  // Contact form → Netlify Forms via fetch (falls back to normal POST + /thank-you without JS)
+  const form = document.querySelector<HTMLFormElement>('[data-contact]')!;
+  const status = form.querySelector<HTMLElement>('[data-status]')!;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    btn.disabled = true; status.classList.remove('is-error'); status.textContent = 'Sending…';
+    const fd = new FormData(form);
+    const interests = fd.getAll('interests').join(', ');
+    fd.delete('interests'); fd.set('interests', interests);
+    try {
+      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(fd as any).toString() });
+      if (!res.ok) throw new Error(String(res.status));
+      form.classList.add('is-sent');
+      status.textContent = `Thank you, ${String(fd.get('name') || '').split(' ')[0] || 'friend'}! Your message is in. I'll reply within one business day.`;
+      status.setAttribute('tabindex', '-1'); status.focus();
+    } catch {
+      status.classList.add('is-error');
+      status.textContent = 'Something went wrong sending your message. Please try again or email me directly.';
+      btn.disabled = false;
+    }
+  });
+</script>

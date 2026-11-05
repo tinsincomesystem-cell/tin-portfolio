@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tinsincomesystem-portfolio.netlify.app/sitemap-index.xml

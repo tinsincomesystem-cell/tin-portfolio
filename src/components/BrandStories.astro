@@ -1,0 +1,313 @@
+---
+// Cinematic brand stories. Desktop: pinned horizontal scroll. Mobile/tablet: swipe.
+import { Image } from 'astro:assets';
+import BrandLogo from './brand/BrandLogo.astro';
+import Palette from './brand/Palette.astro';
+import TypeSpec from './brand/TypeSpec.astro';
+import Postcard from './brand/Postcard.astro';
+import YardSign from './brand/YardSign.astro';
+import BusinessCard from './brand/BusinessCard.astro';
+import SiteConcept from './brand/SiteConcept.astro';
+import { brands, rich, websites } from '../lib/content';
+import { img } from '../lib/images';
+---
+<section id="branding" class="branding s-light section" aria-labelledby="branding-title">
+  <div class="wrap section-head">
+    <span class="eyebrow" data-reveal>{brands.eyebrow}</span>
+    <h2 id="branding-title" class="h-1" data-reveal style="--d:.05" set:html={rich(brands.title)} />
+    <p class="lead" data-reveal style="--d:.1">{brands.intro}</p>
+  </div>
+
+  {brands.brands.map((b: any, bi: number) => {
+    const c = b.colors;
+    const hl = b.logo.style === 'arch' ? c.accent : c.primary;
+    const web = img(b.website?.image);
+    const steps = ['Brand', 'Logo', 'Type', 'Color', 'Social', 'Print', 'Signage', 'Cards', 'Website'];
+    return (
+      <article class="story" style={`--bd:${c.dark || c.primary};--bp:${c.primary};--ba:${c.accent};--bl:${c.light};--bh:${hl}`} aria-label={`Brand: ${b.name}`}>
+        <div class="story-pin">
+          <div class="story-top wrap">
+            <span class="mono story-count">Case {String(bi + 1).padStart(2, '0')} / {String(brands.brands.length).padStart(2, '0')}</span>
+            <div class="story-steps" aria-hidden="true">{steps.map((s, i) => <span data-step={i}>{s}</span>)}</div>
+            <div class="story-nav">
+              <button class="snav" data-dir="-1" aria-label={`Previous slide, ${b.name}`}>←</button>
+              <button class="snav" data-dir="1" aria-label={`Next slide, ${b.name}`}>→</button>
+            </div>
+          </div>
+          <div class="track" tabindex="0" role="region" aria-label={`${b.name} brand kit, swipe or scroll sideways`}>
+            <!-- 0 Intro -->
+            <div class="panel p-intro neon-frame">
+              <div class="pi-logo"><BrandLogo brand={b} variant="stacked" tone="dark" /></div>
+              <div class="pi-copy">
+                <h3 class="h-2">{b.name}</h3>
+                <p class="mono pi-ind">{b.industry}</p>
+                <p>{b.summary}</p>
+                <a class="btn btn-sm pi-btn" href={`/brand/${b.slug}`} data-cursor="Open">Open the brand packet <span class="arrow" aria-hidden="true">→</span></a>
+              </div>
+            </div>
+            <!-- 1 Logo -->
+            <div class="panel p-logo">
+              <span class="plabel">01 · Logo suite</span>
+              <div class="logo-wall">
+                <div class="lw lw-big"><BrandLogo brand={b} variant="stacked" tone="light" /></div>
+                <div class="lw lw-dark"><BrandLogo brand={b} variant="horizontal" tone="dark" /></div>
+                <div class="lw lw-mark"><BrandLogo brand={b} variant="mark" tone="dark" /></div>
+              </div>
+            </div>
+            <!-- 2 Type -->
+            <div class="panel p-card"><span class="plabel">02 · Typography</span><div class="paper"><TypeSpec brand={b} /></div></div>
+            <!-- 3 Color -->
+            <div class="panel p-card"><span class="plabel">03 · Color system <em class="tiny">tap a swatch to copy</em></span><div class="paper"><Palette brand={b} /></div></div>
+            <!-- 4 Social -->
+            <div class="panel p-social">
+              <span class="plabel">04 · Social graphics</span>
+              <div class="social-row">
+                {b.social.map((s: any) => { const im = img(s.image); return im && <Image src={im} alt={s.alt} widths={[360, 640]} sizes="(min-width:1024px) 28vw, 70vw" class="post" />; })}
+              </div>
+            </div>
+            <!-- 5 Print -->
+            <div class="panel p-print">
+              <span class="plabel">05 · Postcards & mailers</span>
+              <div class="print-stack"><div class="pc1"><Postcard brand={b} side="front" /></div><div class="pc2"><Postcard brand={b} side="back" /></div></div>
+            </div>
+            <!-- 6 Sign -->
+            <div class="panel p-sign"><span class="plabel">06 · Signs, in the wild</span><div class="sign-box"><YardSign brand={b} /></div></div>
+            <!-- 7 Cards -->
+            <div class="panel p-cards"><span class="plabel">07 · Business cards</span><div class="cards-box"><BusinessCard brand={b} /></div></div>
+            <!-- 8 Website -->
+            <div class="panel p-web">
+              <span class="plabel">08 · Website</span>
+              <div class="web-box">{web ? <Image src={web} alt={b.website.alt} widths={[700, 1200]} sizes="(min-width:1024px) 55vw, 90vw" /> : <SiteConcept brand={b} />}</div>
+              <a class="btn btn-sm" href={`/brand/${b.slug}`}>See the full packet →</a>
+            </div>
+          </div>
+          <div class="story-bar wrap" aria-hidden="true"><i></i></div>
+        </div>
+      </article>
+    );
+  })}
+
+  <div class="ms-stage">
+  <div class="wrap more-social">
+    <div class="ms-copy">
+      <h3 class="h-3">{brands.moreTitle}</h3>
+      <p class="ms-intro">{brands.moreIntro}</p>
+    </div>
+    <ul class="ms-grid" role="list">
+      {brands.more.map((m: any, i: number) => { const im = img(m.image); return im && (
+        <li class="ms-item" style={`--i:${i}`}>
+          <Image src={im} alt={m.alt} widths={[300, 560]} sizes="(min-width:1024px) 240px, (min-width:640px) 31vw, 46vw" class="ms-img" loading="eager" />
+          <span class="mono ms-tag">{m.industry}</span>
+        </li>
+      ); })}
+    </ul>
+  </div>
+  </div>
+</section>
+
+<style>
+  .branding { padding-bottom: var(--space-xl); }
+  .story { position: relative; margin-bottom: var(--space-xl); }
+  .story-pin { display: flex; flex-direction: column; gap: 1rem; }
+  .story-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .story-count { color: var(--umber); }
+  .story-steps { display: none; gap: .9rem; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--umber); }
+  .story-steps span { opacity: .45; transition: opacity .3s, color .3s; }
+  .story-steps span.is-on { opacity: 1; color: var(--terracotta-ink); }
+  .story-nav { display: flex; gap: .4rem; }
+  .snav { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-size: 1rem; transition: background .2s, color .2s; }
+  .snav:hover { background: var(--espresso); color: var(--linen); }
+
+  .track { display: flex; align-items: flex-start; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .25rem var(--gutter) 1.25rem; scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
+  .track::-webkit-scrollbar { display: none; }
+  .panel { flex: 0 0 88%; scroll-snap-align: start; border-radius: var(--radius-l); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; height: clamp(30rem, 72svh, 36rem); background: var(--linen-2); position: relative; overflow: hidden; }
+  .plabel { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #5a4d43; display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap; }
+  .plabel .tiny { font-style: normal; text-transform: none; letter-spacing: 0; }
+
+  .p-intro { background: var(--bd); color: var(--bl); justify-content: space-between; }
+  .pi-logo { width: min(230px, 62%); align-self: center; margin-top: .5rem; }
+  .pi-copy { display: grid; gap: .6rem; }
+  .pi-copy p { color: color-mix(in srgb, var(--bl) 82%, transparent); font-size: .95rem; }
+  .pi-ind { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--bh) !important; }
+  .concept-chip { justify-self: start; color: var(--bh); border-color: color-mix(in srgb, var(--bh) 50%, transparent); }
+  .pi-btn { --btn-bg: var(--bh); --btn-fg: var(--bd); justify-self: start; }
+  .p-intro .pi-btn { --btn-bg: var(--bl); --btn-fg: var(--bd); }
+
+  .logo-wall { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; gap: .6rem; }
+  .lw { border-radius: 16px; display: grid; place-items: center; padding: 1rem; }
+  .lw-big { grid-column: span 2; background: var(--bl); }
+  .lw-big :global(svg) { width: min(220px, 70%); }
+  .lw-dark { background: var(--bd); }
+  .lw-dark :global(svg) { width: 92%; }
+  .lw-mark { background: var(--bd); }
+  .lw-mark :global(svg) { width: 42%; }
+  .paper { flex: 1; background: #fffdf9; border-radius: 16px; padding: 1.25rem; display: flex; align-items: center; --line: var(--line-light); --muted: var(--umber); }
+
+  .social-row { flex: 1; display: flex; gap: .75rem; align-items: center; justify-content: center; }
+  .social-row .post { width: 100%; max-width: 360px; border-radius: 10px; box-shadow: 0 20px 40px -20px rgb(0 0 0 / .45); }
+  .social-row .post:nth-child(2) { display: none; }
+  .print-stack { flex: 1; display: grid; place-items: center; position: relative; }
+  .print-stack .pc1 { width: 92%; position: relative; z-index: 2; transform: rotate(-2deg); }
+  .print-stack .pc2 { width: 80%; margin-top: -12%; transform: rotate(3deg) translateX(8%); }
+  .sign-box, .cards-box, .web-box { flex: 1; display: grid; place-items: center; }
+  .sign-box > :global(*), .web-box > :global(*) { width: 100%; }
+  .web-box :global(img) { width: 100%; border-radius: 12px; }
+  .cards-box { padding-inline: 4%; }
+  .p-web .btn { align-self: flex-start; }
+
+  .story-bar { height: 2px; position: relative; display: none; }
+  .story-bar::before { content: ''; position: absolute; inset: 0 var(--gutter); background: var(--line-light); }
+  .story-bar i { position: absolute; left: var(--gutter); top: 0; height: 2px; width: calc(100% - 2 * var(--gutter)); background: var(--terracotta); transform-origin: left; transform: scaleX(0); }
+
+  .ms-stage { margin-top: var(--space-l); overflow: hidden; overflow: clip; perspective: 1100px; }
+  .more-social { display: grid; gap: 1.25rem; }
+  .ms-copy { display: grid; gap: .75rem; position: relative; z-index: 2; }
+  .ms-intro { max-width: 60ch; }
+  .ms-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem .75rem; }
+  .ms-item { position: relative; display: grid; gap: .4rem; will-change: transform; }
+  /* moving neon border: on while a piece is flying, and on hover once it has landed */
+  @property --ms-ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  @keyframes msspin { to { --ms-ang: 360deg; } }
+  .ms-item::before { content: ''; position: absolute; inset: -2px -2px auto; aspect-ratio: 4 / 5; border-radius: 13px; padding: 2px; background: conic-gradient(from var(--ms-ang), transparent 0 50%, var(--mint) 68%, #eafff9 74%, var(--champagne) 86%, transparent 96%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: 0; transition: opacity .4s; pointer-events: none; animation: msspin 2.6s linear infinite; z-index: 1; }
+  .ms-item.is-flying::before, .ms-item:hover::before { opacity: 1; }
+  .ms-img { transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out); }
+  .ms-item:hover .ms-img { transform: translateY(-6px) scale(1.03); box-shadow: 0 24px 50px -24px rgb(0 0 0 / .7), 0 0 34px -8px rgb(94 230 200 / .7); }
+  .ms-tag { font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+  @media (min-width: 640px) { .ms-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) {
+    /* copy beside a 4 x 3 wall that fits one screen, so the whole flight can be watched */
+    .more-social { grid-template-columns: minmax(240px, 22rem) 1fr; align-items: center; gap: var(--space-l); min-height: 100svh; padding-block: 1.5rem; }
+    .ms-grid { --w: min(calc((100svh - 9.5rem) / 3 * .8), calc((100vw - 34rem) / 4)); grid-template-columns: repeat(4, var(--w)); justify-content: center; }
+  }
+  .ms-img { width: 100%; border-radius: 12px; aspect-ratio: 4 / 5; object-fit: cover; }
+
+  @media (min-width: 640px) {
+    .panel { flex-basis: 62%; }
+    .social-row .post:nth-child(2) { display: block; }
+  }
+  @media (min-width: 1024px) {
+    .story { margin-bottom: 0; }
+    .story-pin { height: 100svh; justify-content: center; padding-block: 5.5rem 2rem; overflow: hidden; }
+    .story-steps { display: flex; }
+    .story-nav { display: none; }
+    .track { overflow: visible; scroll-snap-type: none; padding-bottom: 0; flex: 1; min-height: 0; gap: 1.5rem; }
+    .track { align-items: stretch; }
+    .panel { flex: 0 0 auto; width: min(64vw, 900px); height: 100%; min-height: 0; padding: 1.75rem; }
+    .p-intro { width: min(52vw, 720px); flex-direction: row; align-items: center; gap: 3rem; padding: 3rem; }
+    .pi-logo { width: 42%; flex: none; margin: 0; }
+    .p-card, .p-cards { width: min(46vw, 640px); }
+    .p-social { width: min(70vw, 980px); }
+    .social-row .post { max-height: 58svh; width: auto; }
+    .p-sign { width: min(62vw, 860px); }
+    .sign-box > :global(*) { width: min(100%, 72svh); }
+    .web-box > :global(*) { width: min(100%, 88svh); }
+    .p-web { width: min(66vw, 940px); }
+    .print-stack .pc1 { width: min(72%, 64svh); }
+    .print-stack .pc2 { width: min(62%, 54svh); }
+    .cards-box > :global(*) { width: min(100%, 64svh); }
+    .story-bar { display: block; }
+  }
+  @media (prefers-reduced-motion: reduce) and (min-width: 1024px) {
+    /* No pinning: fall back to native horizontal scroll */
+    .story-pin { height: auto; padding-block: 2rem; }
+    .track { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; }
+    .panel { height: 72svh; scroll-snap-align: start; }
+    .story-nav { display: flex; }
+  }
+</style>
+
+<script>
+  import { gsap, reducedMotion } from '../scripts/core';
+
+  document.querySelectorAll<HTMLElement>('.story').forEach((story) => {
+    const track = story.querySelector<HTMLElement>('.track')!;
+    const panels = [...track.querySelectorAll<HTMLElement>('.panel')];
+    const steps = story.querySelectorAll<HTMLElement>('[data-step]');
+    const bar = story.querySelector<HTMLElement>('.story-bar i');
+    const setStep = (i: number) => steps.forEach((s, k) => s.classList.toggle('is-on', k === i));
+    setStep(0);
+
+    // Swipe/scroll mode (mobile, tablet, reduced motion): arrow buttons + step tracking
+    const stepW = () => (panels[1]?.offsetLeft ?? 0) - panels[0].offsetLeft || track.clientWidth;
+    const nearest = () => Math.round(track.scrollLeft / stepW());
+    story.querySelectorAll<HTMLButtonElement>('.snav').forEach((b) => b.addEventListener('click', () => {
+      const i = Math.max(0, Math.min(panels.length - 1, nearest() + Number(b.dataset.dir)));
+      track.scrollTo({ left: panels[i].offsetLeft - panels[0].offsetLeft, behavior: reducedMotion() ? 'auto' : 'smooth' });
+    }));
+    track.addEventListener('scroll', () => setStep(nearest()), { passive: true });
+
+    if (reducedMotion()) return;
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 1024px)', () => {
+      const pin = story.querySelector<HTMLElement>('.story-pin')!;
+      const dist = () => Math.max(0, track.scrollWidth - track.clientWidth + 80);
+      const tween = gsap.to(track, {
+        x: () => -dist(), ease: 'none',
+        scrollTrigger: {
+          trigger: story, start: 'top top', end: () => '+=' + dist(), pin, scrub: .8, invalidateOnRefresh: true, anticipatePin: 1,
+          onUpdate: (st) => {
+            if (bar) bar.style.transform = `scaleX(${st.progress})`;
+            setStep(Math.min(panels.length - 1, Math.round(st.progress * (panels.length - 1))));
+          },
+        },
+      });
+      // Parallax inside panels for depth
+      panels.forEach((p) => {
+        const inner = p.querySelector(':scope > .social-row, :scope > .print-stack, :scope > .sign-box, :scope > .web-box');
+        if (inner) gsap.fromTo(inner, { xPercent: 4 }, { xPercent: -4, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
+      });
+      // Keyboard users: keep focused items inside the pinned track visible
+      track.addEventListener('focusin', (e) => {
+        const panel = (e.target as HTMLElement).closest<HTMLElement>('.panel');
+        if (!panel) return;
+        const st = tween.scrollTrigger!;
+        const ratio = (panel.offsetLeft - panels[0].offsetLeft) / Math.max(1, dist());
+        window.scrollTo({ top: st.start + (st.end - st.start) * Math.min(1, ratio) });
+      });
+      return () => { gsap.set(track, { x: 0 }); };
+    });
+  });
+
+  // ---------- "More luxury content": the pieces fly in from all around as you scroll, and settle into the wall ----------
+  (() => {
+    const stageEl = document.querySelector<HTMLElement>('.ms-stage');
+    if (!stageEl || reducedMotion()) return;
+    const items = [...stageEl.querySelectorAll<HTMLElement>('.ms-item')];
+    const copy = stageEl.querySelector<HTMLElement>('.ms-copy');
+    const mm = gsap.matchMedia();
+
+    // Desktop: pinned. Pieces spiral in from past the camera, one after another.
+    mm.add('(min-width: 1024px)', () => {
+      const tl = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: stageEl, start: 'top top', end: '+=170%', pin: true, scrub: .7, anticipatePin: 1,
+          onUpdate: (st) => items.forEach((it, i) => it.classList.toggle('is-flying', st.progress < .05 + (i + 1) * .068 && st.progress > .02 + i * .05)),
+          onLeave: () => items.forEach((it) => it.classList.remove('is-flying')),
+        },
+      });
+      if (copy) tl.from(copy, { opacity: 0, x: -40, duration: .12, ease: 'power2.out' }, 0);
+      items.forEach((it, i) => {
+        const a = (i * 137.5 * Math.PI) / 180, r = () => Math.max(innerWidth, innerHeight) * .75;
+        tl.fromTo(it,
+          { x: () => Math.cos(a) * r(), y: () => Math.sin(a) * r() * .7, scale: 2.3, rotation: (i % 2 ? 1 : -1) * (24 + i * 3), rotationY: (i % 2 ? -1 : 1) * 55, opacity: 0, transformOrigin: '50% 50%' },
+          { x: 0, y: 0, scale: 1, rotation: 0, rotationY: 0, opacity: 1, duration: .3, ease: 'power3.out' },
+          .04 + i * .05);
+      });
+      return () => { gsap.set(items, { clearProps: 'all' }); if (copy) gsap.set(copy, { clearProps: 'all' }); };
+    });
+
+    // Phones and tablets: no pin, so each piece flies in from its own side as it reaches the screen.
+    mm.add('(max-width: 1023px)', () => {
+      if (copy) gsap.from(copy, { opacity: 0, y: 24, scrollTrigger: { trigger: copy, start: 'top 90%', end: 'top 65%', scrub: .5 } });
+      items.forEach((it, i) => {
+        const cols = innerWidth >= 640 ? 3 : 2, col = i % cols, dir = cols === 3 && col === 1 ? 0 : col === 0 ? -1 : 1;
+        gsap.fromTo(it,
+          { x: dir * innerWidth * .6, y: dir === 0 ? 180 : 70, scale: 1.45, rotation: dir === 0 ? 6 : dir * 18, rotationY: dir * 40, opacity: 0 },
+          { x: 0, y: 0, scale: 1, rotation: 0, rotationY: 0, opacity: 1, ease: 'power2.out',
+            scrollTrigger: { trigger: it, start: 'top 104%', end: 'top 62%', scrub: .5, toggleClass: { targets: it, className: 'is-flying' } } });
+      });
+      return () => { gsap.set(items, { clearProps: 'all' }); if (copy) gsap.set(copy, { clearProps: 'all' }); };
+    });
+  })();
+</script>

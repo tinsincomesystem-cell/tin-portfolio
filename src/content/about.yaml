@@ -1,0 +1,49 @@
+# =====================================================================
+#  ABOUT ME
+# =====================================================================
+eyebrow: "About"
+title: "Hi, I'm *Tin*."
+photo: "me/desk.png"
+photoAlt: "Tin working at her desk with a laptop"
+paragraphs:
+  - "I've spent 6+ years inside businesses' inboxes, CRMs and marketing, starting in real estate. That's where I saw the real problem: great businesses losing customers to slow follow-up, scattered tools and a brand that didn't match how good they actually were."
+  - "So I learned to fix all of it. Today I'm an AI Empowered Strategist: I plan funnels, build websites and brands, and set up automation that follows up while you sleep, for medical professionals, real estate agents and businesses in every industry. I even built my own CRM SaaS to run my business. I'm based in the Philippines and personally work US hours."
+  - "My DISC profile is Conscientious & Steady: organized, detail-obsessed and calm under deadlines. I'd rather show you a working system than promise you a miracle."
+# Intro video (file in public/video/). Leave "" to hide.
+video: ""   # the intro video now has its own section: see src/content/intro.yaml
+videoPoster: "me/intro-poster.jpg"
+videoLabel: "Watch my 90-second intro"
+highlights:
+  - { value: "6+ years", label: "Hands-on business systems" }
+  - { value: "DISC: C/S", label: "Conscientious & Steady" }
+  - { value: "US hours", label: "Flexible around your time zone" }
+  - { value: "1 SaaS", label: "Built my own CRM product" }
+differentiators:
+  - { title: "I think in systems", text: "I don't just complete tasks, I design the system behind them, so the work keeps paying off after I'm done." }
+  - { title: "AI empowered, human led", text: "AI speeds up how I work, and my discretion and judgment decide what actually reaches your customers." }
+  - { title: "Design + tech in one person", text: "The same person who designs your brand wires up your CRM, so nothing gets lost between a designer and a developer." }
+  - { title: "Funnel strategist", text: "I start from how your customers decide to buy, then design every page, message and follow-up around that." }
+tools:
+  - { name: "GoHighLevel", group: "CRM & funnels" }
+  - { name: "n8n", group: "Automation" }
+  - { name: "Zapier", group: "Automation" }
+  - { name: "HubSpot", group: "CRM & funnels" }
+  - { name: "ChatGPT", group: "AI" }
+  - { name: "Claude", group: "AI" }
+  - { name: "Claude Code", group: "AI" }
+  - { name: "NotebookLM", group: "AI" }
+  - { name: "WordPress", group: "Web" }
+  - { name: "Wix Studio", group: "Web" }
+  - { name: "Wix", group: "Web" }
+  - { name: "Systeme.io", group: "CRM & funnels" }
+  - { name: "Figma", group: "Design" }
+  - { name: "Canva", group: "Design" }
+  - { name: "Supabase", group: "Web" }
+  - { name: "Netlify", group: "Web" }
+  - { name: "Vercel", group: "Web" }
+  - { name: "QuickBooks Online", group: "Finance" }
+  - { name: "Google Workspace", group: "Operations" }
+certificates:
+  - { image: "certs/quickbooks-proadvisor.png", title: "QuickBooks Online Certified ProAdvisor", issuer: "Intuit QuickBooks" }
+  - { image: "certs/ghl-workshop.png", title: "GoHighLevel Live Workshop", issuer: "Excelerate Digital Marketing" }
+  - { image: "certs/facebook-ads-workshop.png", title: "Facebook Ads Live Workshop", issuer: "Excelerate Digital Marketing" }

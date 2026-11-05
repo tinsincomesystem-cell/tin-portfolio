@@ -1,0 +1,196 @@
+---
+import { Image } from 'astro:assets';
+import { websites, rich, showTodos } from '../lib/content';
+import { img } from '../lib/images';
+const typeLabel: Record<string, string> = { client: 'Client', concept: 'Design', sample: 'Build' };
+const items = websites.items.filter((w: any) => w.image || showTodos);
+---
+<section id="websites" class="sites s-dark section" aria-labelledby="sites-title">
+  <div class="wrap">
+    <div class="section-head sites-head">
+      <span class="eyebrow" data-reveal>{websites.eyebrow}</span>
+      <h2 id="sites-title" class="h-1" data-reveal style="--d:.05" set:html={rich(websites.title)} />
+      <p class="lead" data-reveal style="--d:.1">{websites.intro}</p>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter websites by industry" data-reveal>
+      {websites.filters.map((f: string, i: number) => (
+        <button type="button" class="filter" aria-pressed={i === 0 ? 'true' : 'false'} data-filter={f}>{f}<span class="mono fcount" /></button>
+      ))}
+    </div>
+    <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+    <ul class="site-grid" role="list" data-grid>
+      {items.map((w: any, i: number) => {
+        const main = img(w.image);
+        const tall = img(w.scroll);
+        return (
+          <li class="site" data-tags={JSON.stringify(['All', ...w.filters])} data-reveal style={`--d:${(i % 3) * .07}`}>
+            <button type="button" class="site-open" data-open={i} aria-label={`Open preview: ${w.title}`} data-cursor={tall ? 'Scroll' : 'View'}>
+              <span class="frame">
+                <span class="frame-bar"><i></i><i></i><i></i></span>
+                <span class={`frame-view ${tall ? 'has-scroll' : ''}`}>
+                  {tall ? <Image src={tall} alt="" widths={[480, 800]} sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw" class="shot tall" />
+                    : main ? <Image src={main} alt="" widths={[480, 800]} sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw" class="shot" />
+                    : <span class="shot-todo"><span class="todo">TODO · {w.todo}</span></span>}
+                </span>
+              </span>
+            </button>
+            <div class="site-meta">
+              <div class="site-row"><h3 class="site-title">{w.title}</h3><span class={`chip type-${w.type}`}>{typeLabel[w.type] ?? w.type}</span></div>
+              <p class="muted site-client">{w.client}</p>
+              {w.url && <a class="site-live" href={w.url} target="_blank" rel="noopener">Visit live site ↗</a>}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+
+  <dialog class="lightbox s-dark" data-dialog aria-labelledby="lb-title">
+    <div class="lb-inner">
+      <button class="lb-close" type="button" data-close aria-label="Close preview">✕</button>
+      <div class="lb-media" data-lb-media tabindex="0" aria-label="Full page preview, scrollable"></div>
+      <div class="lb-info">
+        <span class="chip" data-lb-type></span>
+        <h3 id="lb-title" class="h-3" data-lb-title></h3>
+        <p class="muted" data-lb-client></p>
+        <p data-lb-summary></p>
+        <ul class="lb-stack" role="list" data-lb-stack></ul>
+        <div class="lb-actions">
+          <a class="btn btn-sm" href="/" data-lb-live target="_blank" rel="noopener">Visit live site ↗</a>
+          <a class="btn btn-sm btn-ghost" href="#contact" data-close-nav>Ask about a similar build</a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  {items.map((w: any, i: number) => {
+    const main = img(w.image); const tall = img(w.scroll);
+    const extra = (w.gallery || []).map((g: string) => img(g)).filter(Boolean);
+    return (
+      <template data-lb={i}>
+        <div data-meta={JSON.stringify({ title: w.title, client: w.client, summary: w.summary, stack: w.stack, url: w.url, type: typeLabel[w.type] ?? w.type })}></div>
+        {main && <Image src={main} alt={`${w.title} website screenshot`} widths={[900, 1400]} sizes="(min-width:1024px) 60vw, 95vw" loading="lazy" />}
+        {tall && tall !== main && <Image src={tall} alt={`${w.title} full page`} widths={[900, 1400]} sizes="(min-width:1024px) 60vw, 95vw" loading="lazy" />}
+        {extra.map((e: any) => <Image src={e} alt={`${w.title} additional page`} widths={[900, 1400]} sizes="(min-width:1024px) 60vw, 95vw" loading="lazy" />)}
+      </template>
+    );
+  })}
+</section>
+
+<style>
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+  .filter { display: inline-flex; gap: .45rem; align-items: center; min-height: 2.75rem; padding: .55rem 1.1rem; border-radius: 999px; border: 1px solid var(--line-dark); color: var(--smoke); font-size: .92rem; transition: background .25s, color .25s, border-color .25s; }
+  .filter:hover { color: var(--bone); border-color: var(--champagne); }
+  .filter[aria-pressed='true'] { background: var(--bone); color: var(--onyx); border-color: var(--bone); }
+  .fcount { font-size: .7rem; opacity: .6; }
+
+  .site-grid { list-style: none; padding: 0; display: grid; gap: 2rem 1.25rem; }
+  .site { transition: opacity .4s var(--ease-out), transform .4s var(--ease-out); }
+  .site.is-hidden { display: none; }
+  .site.is-fading { opacity: 0; transform: scale(.97); }
+  .site-open { display: block; width: 100%; text-align: left; border-radius: 14px; }
+  .frame { display: block; border-radius: 14px; overflow: hidden; background: var(--panel); border: 1px solid var(--line-dark); transition: transform .6s var(--ease-out), box-shadow .6s var(--ease-out); }
+  .site-open:hover .frame, .site-open:focus-visible .frame { transform: translateY(-6px); box-shadow: 0 40px 70px -40px rgb(0 0 0 / .9), 0 0 0 1px rgb(200 169 126 / .3); }
+  .frame-bar { display: flex; gap: .3rem; padding: .55rem .7rem; background: var(--panel-2); }
+  .frame-bar i { width: .45rem; height: .45rem; border-radius: 50%; background: rgb(242 236 228 / .2); }
+  .frame-view { position: relative; display: block; aspect-ratio: 16 / 10.5; overflow: hidden; background: #fff; }
+  .shot { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s var(--ease-out); }
+  .site-open:hover .shot:not(.tall) { transform: scale(1.04); }
+  .shot.tall { height: auto; position: absolute; top: 0; left: 0; transition: transform var(--scroll-dur, 4s) cubic-bezier(.45, .05, .35, 1); }
+  .site-open:hover .shot.tall, .site-open:focus-visible .shot.tall { transform: translateY(var(--shift, 0)); }
+  .shot-todo { display: grid; place-items: center; height: 100%; background: var(--panel-2); padding: 1rem; text-align: center; }
+  .site-meta { padding-top: .9rem; display: grid; gap: .2rem; }
+  .site-row { display: flex; justify-content: space-between; gap: .75rem; align-items: center; }
+  .site-title { font-family: var(--font-body); font-weight: 600; font-size: 1.05rem; letter-spacing: 0; }
+  .site-client { font-size: .88rem; }
+  .site-live { font-size: .88rem; color: var(--champagne); text-decoration: none; justify-self: start; }
+  .site-live:hover { text-decoration: underline; }
+  .chip.type-client { color: var(--mint); border-color: rgb(94 230 200 / .4); }
+  .chip.type-concept { color: var(--champagne); border-color: rgb(200 169 126 / .4); }
+
+  .lightbox { padding: 0; border: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; color: var(--bone); }
+  .lightbox::backdrop { background: rgb(5 5 5 / .82); backdrop-filter: blur(6px); }
+  .lightbox[open] { display: grid; place-items: center; animation: lbin .45s var(--ease-out); }
+  @keyframes lbin { from { opacity: 0; transform: translateY(20px); } }
+  .lb-inner { position: relative; width: min(1200px, 94vw); max-height: 92svh; background: var(--panel); border: 1px solid var(--line-dark); border-radius: 20px; display: grid; overflow: hidden; }
+  .lb-close { position: absolute; top: .7rem; right: .7rem; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: var(--onyx); border: 1px solid var(--line-dark); }
+  .lb-media { overflow-y: auto; max-height: 52svh; display: grid; gap: .75rem; padding: .75rem; background: var(--onyx); overscroll-behavior: contain; }
+  .lb-media :global(img) { width: 100%; border-radius: 10px; }
+  .lb-info { padding: 1.25rem 1.5rem 1.5rem; display: grid; gap: .6rem; align-content: start; overflow-y: auto; }
+  .lb-stack { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .lb-stack :global(li) { font-family: var(--font-mono); font-size: .72rem; padding: .3rem .6rem; border-radius: 999px; background: var(--panel-2); color: var(--smoke); }
+  .lb-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+  .lb-actions [hidden] { display: none; }
+
+  @media (min-width: 640px) { .site-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) {
+    .site-grid { grid-template-columns: repeat(3, 1fr); }
+    .lb-inner { grid-template-columns: 1.6fr 1fr; height: min(780px, 88svh); }
+    .lb-media { max-height: none; }
+    .lb-info { padding: 3.5rem 2rem 2rem; }
+  }
+</style>
+
+<script>
+  import { getLenis, reducedMotion } from '../scripts/core';
+  const sec = document.getElementById('websites')!;
+  const cards = [...sec.querySelectorAll<HTMLElement>('.site')];
+  const btns = [...sec.querySelectorAll<HTMLButtonElement>('.filter')];
+  const status = sec.querySelector<HTMLElement>('[data-filter-status]')!;
+
+  // Counts per filter
+  btns.forEach((b) => { const n = cards.filter((c) => JSON.parse(c.dataset.tags!).includes(b.dataset.filter)).length; b.querySelector('.fcount')!.textContent = String(n); });
+
+  btns.forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.filter!;
+    btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    let shown = 0;
+    cards.forEach((c) => {
+      const match = JSON.parse(c.dataset.tags!).includes(f);
+      if (match) shown++;
+      if (reducedMotion()) { c.classList.toggle('is-hidden', !match); return; }
+      c.classList.add('is-fading');
+      setTimeout(() => { c.classList.toggle('is-hidden', !match); requestAnimationFrame(() => c.classList.remove('is-fading')); c.classList.add('is-in'); }, 220);
+    });
+    status.textContent = `Showing ${shown} ${f === 'All' ? '' : f + ' '}projects`;
+  }));
+
+  // Hover scroll distance for tall screenshots
+  const setShift = () => sec.querySelectorAll<HTMLImageElement>('.shot.tall').forEach((im) => {
+    const view = im.parentElement!;
+    const run = () => { const d = im.offsetHeight - view.clientHeight; im.style.setProperty('--shift', `-${Math.max(0, d)}px`); im.style.setProperty('--scroll-dur', `${Math.min(7, Math.max(2, d / 450))}s`); };
+    if (im.complete) run(); else im.addEventListener('load', run, { once: true });
+  });
+  setShift(); window.addEventListener('resize', setShift);
+
+  // Lightbox
+  const dlg = sec.querySelector<HTMLDialogElement>('[data-dialog]')!;
+  const media = dlg.querySelector<HTMLElement>('[data-lb-media]')!;
+  let lastFocus: HTMLElement | null = null;
+  sec.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((b) => b.addEventListener('click', () => {
+    const tpl = sec.querySelector<HTMLTemplateElement>(`template[data-lb="${b.dataset.open}"]`)!;
+    const frag = tpl.content.cloneNode(true) as DocumentFragment;
+    const meta = JSON.parse((frag.querySelector('[data-meta]') as HTMLElement).dataset.meta!);
+    frag.querySelector('[data-meta]')!.remove();
+    media.replaceChildren(frag);
+    if (!media.children.length) media.innerHTML = '<p class="muted" style="padding:2rem">Screenshot coming soon.</p>';
+    dlg.querySelector('[data-lb-title]')!.textContent = meta.title;
+    dlg.querySelector('[data-lb-client]')!.textContent = meta.client;
+    dlg.querySelector('[data-lb-summary]')!.textContent = meta.summary;
+    dlg.querySelector('[data-lb-type]')!.textContent = meta.type;
+    const st = dlg.querySelector('[data-lb-stack]')!; st.innerHTML = '';
+    (meta.stack || []).forEach((s: string) => { const li = document.createElement('li'); li.textContent = s; st.append(li); });
+    const live = dlg.querySelector<HTMLAnchorElement>('[data-lb-live]')!;
+    if (meta.url) { live.href = meta.url; live.hidden = false; } else live.hidden = true;
+    lastFocus = b;
+    dlg.showModal(); getLenis()?.stop();
+    media.scrollTop = 0;
+  }));
+  const close = () => { dlg.close(); };
+  dlg.addEventListener('close', () => { getLenis()?.start(); lastFocus?.focus(); });
+  dlg.querySelector('[data-close]')!.addEventListener('click', close);
+  dlg.querySelector('[data-close-nav]')!.addEventListener('click', close);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) close(); });
+</script>

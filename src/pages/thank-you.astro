@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/content';
+---
+<Base title={`Thank you — ${site.name}`} noindex>
+  <main id="main" class="ty s-dark">
+    <div class="wrap ty-inner">
+      <span class="eyebrow">Message received</span>
+      <h1 class="h-display">Thank <em>you</em>.</h1>
+      <p class="lead">Your message is in my inbox. I'll reply personally within one business day. Want to skip the back-and-forth? Grab a time on my calendar.</p>
+      <div class="ty-ctas">
+        <a class="btn" href={site.bookingUrl} target="_blank" rel="noopener">{site.bookingLabel} →</a>
+        <a class="btn btn-ghost" href="/">Back to the site</a>
+      </div>
+    </div>
+  </main>
+</Base>
+<style>
+  .ty { min-height: 100svh; display: grid; place-items: center; }
+  .ty-inner { display: grid; gap: 1.5rem; justify-items: start; padding-block: 4rem; }
+  .ty em { color: var(--champagne); }
+  .ty-ctas { display: flex; flex-wrap: wrap; gap: .6rem; }
+</style>

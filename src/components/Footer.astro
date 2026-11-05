@@ -1,0 +1,45 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../lib/content';
+const socials = Object.entries(site.social || {}).filter(([, v]) => v) as [string, string][];
+const year = new Date().getFullYear();
+---
+<footer class="footer s-dark">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <a href="/#top" class="foot-logo">{site.name}<em>.</em></a>
+      <p class="muted">{site.footer.tagline}</p>
+    </div>
+    <nav aria-label="Footer">
+      <ul role="list" class="foot-links">
+        {site.nav.map((n: any) => <li><a href={`/${n.href}`}>{n.label}</a></li>)}
+        <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="foot-contact">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={site.bookingUrl} target="_blank" rel="noopener">{site.bookingLabel} ↗</a>
+      {socials.length > 0 && <ul class="soc" role="list">{socials.map(([k, v]) => <li><a href={v} target="_blank" rel="noopener" aria-label={k}><Icon name={k} size={20} /></a></li>)}</ul>}
+    </div>
+  </div>
+  <div class="wrap foot-bottom mono">
+    <span>© {year} {site.footer.copyright}</span>
+    <span>{site.location} · {site.timezone}</span>
+  </div>
+</footer>
+<style>
+  .footer { border-top: 1px solid var(--line-dark); padding-block: var(--space-xl) 6rem; }
+  .foot-grid { display: grid; gap: 2rem; }
+  .foot-logo { font-family: var(--font-display); font-size: 3.5rem; line-height: 1; text-decoration: none; }
+  .foot-logo em { color: var(--champagne); }
+  .foot-brand p { margin-top: .75rem; max-width: 34ch; }
+  .foot-links { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1.5rem; }
+  .foot-links a, .foot-contact a { text-decoration: none; color: var(--smoke); }
+  .foot-links a:hover, .foot-contact a:hover { color: var(--bone); }
+  .foot-contact { display: grid; gap: .6rem; align-content: start; }
+  .soc { list-style: none; padding: 0; display: flex; gap: .5rem; margin-top: .5rem; }
+  .soc a { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-dark); }
+  .foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-top: var(--space-l); padding-top: 1.25rem; border-top: 1px solid var(--line-dark); font-size: .72rem; color: var(--smoke); }
+  @media (min-width: 768px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } .footer { padding-bottom: var(--space-l); } }
+</style>

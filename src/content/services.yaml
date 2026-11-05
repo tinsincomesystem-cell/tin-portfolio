@@ -1,0 +1,66 @@
+# =====================================================================
+#  SERVICES — the four things you do. Order here = order on the site.
+#  icon options: brand, web, automation, assistant
+# =====================================================================
+
+eyebrow: "What I do"
+title: "One strategist. *Five* jobs you've been doing yourself."
+intro: "Most business owners hire a strategist, a designer, a web person, a tech person and an assistant, then spend their week getting them to talk to each other. I do all five, and they're built to work together from day one."
+
+items:
+  - id: funnels
+    icon: automation
+    featured: true
+    title: "Funnel Design & Strategy"
+    tagline: "The path that turns a stranger into a paying customer"
+    description: "I map the offer, the customer journey and every step in between, then design and build it: pages, emails, booking, payments and follow-up. You get a funnel designed around how your customers actually decide to buy."
+    deliverables: ["Offer & customer journey strategy", "Landing & sales pages", "Booking & order forms", "Email & SMS nurture sequences", "No-show & abandoned-lead recovery", "Tracking & conversion review"]
+    link: { label: "Watch my funnel walkthroughs", href: "#funnels" }
+
+  - id: branding
+    icon: brand
+    title: "Full Branding"
+    tagline: "For any business that wants to look established"
+    description: "A complete identity people remember: logo suite, typography, color system, social templates, print pieces and signage, plus the website to match. You get a brand packet you can hand to any printer or designer."
+    deliverables: ["Logo suite & monogram", "Typography & color system", "Social media templates", "Postcards & mailers", "Signage", "Business cards & email signature", "Brand guidelines packet (PDF)"]
+    link: { label: "See my brand work", href: "#branding" }
+
+  - id: websites
+    icon: web
+    title: "Website Design & Build"
+    tagline: "Fast, mobile-first sites built to bring in leads"
+    description: "Business, clinic and real estate sites, landing pages and funnels on Wix Studio, WordPress, GoHighLevel or custom code, all connected to your CRM so every inquiry gets followed up."
+    deliverables: ["Wix Studio & custom websites", "Landing pages & funnels", "Clinic, real estate & service sites", "CRM-connected lead forms", "On-page SEO & speed", "Booking integration"]
+    link: { label: "Browse websites", href: "#websites" }
+
+  - id: automation
+    icon: automation
+    title: "AI Automation Strategy"
+    tagline: "AI that follows up for you, with a human managing it"
+    description: "Speed-to-lead AI replies, CRM pipelines, nurture sequences, AI chat and voice agents, and workflows that connect the tools you already use. I choose the platform that fits your business, then train and check the AI. Every new lead gets a fast reply and a follow-up plan."
+    deliverables: ["AI chat & voice agents", "Speed-to-lead SMS/email", "CRM pipelines & tags", "Long-term nurture drips", "Custom workflow automation", "Missed-call text-back"]
+    link: { label: "See how a lead flows", href: "#automation" }
+
+  - id: executive-va
+    icon: assistant
+    title: "Executive VA"
+    tagline: "Your right hand for the work that eats your week"
+    description: "Inbox and calendar, documents and paperwork, CRM upkeep, pipeline building, social media management and inbound receptionist duties, handled by someone who thinks in systems."
+    deliverables: ["Inbox & calendar management", "Documents & client files", "CRM & pipeline management", "Social media management", "Inbound receptionist", "Marketing support", "Bookkeeping add-on (QBO certified)"]
+    link: { label: "See VA plans", href: "#pricing" }
+
+# ---------- Branding offers for OTHER businesses ----------
+# Industry-specific branding offers — TODO: set your prices (or leave "Custom quote").
+otherBusinesses:
+  title: "Tailored To Your Industry"
+  intro: "Well-researched branding that helps you stand out from your competitors."
+  todo: "Set prices for these branding offers"
+  offers:
+    - { name: "Real Estate Kit", for: "Agents, teams and brokerages", includes: "Logo suite, listing and social templates, postcards, signage and a brand packet", price: "Custom quote" }
+    - { name: "AI Automations", for: "Businesses losing time to busywork", includes: "AI replies, lead capture, follow-up and workflows, trained and managed by me", price: "Custom quote" }
+    - { name: "Strategy", for: "Owners who need a clear plan first", includes: "Business, funnel and systems roadmap: what to build, in what order and why", price: "Custom quote" }
+    - { name: "Brand Launch Kit", for: "New local businesses", includes: "Logo suite, palette, type, business cards, 10 social templates", price: "Custom quote" }
+    - { name: "Trades & Contractor Kit", for: "Contractors, equipment & home services", includes: "Logo, truck/van wrap layout, yard signs, door hangers, quote & invoice templates", price: "Custom quote" }
+    - { name: "Clinic & Med Spa Kit", for: "Clinics, med spas, wellness", includes: "Brand system, booking funnel, treatment menu, appointment reminder templates", price: "Custom quote" }
+    - { name: "Coach & Personal Brand Kit", for: "Coaches, consultants, creators", includes: "Portrait-led brand, Canva template library, lead magnet design", price: "Custom quote" }
+    - { name: "Brand Refresh Sprint", for: "Businesses with a brand that's drifted", includes: "Audit + cleaned-up logo files, palette, type and templates in 2 weeks", price: "Custom quote" }

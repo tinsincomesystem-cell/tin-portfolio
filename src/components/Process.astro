@@ -1,0 +1,43 @@
+---
+import { process as pr, rich } from '../lib/content';
+---
+<section id="process" class="process s-dark section" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-reveal>{pr.eyebrow}</span>
+      <h2 id="process-title" class="h-1" data-reveal style="--d:.05" set:html={rich(pr.title)} />
+    </div>
+    <ol class="steps" role="list" data-steps>
+      <span class="steps-line" aria-hidden="true"><i></i></span>
+      {pr.steps.map((s: any, i: number) => (
+        <li class="step" data-reveal style={`--d:${i * .08}`}>
+          <span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="step-title">{s.title}</h3>
+          <p class="muted">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+
+  </div>
+</section>
+<style>
+  .steps { list-style: none; padding: 0; display: grid; gap: 2rem; position: relative; }
+  .steps-line { position: absolute; left: 1.4rem; top: 1rem; bottom: 1rem; width: 1px; background: var(--line-dark); }
+  .steps-line i { position: absolute; inset: 0; background: var(--champagne); transform-origin: top; transform: scaleY(var(--fill, 0)); }
+  .step { position: relative; display: grid; gap: .4rem; padding-left: 4rem; }
+  .step-num { position: absolute; left: 0; top: 0; width: 2.8rem; height: 2.8rem; display: grid; place-items: center; border-radius: 50%; background: var(--onyx); border: 1px solid var(--champagne); color: var(--champagne); font-family: var(--font-mono); font-size: .8rem; }
+  .step-title { font-size: var(--step-2); }
+  .step p { max-width: 42ch; font-size: .95rem; }
+  @media (min-width: 1024px) {
+    .steps { grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+    .steps-line { left: 1.4rem; right: 1.4rem; top: 1.4rem; bottom: auto; width: auto; height: 1px; }
+    .steps-line i { transform-origin: left; transform: scaleX(var(--fill, 0)); }
+    .step { padding-left: 0; padding-top: 4.25rem; }
+  }
+</style>
+<script>
+  import { ScrollTrigger, reducedMotion } from '../scripts/core';
+  const el = document.querySelector<HTMLElement>('[data-steps]')!;
+  if (reducedMotion()) el.style.setProperty('--fill', '1');
+  else ScrollTrigger.create({ trigger: el, start: 'top 75%', end: 'bottom 60%', scrub: .5, onUpdate: (s) => el.style.setProperty('--fill', String(s.progress)) });
+</script>
